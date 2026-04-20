@@ -1,0 +1,20 @@
+{
+  "name": "ОвощиМаркет — доставка овощей",
+  "short_name": "ОвощиМаркет",
+  "description": "Свежие органические овощи с доставкой по Уфе",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a1f0f",
+  "theme_color": "#1a6b3c",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/22ac6a84-88d1-497c-b4d1-4b86c37cdec1.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["food", "shopping"],
+  "lang": "ru"
+}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Icon from "@/components/ui/icon";
 
 const HERO_IMAGE = "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/58f8e18c-3a1d-4321-a0d0-d558c40958c4.jpg";
@@ -50,6 +50,23 @@ export default function Index() {
   const [formPhone, setFormPhone] = useState('');
   const [formComment, setFormComment] = useState('');
   const [formStatus, setFormStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [installPrompt, setInstallPrompt] = useState<Event | null>(null);
+  const [installed, setInstalled] = useState(false);
+
+  useEffect(() => {
+    const handler = (e: Event) => { e.preventDefault(); setInstallPrompt(e); };
+    window.addEventListener('beforeinstallprompt', handler);
+    window.addEventListener('appinstalled', () => setInstalled(true));
+    return () => window.removeEventListener('beforeinstallprompt', handler);
+  }, []);
+
+  const handleInstall = async () => {
+    if (!installPrompt) return;
+    installPrompt.prompt();
+    const { outcome } = await installPrompt.userChoice;
+    if (outcome === 'accepted') setInstalled(true);
+    setInstallPrompt(null);
+  };
 
   const handleSubmit = async () => {
     if (!formName.trim() || !formPhone.trim()) return;
@@ -124,6 +141,17 @@ export default function Index() {
           </div>
 
           <div className="flex items-center gap-3">
+            {installPrompt && !installed && (
+              <button onClick={handleInstall} className="hidden md:flex items-center gap-2 border border-veggie-lime/50 text-veggie-lime px-3 py-2 rounded-full text-sm font-medium hover:bg-veggie-lime/10 transition-colors">
+                <Icon name="Download" size={14} />
+                Установить
+              </button>
+            )}
+            {installed && (
+              <span className="hidden md:flex items-center gap-1 text-veggie-lime/60 text-xs">
+                <Icon name="CheckCircle" size={14} />Установлено
+              </span>
+            )}
             <button onClick={() => setCartOpen(true)} className="relative flex items-center gap-2 bg-veggie-lime text-veggie-dark px-4 py-2 rounded-full font-semibold text-sm hover:bg-white transition-colors">
               <Icon name="ShoppingCart" size={16} />
               <span>Корзина</span>
