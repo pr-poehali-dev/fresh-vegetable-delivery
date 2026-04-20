@@ -122,8 +122,38 @@ export default function Index() {
     setMobileMenuOpen(false);
   };
 
+  const [bannerDismissed, setBannerDismissed] = useState(() => localStorage.getItem('pwa-banner-dismissed') === '1');
+  const showBanner = !bannerDismissed && !installed && !!installPrompt;
+
+  const dismissBanner = () => {
+    setBannerDismissed(true);
+    localStorage.setItem('pwa-banner-dismissed', '1');
+  };
+
   return (
     <div className="min-h-screen bg-background font-body">
+      {/* PWA INSTALL BANNER */}
+      {showBanner && (
+        <div className="fixed bottom-0 left-0 right-0 z-50 p-4 animate-fade-in">
+          <div className="max-w-lg mx-auto bg-veggie-dark border border-veggie-lime/40 rounded-2xl p-4 shadow-2xl flex items-center gap-4">
+            <div className="text-4xl shrink-0">🥬</div>
+            <div className="flex-1 min-w-0">
+              <p className="font-heading font-bold text-white text-base leading-tight">Установите приложение!</p>
+              <p className="text-white/60 text-sm mt-0.5">Быстрый доступ к заказу овощей прямо с экрана телефона</p>
+            </div>
+            <div className="flex flex-col gap-2 shrink-0">
+              <button onClick={() => { handleInstall(); dismissBanner(); }}
+                className="bg-veggie-lime text-veggie-dark px-4 py-2 rounded-xl text-sm font-bold hover:bg-white transition-colors whitespace-nowrap">
+                Установить
+              </button>
+              <button onClick={dismissBanner} className="text-white/40 hover:text-white/70 text-xs text-center transition-colors">
+                Не сейчас
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* NAVBAR */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-veggie-dark/95 backdrop-blur-md border-b border-veggie-green/30">
         <div className="container flex items-center justify-between h-16">
