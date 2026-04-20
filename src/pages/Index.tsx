@@ -46,6 +46,30 @@ export default function Index() {
   const [cartOpen, setCartOpen] = useState(false);
   const [faqOpen, setFaqOpen] = useState<number | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [formName, setFormName] = useState('');
+  const [formPhone, setFormPhone] = useState('');
+  const [formComment, setFormComment] = useState('');
+  const [formStatus, setFormStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+
+  const handleSubmit = async () => {
+    if (!formName.trim() || !formPhone.trim()) return;
+    setFormStatus('loading');
+    try {
+      const res = await fetch('https://functions.poehali.dev/a913c03c-9fc0-4a9f-baef-df33289b1a86', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: formName, phone: formPhone, comment: formComment }),
+      });
+      if (res.ok) {
+        setFormStatus('success');
+        setFormName(''); setFormPhone(''); setFormComment('');
+      } else {
+        setFormStatus('error');
+      }
+    } catch {
+      setFormStatus('error');
+    }
+  };
 
   const filteredProducts = PRODUCTS.filter(p => {
     const seasonOk = activeSeason === "все" || p.season === activeSeason;
@@ -465,14 +489,29 @@ export default function Index() {
             <div className="bg-veggie-green rounded-2xl p-8 text-white">
               <h3 className="font-heading text-2xl font-bold mb-2">Оставить заявку</h3>
               <p className="text-white/70 mb-6">Перезвоним в течение 15 минут</p>
-              <div className="space-y-4">
-                <input type="text" placeholder="Ваше имя" className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:border-veggie-lime transition-colors" />
-                <input type="tel" placeholder="Номер телефона" className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:border-veggie-lime transition-colors" />
-                <textarea placeholder="Комментарий (необязательно)" rows={3} className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:border-veggie-lime transition-colors resize-none" />
-                <button className="w-full btn-accent py-4 rounded-xl font-heading text-lg font-semibold tracking-wide">
-                  Отправить заявку →
-                </button>
-              </div>
+
+              {formStatus === 'success' ? (
+                <div className="text-center py-8">
+                  <div className="text-5xl mb-4">🎉</div>
+                  <p className="font-heading text-xl font-bold mb-2">Заявка отправлена!</p>
+                  <p className="text-white/70">Мы позвоним вам в ближайшее время</p>
+                  <button onClick={() => setFormStatus('idle')} className="mt-4 text-veggie-lime underline text-sm">Отправить ещё</button>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  <input type="text" placeholder="Ваше имя" value={formName} onChange={e => setFormName(e.target.value)}
+                    className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:border-veggie-lime transition-colors" />
+                  <input type="tel" placeholder="Номер телефона" value={formPhone} onChange={e => setFormPhone(e.target.value)}
+                    className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:border-veggie-lime transition-colors" />
+                  <textarea placeholder="Комментарий (необязательно)" rows={3} value={formComment} onChange={e => setFormComment(e.target.value)}
+                    className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:border-veggie-lime transition-colors resize-none" />
+                  {formStatus === 'error' && <p className="text-red-300 text-sm">Ошибка отправки. Попробуйте ещё раз.</p>}
+                  <button onClick={handleSubmit} disabled={formStatus === 'loading' || !formName || !formPhone}
+                    className="w-full btn-accent py-4 rounded-xl font-heading text-lg font-semibold tracking-wide disabled:opacity-50 disabled:cursor-not-allowed">
+                    {formStatus === 'loading' ? 'Отправляем...' : 'Отправить заявку →'}
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
