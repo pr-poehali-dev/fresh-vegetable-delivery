@@ -281,13 +281,13 @@ export default function Index() {
           <div className="text-center mb-14">
             <h2 className="font-heading text-5xl font-bold mb-3">КАК МЫ ДОСТАВЛЯЕМ</h2>
             <div className="section-divider w-24 mx-auto mb-4" />
-            <p className="text-white/60 text-lg">Быстро, свежо, надёжно</p>
+            <p className="text-white/60 text-lg">По всей Уфе — быстро, свежо, надёжно</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8 mb-14">
             {[
               { icon: "Clock", title: "2–4 часа", desc: "Среднее время доставки от момента оформления заказа", color: "text-veggie-lime" },
-              { icon: "MapPin", title: "В радиусе 30 км", desc: "Доставляем по городу и пригородам без ограничений", color: "text-veggie-orange" },
+              { icon: "MapPin", title: "По всей Уфе", desc: "Доставляем в любой район города без ограничений", color: "text-veggie-orange" },
               { icon: "Package", title: "Эко-упаковка", desc: "Используем биоразлагаемые пакеты и холодовые контейнеры", color: "text-veggie-lime" },
             ].map((item) => (
               <div key={item.title} className="text-center p-8 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 transition-all card-hover">
