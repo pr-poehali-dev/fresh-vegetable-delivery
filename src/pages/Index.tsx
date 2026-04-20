@@ -444,9 +444,8 @@ export default function Index() {
           <div className="grid md:grid-cols-2 gap-12 max-w-4xl mx-auto">
             <div className="space-y-6">
               {[
-                { icon: "Phone", label: "Телефон", value: "+7 (800) 555-35-35" },
-                { icon: "Mail", label: "Email", value: "hello@ovoshimarket.ru" },
-                { icon: "MessageCircle", label: "WhatsApp / Telegram", value: "+7 (999) 123-45-67" },
+                { icon: "Phone", label: "Телефон", value: "+7 (938) 468-44-44" },
+                { icon: "MessageCircle", label: "WhatsApp / Telegram", value: "+7 (938) 468-44-44" },
                 { icon: "Clock", label: "Время работы", value: "Пн–Пт: 8:00–22:00" },
               ].map((contact) => (
                 <div key={contact.label} className="flex items-center gap-4">
