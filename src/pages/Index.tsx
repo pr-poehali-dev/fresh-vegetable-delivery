@@ -4,18 +4,18 @@ import Icon from "@/components/ui/icon";
 const HERO_IMAGE = "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/58f8e18c-3a1d-4321-a0d0-d558c40958c4.jpg";
 
 const PRODUCTS = [
-  { id: 1, name: "Томаты черри", price: 320, unit: "кг", season: "лето", type: "томаты", emoji: "🍅", badge: "Хит", weight: "500г" },
-  { id: 2, name: "Огурцы свежие", price: 180, unit: "кг", season: "лето", type: "огурцы", emoji: "🥒", badge: "Органик", weight: "1кг" },
-  { id: 3, name: "Болгарский перец", price: 260, unit: "кг", season: "лето", type: "перец", emoji: "🫑", badge: null, weight: "1кг" },
-  { id: 4, name: "Морковь", price: 90, unit: "кг", season: "осень", type: "корнеплоды", emoji: "🥕", badge: "Сезон", weight: "1кг" },
-  { id: 5, name: "Кабачок", price: 140, unit: "кг", season: "лето", type: "кабачки", emoji: "🥬", badge: null, weight: "1кг" },
-  { id: 6, name: "Брокколи", price: 340, unit: "кг", season: "весна", type: "капуста", emoji: "🥦", badge: "Органик", weight: "500г" },
-  { id: 7, name: "Свёкла", price: 80, unit: "кг", season: "осень", type: "корнеплоды", emoji: "🫐", badge: null, weight: "1кг" },
-  { id: 8, name: "Картофель", price: 70, unit: "кг", season: "осень", type: "корнеплоды", emoji: "🥔", badge: "Фермерский", weight: "2кг" },
-  { id: 9, name: "Тыква", price: 120, unit: "кг", season: "осень", type: "тыква", emoji: "🎃", badge: "Сезон", weight: "1кг" },
-  { id: 10, name: "Шпинат", price: 290, unit: "пучок", season: "весна", type: "зелень", emoji: "🌿", badge: "Органик", weight: "200г" },
-  { id: 11, name: "Редис", price: 110, unit: "пучок", season: "весна", type: "корнеплоды", emoji: "🌸", badge: null, weight: "300г" },
-  { id: 12, name: "Баклажан", price: 210, unit: "кг", season: "лето", type: "баклажаны", emoji: "🍆", badge: null, weight: "1кг" },
+  { id: 1, name: "Томаты черри", price: 320, unit: "кг", season: "лето", type: "томаты", emoji: "🍅", badge: "Хит", weight: "500г", weightKg: 0.5 },
+  { id: 2, name: "Огурцы свежие", price: 180, unit: "кг", season: "лето", type: "огурцы", emoji: "🥒", badge: "Органик", weight: "1кг", weightKg: 1 },
+  { id: 3, name: "Болгарский перец", price: 260, unit: "кг", season: "лето", type: "перец", emoji: "🫑", badge: null, weight: "1кг", weightKg: 1 },
+  { id: 4, name: "Морковь", price: 90, unit: "кг", season: "осень", type: "корнеплоды", emoji: "🥕", badge: "Сезон", weight: "1кг", weightKg: 1 },
+  { id: 5, name: "Кабачок", price: 140, unit: "кг", season: "лето", type: "кабачки", emoji: "🥬", badge: null, weight: "1кг", weightKg: 1 },
+  { id: 6, name: "Брокколи", price: 340, unit: "кг", season: "весна", type: "капуста", emoji: "🥦", badge: "Органик", weight: "500г", weightKg: 0.5 },
+  { id: 7, name: "Свёкла", price: 80, unit: "кг", season: "осень", type: "корнеплоды", emoji: "🫐", badge: null, weight: "1кг", weightKg: 1 },
+  { id: 8, name: "Картофель", price: 70, unit: "кг", season: "осень", type: "корнеплоды", emoji: "🥔", badge: "Фермерский", weight: "2кг", weightKg: 2 },
+  { id: 9, name: "Тыква", price: 120, unit: "кг", season: "осень", type: "тыква", emoji: "🎃", badge: "Сезон", weight: "1кг", weightKg: 1 },
+  { id: 10, name: "Шпинат", price: 290, unit: "пучок", season: "весна", type: "зелень", emoji: "🌿", badge: "Органик", weight: "200г", weightKg: 0.2 },
+  { id: 11, name: "Редис", price: 110, unit: "пучок", season: "весна", type: "корнеплоды", emoji: "🌸", badge: null, weight: "300г", weightKg: 0.3 },
+  { id: 12, name: "Баклажан", price: 210, unit: "кг", season: "лето", type: "баклажаны", emoji: "🍆", badge: null, weight: "1кг", weightKg: 1 },
 ];
 
 const SEASONS = ["все", "весна", "лето", "осень", "зима"];
@@ -37,7 +37,7 @@ const FAQ_ITEMS = [
 
 const NAV_LINKS = ["Каталог", "Доставка", "О сервисе", "Отзывы", "FAQ", "Контакты"];
 
-type CartItem = { id: number; name: string; price: number; emoji: string; qty: number };
+type CartItem = { id: number; name: string; price: number; emoji: string; qty: number; weightKg: number };
 
 export default function Index() {
   const [activeSeason, setActiveSeason] = useState("все");
@@ -55,12 +55,14 @@ export default function Index() {
 
   const totalItems = cart.reduce((s, i) => s + i.qty, 0);
   const totalPrice = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  const totalWeight = cart.reduce((s, i) => s + i.weightKg * i.qty, 0);
+  const freeDelivery = totalWeight >= 5;
 
   const addToCart = (product: typeof PRODUCTS[0]) => {
     setCart(prev => {
       const existing = prev.find(i => i.id === product.id);
       if (existing) return prev.map(i => i.id === product.id ? { ...i, qty: i.qty + 1 } : i);
-      return [...prev, { id: product.id, name: product.name, price: product.price, emoji: product.emoji, qty: 1 }];
+      return [...prev, { id: product.id, name: product.name, price: product.price, emoji: product.emoji, qty: 1, weightKg: product.weightKg }];
     });
   };
 
@@ -306,7 +308,7 @@ export default function Index() {
                 <Icon name="Truck" size={20} />ТАРИФЫ ДОСТАВКИ
               </div>
               <div className="space-y-3">
-                {[["Заказ до 2000 ₽", "199 ₽"], ["Заказ от 2000 ₽", "Бесплатно"], ["Экспресс (1 час)", "+299 ₽"]].map(([label, price]) => (
+                {[["Заказ до 5 кг", "199 ₽"], ["Заказ от 5 кг", "Бесплатно"], ["Экспресс (1 час)", "+299 ₽"]].map(([label, price]) => (
                   <div key={label} className="flex justify-between items-center border-b border-white/10 pb-3 last:border-0 last:pb-0">
                     <span className="text-white/70">{label}</span>
                     <span className="font-semibold text-veggie-lime">{price}</span>
@@ -549,16 +551,20 @@ export default function Index() {
 
             {cart.length > 0 && (
               <div className="p-6 border-t bg-background">
+                <div className="flex justify-between items-center mb-1">
+                  <span className="text-muted-foreground">Вес заказа:</span>
+                  <span className="font-semibold">{totalWeight.toFixed(1)} кг</span>
+                </div>
                 <div className="flex justify-between items-center mb-2">
                   <span className="text-muted-foreground">Доставка:</span>
-                  <span className="font-semibold">{totalPrice >= 2000 ? "Бесплатно 🎉" : "199 ₽"}</span>
+                  <span className="font-semibold">{freeDelivery ? "Бесплатно 🎉" : "199 ₽"}</span>
                 </div>
-                {totalPrice < 2000 && (
-                  <p className="text-xs text-muted-foreground mb-3">До бесплатной доставки не хватает {2000 - totalPrice} ₽</p>
+                {!freeDelivery && (
+                  <p className="text-xs text-muted-foreground mb-3">До бесплатной доставки не хватает {(5 - totalWeight).toFixed(1)} кг</p>
                 )}
                 <div className="flex justify-between items-center text-xl font-heading font-bold mb-4">
                   <span>Итого:</span>
-                  <span className="text-veggie-green">{totalPrice + (totalPrice >= 2000 ? 0 : 199)} ₽</span>
+                  <span className="text-veggie-green">{totalPrice + (freeDelivery ? 0 : 199)} ₽</span>
                 </div>
                 <button className="w-full btn-accent py-4 rounded-xl font-heading text-lg font-semibold tracking-wide">
                   Оформить заказ →
