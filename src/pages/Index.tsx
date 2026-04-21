@@ -18,7 +18,6 @@ const PRODUCTS = [
   { id: 12, name: "Баклажан", price: 210, unit: "кг", season: "лето", type: "баклажаны", emoji: "🍆", badge: null, weight: "1кг", weightKg: 1 },
 ];
 
-const SEASONS = ["все", "весна", "лето", "осень", "зима"];
 const TYPES = ["все", "томаты", "огурцы", "перец", "корнеплоды", "капуста", "зелень", "кабачки", "тыква", "баклажаны"];
 
 const REVIEWS = [
@@ -40,7 +39,6 @@ const NAV_LINKS = ["Каталог", "Доставка", "О сервисе", "�
 type CartItem = { id: number; name: string; price: number; emoji: string; qty: number; weightKg: number };
 
 export default function Index() {
-  const [activeSeason, setActiveSeason] = useState("все");
   const [activeType, setActiveType] = useState("все");
   const [cart, setCart] = useState<CartItem[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
@@ -88,11 +86,7 @@ export default function Index() {
     }
   };
 
-  const filteredProducts = PRODUCTS.filter(p => {
-    const seasonOk = activeSeason === "все" || p.season === activeSeason;
-    const typeOk = activeType === "все" || p.type === activeType;
-    return seasonOk && typeOk;
-  });
+  const filteredProducts = PRODUCTS.filter(p => activeType === "все" || p.type === activeType);
 
   const totalItems = cart.reduce((s, i) => s + i.qty, 0);
   const totalPrice = cart.reduce((s, i) => s + i.price * i.qty, 0);
@@ -273,24 +267,10 @@ export default function Index() {
           <div className="text-center mb-12">
             <h2 className="font-heading text-5xl font-bold text-veggie-green mb-3">КАТАЛОГ ОВОЩЕЙ</h2>
             <div className="section-divider w-24 mx-auto mb-4" />
-            <p className="text-muted-foreground text-lg">Выбирайте по сезону и типу — всё самое свежее</p>
+            <p className="text-muted-foreground text-lg">Выбирайте по типу — всё самое свежее</p>
           </div>
 
-          <div className="mb-8 space-y-4">
-            <div>
-              <div className="text-sm font-semibold text-veggie-green mb-2 uppercase tracking-wider flex items-center gap-2">
-                <Icon name="Calendar" size={14} />По сезону
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {SEASONS.map(s => (
-                  <button key={s} onClick={() => setActiveSeason(s)}
-                    className={`px-4 py-2 rounded-full text-sm font-semibold capitalize transition-all border ${activeSeason === s ? 'bg-veggie-green text-white border-veggie-green' : 'bg-white text-veggie-green border-veggie-green/30 hover:border-veggie-green'}`}>
-                    {s === "все" ? "🌿 Все сезоны" : s === "весна" ? "🌸 Весна" : s === "лето" ? "☀️ Лето" : s === "осень" ? "🍂 Осень" : "❄️ Зима"}
-                  </button>
-                ))}
-              </div>
-            </div>
-
+          <div className="mb-8">
             <div>
               <div className="text-sm font-semibold text-veggie-green mb-2 uppercase tracking-wider flex items-center gap-2">
                 <Icon name="Filter" size={14} />По типу
@@ -329,7 +309,7 @@ export default function Index() {
                       <h3 className="font-semibold text-foreground mb-1 leading-tight">{product.name}</h3>
                       <div className="flex items-center gap-2 mb-3">
                         <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-full">{product.weight}</span>
-                        <span className="text-xs text-veggie-green capitalize">{product.season}</span>
+
                       </div>
                       <div className="flex items-center justify-between">
                         <span className="font-heading text-xl font-bold text-veggie-green">{product.price} ₽</span>
