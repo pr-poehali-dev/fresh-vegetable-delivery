@@ -11,7 +11,7 @@ const PRODUCTS = [
   { id: 5, name: "Кабачок", price: 140, unit: "кг", season: "лето", type: "кабачки", emoji: "🥬", badge: null, weight: "1кг", weightKg: 1 },
   { id: 6, name: "Брокколи", price: 340, unit: "кг", season: "весна", type: "капуста", emoji: "🥦", badge: "Органик", weight: "500г", weightKg: 0.5 },
   { id: 7, name: "Свёкла", price: 80, unit: "кг", season: "осень", type: "корнеплоды", emoji: "🫐", badge: null, weight: "1кг", weightKg: 1 },
-  { id: 8, name: "Картофель", price: 40, unit: "кг", season: "осень", type: "корнеплоды", emoji: "🥔", badge: "Предзаказ", weight: "2кг", weightKg: 2 },
+  { id: 8, name: "Картофель", price: 40, unit: "кг", season: "осень", type: "корнеплоды", emoji: "🥔", badge: "Предзаказ", weight: "1кг", weightKg: 1 },
   { id: 9, name: "Тыква", price: 120, unit: "кг", season: "осень", type: "тыква", emoji: "🎃", badge: "Сезон", weight: "1кг", weightKg: 1 },
   { id: 10, name: "Шпинат", price: 290, unit: "пучок", season: "весна", type: "зелень", emoji: "🌿", badge: "Органик", weight: "200г", weightKg: 0.2 },
   { id: 11, name: "Редис", price: 110, unit: "пучок", season: "весна", type: "корнеплоды", emoji: "🌸", badge: null, weight: "300г", weightKg: 0.3 },
