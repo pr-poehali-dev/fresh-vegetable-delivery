@@ -153,7 +153,7 @@ export default function Index() {
         <div className="container flex items-center justify-between h-16">
           <div className="flex items-center gap-2">
             <span className="text-2xl">🥬</span>
-            <span className="font-heading text-xl font-bold text-white tracking-wide">ОВОЩИ<span className="text-veggie-lime">МАРКЕТ</span></span>
+            <span className="font-heading text-xl font-bold text-white tracking-wide">ФИЛИНИ<span className="text-veggie-lime"> ФЕРМЕРСКИЕ ПРОДУКТЫ</span></span>
           </div>
 
           <div className="hidden md:flex items-center gap-6">
@@ -405,7 +405,7 @@ export default function Index() {
               </div>
               <h2 className="font-heading text-5xl font-bold text-veggie-green mb-6 leading-tight">О НАС — КТО МЫ И ЗАЧЕМ</h2>
               <p className="text-muted-foreground text-lg mb-6 leading-relaxed">
-                ОвощиМаркет — это команда людей, влюблённых в настоящую еду. Мы работаем напрямую с 30+ фермерами, чтобы вы получали только самое свежее и честное.
+                Филини Фермерские Продукты — это команда людей, влюблённых в настоящую еду. Мы работаем напрямую с 30+ фермерами, чтобы вы получали только самое свежее и честное.
               </p>
               <p className="text-muted-foreground text-lg mb-8 leading-relaxed">
                 Никаких перекупщиков, никакой химии. Только сезонные овощи в правильное время года — именно тогда, когда они самые вкусные и питательные.
@@ -560,9 +560,9 @@ export default function Index() {
         <div className="container flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <span className="text-xl">🥬</span>
-            <span className="font-heading text-lg font-bold text-white">ОВОЩИ<span className="text-veggie-lime">МАРКЕТ</span></span>
+            <span className="font-heading text-lg font-bold text-white">ФИЛИНИ<span className="text-veggie-lime"> ФЕРМЕРСКИЕ ПРОДУКТЫ</span></span>
           </div>
-          <p className="text-white/40 text-sm">© 2026 ОвощиМаркет. Все права защищены.</p>
+          <p className="text-white/40 text-sm">© 2026 Филини Фермерские Продукты. Все права защищены.</p>
           <div className="flex gap-6">
             {["Каталог", "Доставка", "Контакты"].map(link => (
               <button key={link} onClick={() => scrollTo(link)} className="text-white/40 hover:text-veggie-lime text-sm transition-colors">
