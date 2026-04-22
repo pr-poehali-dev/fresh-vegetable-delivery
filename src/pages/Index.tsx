@@ -344,13 +344,13 @@ export default function Index() {
           <div className="text-center mb-14">
             <h2 className="font-heading text-5xl font-bold mb-3">КАК МЫ ДОСТАВЛЯЕМ</h2>
             <div className="section-divider w-24 mx-auto mb-4" />
-            <p className="text-white/60 text-lg">По всей Уфе — быстро, свежо, надёжно</p>
+            <p className="text-white/60 text-lg">Бесплатно по Уфе и в радиусе 20 км при заказе от 1500 рублей</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8 mb-14">
             {[
               { icon: "Clock", title: "По предзаказу", desc: "Доставка утром и вечером — оформите заказ заранее", color: "text-veggie-lime" },
-              { icon: "MapPin", title: "По всей Уфе", desc: "Доставляем в любой район города без ограничений", color: "text-veggie-orange" },
+              { icon: "MapPin", title: "Уфа и 20 км", desc: "Доставляем по всей Уфе и до 20 км от города", color: "text-veggie-orange" },
               { icon: "Package", title: "Эко-упаковка", desc: "Используем биоразлагаемые пакеты и холодовые контейнеры", color: "text-veggie-lime" },
             ].map((item) => (
               <div key={item.title} className="text-center p-8 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 transition-all card-hover">
@@ -369,7 +369,7 @@ export default function Index() {
                 <Icon name="Truck" size={20} />ТАРИФЫ ДОСТАВКИ
               </div>
               <div className="space-y-3">
-                {[["Заказ до 5 кг", "199 ₽"], ["Заказ от 5 кг", "Бесплатно"], ["Утренняя доставка", "до 12:00"], ["Вечерняя доставка", "с 18:00"]].map(([label, price]) => (
+                {[["Заказ от 1500 ₽", "Бесплатно"], ["Заказ до 1500 ₽", "По договорённости"], ["Утренняя доставка", "до 12:00"], ["Вечерняя доставка", "с 18:00"]].map(([label, price]) => (
                   <div key={label} className="flex justify-between items-center border-b border-white/10 pb-3 last:border-0 last:pb-0">
                     <span className="text-white/70">{label}</span>
                     <span className="font-semibold text-veggie-lime">{price}</span>
