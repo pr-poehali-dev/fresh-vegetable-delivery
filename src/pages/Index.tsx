@@ -226,7 +226,7 @@ export default function Index() {
             </h1>
 
             <p className="text-white/70 text-lg md:text-xl mb-10 leading-relaxed animate-fade-in animate-delay-200">
-              Органические овощи прямо с фермы — отборные, сезонные, вкусные. Выбирайте по типу и времени года.
+              Всегда свежие отборные овощи. Бесплатная доставка по Уфе и в радиусе 20 км от города при заказе от 1500 рублей.
             </p>
 
             <div className="flex flex-wrap gap-4 animate-fade-in animate-delay-300">
