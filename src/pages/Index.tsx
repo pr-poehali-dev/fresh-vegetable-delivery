@@ -217,7 +217,7 @@ export default function Index() {
           <div className="max-w-2xl">
             <div className="inline-flex items-center gap-2 bg-veggie-lime/20 border border-veggie-lime/40 text-veggie-lime text-sm px-4 py-2 rounded-full mb-6 animate-fade-in">
               <span className="w-2 h-2 bg-veggie-lime rounded-full animate-pulse" />
-              Доставка за 2 часа
+              Доставка по предзаказу
             </div>
 
             <h1 className="font-heading text-6xl md:text-8xl font-bold text-white leading-none mb-6 animate-fade-in animate-delay-100">
@@ -240,7 +240,7 @@ export default function Index() {
             </div>
 
             <div className="flex gap-8 mt-14 animate-fade-in animate-delay-400">
-              {[["500+", "сортов"], ["2ч", "доставка"], ["98%", "довольны"]].map(([val, label]) => (
+              {[["500+", "сортов"], ["утро/вечер", "доставка"], ["98%", "довольны"]].map(([val, label]) => (
                 <div key={label}>
                   <div className="font-heading text-3xl font-bold text-veggie-lime">{val}</div>
                   <div className="text-white/50 text-sm">{label}</div>
