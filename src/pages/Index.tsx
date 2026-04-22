@@ -4,21 +4,20 @@ import Icon from "@/components/ui/icon";
 const HERO_IMAGE = "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/58f8e18c-3a1d-4321-a0d0-d558c40958c4.jpg";
 
 const PRODUCTS = [
-  { id: 1, name: "Томаты черри", price: 320, unit: "кг", season: "лето", type: "томаты", emoji: "🍅", badge: "Хит", weight: "500г", weightKg: 0.5 },
-  { id: 2, name: "Огурцы свежие", price: 180, unit: "кг", season: "лето", type: "огурцы", emoji: "🥒", badge: "Органик", weight: "1кг", weightKg: 1 },
-  { id: 3, name: "Болгарский перец", price: 260, unit: "кг", season: "лето", type: "перец", emoji: "🫑", badge: null, weight: "1кг", weightKg: 1 },
-  { id: 4, name: "Морковь", price: 90, unit: "кг", season: "осень", type: "корнеплоды", emoji: "🥕", badge: "Сезон", weight: "1кг", weightKg: 1 },
-  { id: 5, name: "Кабачок", price: 140, unit: "кг", season: "лето", type: "кабачки", emoji: "🥬", badge: null, weight: "1кг", weightKg: 1 },
-  { id: 6, name: "Брокколи", price: 340, unit: "кг", season: "весна", type: "капуста", emoji: "🥦", badge: "Органик", weight: "500г", weightKg: 0.5 },
-  { id: 7, name: "Свёкла", price: 80, unit: "кг", season: "осень", type: "корнеплоды", emoji: "🫐", badge: null, weight: "1кг", weightKg: 1 },
-  { id: 8, name: "Картофель", price: 40, unit: "кг", season: "осень", type: "корнеплоды", emoji: "🥔", badge: "Предзаказ", weight: "1кг", weightKg: 1 },
-  { id: 9, name: "Тыква", price: 120, unit: "кг", season: "осень", type: "тыква", emoji: "🎃", badge: "Сезон", weight: "1кг", weightKg: 1 },
-  { id: 10, name: "Шпинат", price: 290, unit: "пучок", season: "весна", type: "зелень", emoji: "🌿", badge: "Органик", weight: "200г", weightKg: 0.2 },
-  { id: 11, name: "Редис", price: 110, unit: "пучок", season: "весна", type: "корнеплоды", emoji: "🌸", badge: null, weight: "300г", weightKg: 0.3 },
-  { id: 12, name: "Баклажан", price: 210, unit: "кг", season: "лето", type: "баклажаны", emoji: "🍆", badge: null, weight: "1кг", weightKg: 1 },
+  { id: 1, name: "Картофель мытый", price: 55, unit: "кг", season: "осень", type: "картофель", emoji: "🥔", badge: null, weight: "1кг", weightKg: 1 },
+  { id: 2, name: "Картофель Галла", price: 50, unit: "кг", season: "осень", type: "картофель", emoji: "🥔", badge: null, weight: "1кг", weightKg: 1 },
+  { id: 3, name: "Картофель Колумба", price: 42, unit: "кг", season: "осень", type: "картофель", emoji: "🥔", badge: null, weight: "1кг", weightKg: 1 },
+  { id: 4, name: "Капуста белокочанная свежая", price: 40, unit: "кг", season: "осень", type: "капуста", emoji: "🥬", badge: null, weight: "1кг", weightKg: 1 },
+  { id: 5, name: "Морковь свежая", price: 38, unit: "кг", season: "осень", type: "корнеплоды", emoji: "🥕", badge: null, weight: "1кг", weightKg: 1 },
+  { id: 6, name: "Лук репчатый свежий", price: 50, unit: "кг", season: "осень", type: "лук", emoji: "🧅", badge: null, weight: "1кг", weightKg: 1 },
+  { id: 7, name: "Лук репчатый Казахстан", price: 30, unit: "кг", season: "осень", type: "лук", emoji: "🧅", badge: null, weight: "1кг", weightKg: 1 },
+  { id: 8, name: "Свёкла Краснодар", price: 45, unit: "кг", season: "осень", type: "корнеплоды", emoji: "🫐", badge: null, weight: "1кг", weightKg: 1 },
+  { id: 9, name: "Помидор Малиновка", price: 250, unit: "кг", season: "лето", type: "томаты", emoji: "🍅", badge: "Хит", weight: "1кг", weightKg: 1 },
+  { id: 10, name: "Помидор на ветке", price: 150, unit: "кг", season: "лето", type: "томаты", emoji: "🍅", badge: null, weight: "1кг", weightKg: 1 },
+  { id: 11, name: "Огурец пупырчатый Чечня", price: 150, unit: "кг", season: "лето", type: "огурцы", emoji: "🥒", badge: null, weight: "1кг", weightKg: 1 },
 ];
 
-const TYPES = ["все", "томаты", "огурцы", "перец", "корнеплоды", "капуста", "зелень", "кабачки", "тыква", "баклажаны"];
+const TYPES = ["все", "картофель", "капуста", "корнеплоды", "лук", "томаты", "огурцы"];
 
 const REVIEWS = [
   { id: 1, name: "Анна К.", text: "Уже третий месяц заказываю каждую неделю! Овощи всегда свежайшие, как с грядки. Брокколи и шпинат — просто объедение!", rating: 5, avatar: "👩‍🦰", location: "Москва" },
