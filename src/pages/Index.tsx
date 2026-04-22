@@ -311,7 +311,7 @@ export default function Index() {
 
                       </div>
                       <div className="flex items-center justify-between">
-                        {product.id === 8 ? <span className="font-heading text-xl font-bold text-veggie-green">{product.price} ₽</span> : <span className="text-sm text-muted-foreground italic">Уточнить цену</span>}
+                        <span className="font-heading text-xl font-bold text-veggie-green">{product.price} ₽/{product.unit}</span>
                         {inCart ? (
                           <div className="flex items-center gap-2">
                             <button onClick={() => updateQty(product.id, -1)} className="w-7 h-7 rounded-full bg-veggie-green/10 hover:bg-veggie-green/20 text-veggie-green font-bold flex items-center justify-center transition-colors">
