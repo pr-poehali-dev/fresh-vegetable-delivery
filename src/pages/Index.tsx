@@ -3,7 +3,7 @@ import Icon from "@/components/ui/icon";
 
 const HERO_IMAGE = "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/58f8e18c-3a1d-4321-a0d0-d558c40958c4.jpg";
 
-const PRODUCTS = [
+const VEGETABLES = [
   { id: 1, name: "Картофель мытый", price: 55, unit: "кг", season: "осень", type: "картофель", emoji: "🥔", badge: null, weight: "1кг", weightKg: 1 },
   { id: 2, name: "Картофель Галла", price: 50, unit: "кг", season: "осень", type: "картофель", emoji: "🥔", badge: null, weight: "1кг", weightKg: 1 },
   { id: 3, name: "Картофель Колумба", price: 42, unit: "кг", season: "осень", type: "картофель", emoji: "🥔", badge: null, weight: "1кг", weightKg: 1 },
@@ -17,7 +17,21 @@ const PRODUCTS = [
   { id: 11, name: "Огурец пупырчатый Чечня", price: 150, unit: "кг", season: "лето", type: "огурцы", emoji: "🥒", badge: null, weight: "1кг", weightKg: 1 },
 ];
 
-const TYPES = ["все", "картофель", "капуста", "корнеплоды", "лук", "томаты", "огурцы"];
+const FRUITS = [
+  { id: 101, name: "Яблоки Голден", price: 120, unit: "кг", season: "осень", type: "яблоки", emoji: "🍎", badge: null, weight: "1кг", weightKg: 1 },
+  { id: 102, name: "Яблоки Антоновка", price: 90, unit: "кг", season: "осень", type: "яблоки", emoji: "🍏", badge: null, weight: "1кг", weightKg: 1 },
+  { id: 103, name: "Груши Конференц", price: 180, unit: "кг", season: "осень", type: "груши", emoji: "🍐", badge: "Хит", weight: "1кг", weightKg: 1 },
+  { id: 104, name: "Виноград Кишмиш", price: 250, unit: "кг", season: "лето", type: "виноград", emoji: "🍇", badge: null, weight: "1кг", weightKg: 1 },
+  { id: 105, name: "Персики", price: 300, unit: "кг", season: "лето", type: "персики", emoji: "🍑", badge: null, weight: "1кг", weightKg: 1 },
+  { id: 106, name: "Сливы синие", price: 200, unit: "кг", season: "лето", type: "сливы", emoji: "🍑", badge: null, weight: "1кг", weightKg: 1 },
+  { id: 107, name: "Арбуз Астраханский", price: 35, unit: "кг", season: "лето", type: "бахча", emoji: "🍉", badge: "Хит", weight: "за кг", weightKg: 1 },
+  { id: 108, name: "Дыня Колхозница", price: 80, unit: "кг", season: "лето", type: "бахча", emoji: "🍈", badge: null, weight: "за кг", weightKg: 1 },
+];
+
+const VEG_TYPES = ["все", "картофель", "капуста", "корнеплоды", "лук", "томаты", "огурцы"];
+const FRUIT_TYPES = ["все", "яблоки", "груши", "виноград", "персики", "сливы", "бахча"];
+
+const PRODUCTS = [...VEGETABLES, ...FRUITS];
 
 const REVIEWS = [
   { id: 1, name: "Анна К.", text: "Уже третий месяц заказываю каждую неделю! Овощи всегда свежайшие, как с грядки. Брокколи и шпинат — просто объедение!", rating: 5, avatar: "👩‍🦰", location: "Уфа" },
@@ -38,6 +52,7 @@ const NAV_LINKS = ["Каталог", "Доставка", "О сервисе", "�
 type CartItem = { id: number; name: string; price: number; emoji: string; qty: number; weightKg: number };
 
 export default function Index() {
+  const [activeSection, setActiveSection] = useState<"vegetables" | "fruits">("vegetables");
   const [activeType, setActiveType] = useState("все");
   const [cart, setCart] = useState<CartItem[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
@@ -85,7 +100,9 @@ export default function Index() {
     }
   };
 
-  const filteredProducts = PRODUCTS.filter(p => activeType === "все" || p.type === activeType);
+  const currentProducts = activeSection === "vegetables" ? VEGETABLES : FRUITS;
+  const currentTypes = activeSection === "vegetables" ? VEG_TYPES : FRUIT_TYPES;
+  const filteredProducts = currentProducts.filter(p => activeType === "все" || p.type === activeType);
 
   const totalItems = cart.reduce((s, i) => s + i.qty, 0);
   const totalPrice = cart.reduce((s, i) => s + i.price * i.qty, 0);
@@ -264,9 +281,24 @@ export default function Index() {
       <section id="catalog" className="py-20 bg-background">
         <div className="container">
           <div className="text-center mb-12">
-            <h2 className="font-heading text-5xl font-bold text-veggie-green mb-3">КАТАЛОГ ОВОЩЕЙ</h2>
+            <h2 className="font-heading text-5xl font-bold text-veggie-green mb-3">КАТАЛОГ</h2>
             <div className="section-divider w-24 mx-auto mb-4" />
-            <p className="text-muted-foreground text-lg">Выбирайте по типу — всё самое свежее</p>
+            <p className="text-muted-foreground text-lg">Выбирайте по разделу — всё самое свежее</p>
+          </div>
+
+          <div className="flex justify-center mb-8">
+            <div className="flex bg-muted rounded-2xl p-1 gap-1">
+              <button
+                onClick={() => { setActiveSection("vegetables"); setActiveType("все"); }}
+                className={`px-6 py-3 rounded-xl font-heading font-semibold text-base transition-all ${activeSection === "vegetables" ? "bg-veggie-green text-white shadow" : "text-muted-foreground hover:text-veggie-green"}`}>
+                🥬 Овощи
+              </button>
+              <button
+                onClick={() => { setActiveSection("fruits"); setActiveType("все"); }}
+                className={`px-6 py-3 rounded-xl font-heading font-semibold text-base transition-all ${activeSection === "fruits" ? "bg-veggie-green text-white shadow" : "text-muted-foreground hover:text-veggie-green"}`}>
+                🍎 Фрукты
+              </button>
+            </div>
           </div>
 
           <div className="mb-8">
@@ -275,7 +307,7 @@ export default function Index() {
                 <Icon name="Filter" size={14} />По типу
               </div>
               <div className="flex flex-wrap gap-2">
-                {TYPES.map(t => (
+                {currentTypes.map(t => (
                   <button key={t} onClick={() => setActiveType(t)}
                     className={`px-3 py-1.5 rounded-full text-sm capitalize transition-all border ${activeType === t ? 'bg-veggie-lime text-veggie-dark font-semibold border-veggie-lime' : 'bg-white text-muted-foreground border-border hover:border-veggie-lime/50'}`}>
                     {t === "все" ? "Все типы" : t}
