@@ -186,6 +186,22 @@ export default function Index() {
             ))}
           </div>
 
+          <div className="hidden md:flex items-center relative">
+            <Icon name="Search" size={16} className="absolute left-3 text-white/40 pointer-events-none" />
+            <input
+              type="text"
+              value={search}
+              onChange={e => { setSearch(e.target.value); if (e.target.value) scrollTo("Каталог"); }}
+              placeholder="Поиск..."
+              className="bg-white/10 border border-white/20 text-white placeholder:text-white/40 pl-9 pr-8 py-2 rounded-full text-sm focus:outline-none focus:border-veggie-lime/60 transition-colors w-44 focus:w-56"
+            />
+            {search && (
+              <button onClick={() => setSearch("")} className="absolute right-3 text-white/40 hover:text-white transition-colors">
+                <Icon name="X" size={14} />
+              </button>
+            )}
+          </div>
+
           <div className="flex items-center gap-3">
             {installPrompt && !installed && (
               <button onClick={handleInstall} className="hidden md:flex items-center gap-2 border border-veggie-lime/50 text-veggie-lime px-3 py-2 rounded-full text-sm font-medium hover:bg-veggie-lime/10 transition-colors">
