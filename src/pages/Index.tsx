@@ -54,6 +54,7 @@ type CartItem = { id: number; name: string; price: number; emoji: string; qty: n
 export default function Index() {
   const [activeSection, setActiveSection] = useState<"vegetables" | "fruits">("vegetables");
   const [activeType, setActiveType] = useState("все");
+  const [search, setSearch] = useState("");
   const [cart, setCart] = useState<CartItem[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
   const [faqOpen, setFaqOpen] = useState<number | null>(null);
@@ -100,9 +101,14 @@ export default function Index() {
     }
   };
 
-  const currentProducts = activeSection === "vegetables" ? VEGETABLES : FRUITS;
+  const isSearching = search.trim().length > 0;
+  const currentProducts = isSearching ? PRODUCTS : (activeSection === "vegetables" ? VEGETABLES : FRUITS);
   const currentTypes = activeSection === "vegetables" ? VEG_TYPES : FRUIT_TYPES;
-  const filteredProducts = currentProducts.filter(p => activeType === "все" || p.type === activeType);
+  const filteredProducts = currentProducts.filter(p => {
+    const matchesType = isSearching || activeType === "все" || p.type === activeType;
+    const matchesSearch = !isSearching || p.name.toLowerCase().includes(search.toLowerCase());
+    return matchesType && matchesSearch;
+  });
 
   const totalItems = cart.reduce((s, i) => s + i.qty, 0);
   const totalPrice = cart.reduce((s, i) => s + i.price * i.qty, 0);
@@ -284,6 +290,24 @@ export default function Index() {
             <h2 className="font-heading text-5xl font-bold text-veggie-green mb-3">КАТАЛОГ</h2>
             <div className="section-divider w-24 mx-auto mb-4" />
             <p className="text-muted-foreground text-lg">Выбирайте по разделу — всё самое свежее</p>
+          </div>
+
+          <div className="max-w-md mx-auto mb-8">
+            <div className="relative">
+              <Icon name="Search" size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
+              <input
+                type="text"
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+                placeholder="Поиск по товарам..."
+                className="w-full pl-11 pr-10 py-3 rounded-2xl border border-border bg-white text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-veggie-lime transition-colors text-base"
+              />
+              {search && (
+                <button onClick={() => setSearch("")} className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors">
+                  <Icon name="X" size={16} />
+                </button>
+              )}
+            </div>
           </div>
 
           <div className="flex justify-center mb-8">
