@@ -174,7 +174,7 @@ export default function Index() {
       <nav className="fixed top-0 left-0 right-0 z-50 bg-veggie-dark/95 backdrop-blur-md border-b border-veggie-green/30">
         <div className="container flex items-center justify-between h-16">
           <div className="flex items-center gap-2">
-            <span className="text-2xl">🥬</span>
+            <img src="https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/ac61ce7a-2d22-4c12-af30-055ce3380771.jpg" alt="Филини" className="h-10 w-10 rounded-xl object-cover" />
             <span className="font-heading text-xl font-bold text-white tracking-wide">ФИЛИНИ<span className="text-veggie-lime"> ФЕРМЕРСКИЕ ПРОДУКТЫ</span></span>
           </div>
 
