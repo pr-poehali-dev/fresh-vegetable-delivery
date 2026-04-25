@@ -14,6 +14,7 @@ const VEGETABLES = [
   { id: 8, name: "Свёкла Краснодар", price: 45, unit: "кг", season: "осень", type: "корнеплоды", emoji: "🫐", badge: null, weight: "1кг", weightKg: 1 },
   { id: 9, name: "Помидор Малиновка", price: 250, unit: "кг", season: "лето", type: "томаты", emoji: "🍅", badge: "Хит", weight: "1кг", weightKg: 1 },
   { id: 10, name: "Помидор на ветке", price: 150, unit: "кг", season: "лето", type: "томаты", emoji: "🍅", badge: null, weight: "1кг", weightKg: 1 },
+  { id: 12, name: "Помидор Парадайс", price: 220, unit: "кг", season: "лето", type: "томаты", emoji: "🍅", badge: null, weight: "1кг", weightKg: 1 },
   { id: 11, name: "Огурец пупырчатый Чечня", price: 150, unit: "кг", season: "лето", type: "огурцы", emoji: "🥒", badge: null, weight: "1кг", weightKg: 1 },
 ];
 
