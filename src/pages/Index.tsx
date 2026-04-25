@@ -1,5 +1,103 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Icon from "@/components/ui/icon";
+
+const API_SEND_CODE = "https://functions.poehali.dev/55e40474-9a2a-4db3-9880-7fdbfc00edf0";
+const API_VERIFY_CODE = "https://functions.poehali.dev/49670255-1338-4a0e-a466-50ed6b41136d";
+
+type User = { id: number; phone: string; name: string; points: number; is_first_order_done: boolean; is_new?: boolean };
+
+function AuthModal({ onClose, onAuth }: { onClose: () => void; onAuth: (user: User) => void }) {
+  const [step, setStep] = useState<'phone' | 'code'>('phone');
+  const [phone, setPhone] = useState('');
+  const [code, setCode] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [devCode, setDevCode] = useState('');
+  const codeRef = useRef<HTMLInputElement>(null);
+
+  const sendCode = async () => {
+    if (!phone.trim()) return;
+    setLoading(true); setError('');
+    try {
+      const res = await fetch(API_SEND_CODE, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone }) });
+      const data = await res.json();
+      if (res.ok) { setStep('code'); setDevCode(data.dev_code || ''); setTimeout(() => codeRef.current?.focus(), 100); }
+      else setError(data.error || 'Ошибка');
+    } catch { setError('Ошибка соединения'); }
+    setLoading(false);
+  };
+
+  const verifyCode = async () => {
+    if (!code.trim()) return;
+    setLoading(true); setError('');
+    try {
+      const res = await fetch(API_VERIFY_CODE, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone, code }) });
+      const data = await res.json();
+      if (res.ok) {
+        localStorage.setItem('user', JSON.stringify(data.user));
+        onAuth(data.user);
+        onClose();
+      } else setError(data.error || 'Неверный код');
+    } catch { setError('Ошибка соединения'); }
+    setLoading(false);
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={onClose}>
+      <div className="bg-veggie-dark border border-veggie-green/40 rounded-2xl p-6 w-full max-w-sm shadow-2xl" onClick={e => e.stopPropagation()}>
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h2 className="font-heading text-xl font-bold text-white">Войти</h2>
+            <p className="text-white/50 text-sm mt-0.5">Накапливайте баллы с каждым заказом</p>
+          </div>
+          <button onClick={onClose} className="text-white/40 hover:text-white transition-colors"><Icon name="X" size={20} /></button>
+        </div>
+
+        {step === 'phone' ? (
+          <>
+            <label className="text-white/60 text-sm mb-2 block">Номер телефона</label>
+            <input
+              type="tel" value={phone} onChange={e => setPhone(e.target.value)} placeholder="+7 900 000-00-00"
+              onKeyDown={e => e.key === 'Enter' && sendCode()}
+              className="w-full bg-white/10 border border-white/20 text-white placeholder:text-white/30 px-4 py-3 rounded-xl text-base focus:outline-none focus:border-veggie-lime/60 transition-colors mb-4"
+              autoFocus
+            />
+            {error && <p className="text-red-400 text-sm mb-3">{error}</p>}
+            <button onClick={sendCode} disabled={loading || !phone.trim()} className="w-full bg-veggie-lime text-veggie-dark py-3 rounded-xl font-bold text-base hover:bg-white transition-colors disabled:opacity-50">
+              {loading ? 'Отправляем...' : 'Получить код'}
+            </button>
+          </>
+        ) : (
+          <>
+            <p className="text-white/60 text-sm mb-2">Код отправлен на <span className="text-white font-medium">{phone}</span></p>
+            {devCode && <p className="text-veggie-lime text-sm mb-2 bg-veggie-lime/10 rounded-lg px-3 py-2">Код для входа: <b>{devCode}</b></p>}
+            <input
+              ref={codeRef} type="text" value={code} onChange={e => setCode(e.target.value)} placeholder="Введите 6-значный код"
+              onKeyDown={e => e.key === 'Enter' && verifyCode()}
+              maxLength={6}
+              className="w-full bg-white/10 border border-white/20 text-white placeholder:text-white/30 px-4 py-3 rounded-xl text-base text-center tracking-widest font-mono focus:outline-none focus:border-veggie-lime/60 transition-colors mb-4"
+            />
+            {error && <p className="text-red-400 text-sm mb-3">{error}</p>}
+            <button onClick={verifyCode} disabled={loading || code.length < 4} className="w-full bg-veggie-lime text-veggie-dark py-3 rounded-xl font-bold text-base hover:bg-white transition-colors disabled:opacity-50">
+              {loading ? 'Проверяем...' : 'Войти'}
+            </button>
+            <button onClick={() => { setStep('phone'); setCode(''); setError(''); }} className="w-full text-white/40 hover:text-white text-sm mt-3 transition-colors">
+              Изменить номер
+            </button>
+          </>
+        )}
+
+        <div className="mt-6 bg-veggie-lime/10 border border-veggie-lime/20 rounded-xl p-3 flex items-center gap-3">
+          <span className="text-2xl">🎁</span>
+          <div>
+            <p className="text-veggie-lime font-semibold text-sm">200 баллов за регистрацию</p>
+            <p className="text-white/50 text-xs">+ 200 баллов за первый заказ. 1 балл = 1 ₽</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 const HERO_IMAGE = "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/58f8e18c-3a1d-4321-a0d0-d558c40958c4.jpg";
 
@@ -69,6 +167,11 @@ export default function Index() {
   const [formStatus, setFormStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [installPrompt, setInstallPrompt] = useState<Event | null>(null);
   const [installed, setInstalled] = useState(false);
+  const [authOpen, setAuthOpen] = useState(false);
+  const [user, setUser] = useState<User | null>(() => {
+    try { return JSON.parse(localStorage.getItem('user') || 'null'); } catch { return null; }
+  });
+  const [profileOpen, setProfileOpen] = useState(false);
 
   useEffect(() => {
     const handler = (e: Event) => { e.preventDefault(); setInstallPrompt(e); };
@@ -150,8 +253,46 @@ export default function Index() {
     localStorage.setItem('pwa-banner-dismissed', '1');
   };
 
+  const logout = () => { setUser(null); localStorage.removeItem('user'); setProfileOpen(false); };
+
   return (
     <div className="min-h-screen bg-background font-body">
+      {authOpen && <AuthModal onClose={() => setAuthOpen(false)} onAuth={setUser} />}
+
+      {profileOpen && user && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={() => setProfileOpen(false)}>
+          <div className="bg-veggie-dark border border-veggie-green/40 rounded-2xl p-6 w-full max-w-sm shadow-2xl" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-5">
+              <h2 className="font-heading text-xl font-bold text-white">Мой профиль</h2>
+              <button onClick={() => setProfileOpen(false)} className="text-white/40 hover:text-white transition-colors"><Icon name="X" size={20} /></button>
+            </div>
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-12 h-12 rounded-full bg-veggie-lime/20 flex items-center justify-center text-2xl">👤</div>
+              <div>
+                <p className="text-white font-semibold">{user.name}</p>
+                <p className="text-white/50 text-sm">{user.phone}</p>
+              </div>
+            </div>
+            <div className="bg-veggie-lime/10 border border-veggie-lime/30 rounded-xl p-4 mb-4 flex items-center gap-4">
+              <span className="text-3xl">⭐</span>
+              <div>
+                <p className="text-veggie-lime text-2xl font-bold">{user.points} баллов</p>
+                <p className="text-white/50 text-sm">1 балл = 1 ₽ скидки</p>
+              </div>
+            </div>
+            {!user.is_first_order_done && (
+              <div className="bg-veggie-orange/10 border border-veggie-orange/30 rounded-xl p-3 mb-4 flex items-center gap-2">
+                <span>🎁</span>
+                <p className="text-veggie-orange text-sm font-medium">+200 баллов за первый заказ!</p>
+              </div>
+            )}
+            <button onClick={logout} className="w-full border border-white/20 text-white/60 hover:text-white hover:border-white/40 py-2.5 rounded-xl text-sm transition-colors">
+              Выйти
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* PWA INSTALL BANNER */}
       {showBanner && (
         <div className="fixed bottom-0 left-0 right-0 z-50 p-4 animate-fade-in">
@@ -218,6 +359,17 @@ export default function Index() {
                 <Icon name="CheckCircle" size={14} />Установлено
               </span>
             )}
+            {user ? (
+              <button onClick={() => setProfileOpen(true)} className="hidden md:flex items-center gap-2 border border-veggie-lime/40 text-veggie-lime px-3 py-2 rounded-full text-sm font-medium hover:bg-veggie-lime/10 transition-colors">
+                <span>⭐</span>
+                <span>{user.points} баллов</span>
+              </button>
+            ) : (
+              <button onClick={() => setAuthOpen(true)} className="hidden md:flex items-center gap-2 border border-white/20 text-white/70 px-3 py-2 rounded-full text-sm font-medium hover:bg-white/10 transition-colors">
+                <Icon name="User" size={14} />
+                Войти
+              </button>
+            )}
             <button onClick={() => setCartOpen(true)} className="relative flex items-center gap-2 bg-veggie-lime text-veggie-dark px-4 py-2 rounded-full font-semibold text-sm hover:bg-white transition-colors">
               <Icon name="ShoppingCart" size={16} />
               <span>Корзина</span>
@@ -240,6 +392,15 @@ export default function Index() {
                 {link}
               </button>
             ))}
+            {user ? (
+              <button onClick={() => { setProfileOpen(true); setMobileMenuOpen(false); }} className="flex items-center gap-2 text-veggie-lime font-semibold py-2">
+                <span>⭐</span> {user.points} баллов
+              </button>
+            ) : (
+              <button onClick={() => { setAuthOpen(true); setMobileMenuOpen(false); }} className="flex items-center gap-2 text-white/70 py-2">
+                <Icon name="User" size={16} /> Войти и получить баллы
+              </button>
+            )}
           </div>
         )}
       </nav>
