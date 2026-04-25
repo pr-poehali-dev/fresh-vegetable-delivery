@@ -174,7 +174,12 @@ export default function Index() {
   const [profileOpen, setProfileOpen] = useState(false);
   const [orderName, setOrderName] = useState('');
   const [orderPhone, setOrderPhone] = useState('');
+  const [orderAddress, setOrderAddress] = useState('');
+  const [orderFlat, setOrderFlat] = useState('');
+  const [orderTime, setOrderTime] = useState<'morning' | 'evening'>('morning');
+  const [orderComment, setOrderComment] = useState('');
   const [orderStatus, setOrderStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [orderStep, setOrderStep] = useState<1 | 2>(1);
 
   useEffect(() => {
     const handler = (e: Event) => { e.preventDefault(); setInstallPrompt(e); };
@@ -259,11 +264,13 @@ export default function Index() {
   const logout = () => { setUser(null); localStorage.removeItem('user'); setProfileOpen(false); };
 
   const handleOrder = async () => {
-    if (!orderName.trim() || !orderPhone.trim()) return;
+    if (!orderName.trim() || !orderPhone.trim() || !orderAddress.trim()) return;
     setOrderStatus('loading');
     const items = cart.map(i => `• ${i.emoji} ${i.name} — ${i.qty} кг × ${i.price} ₽ = ${i.qty * i.price} ₽`).join('\n');
     const delivery = freeDelivery ? 0 : 199;
     const total = totalPrice + delivery;
+    const timeLabel = orderTime === 'morning' ? 'Утро (до 12:00)' : 'Вечер (с 18:00)';
+    const address = orderFlat ? `${orderAddress}, кв. ${orderFlat}` : orderAddress;
     try {
       const res = await fetch('https://functions.poehali.dev/a913c03c-9fc0-4a9f-baef-df33289b1a86', {
         method: 'POST',
@@ -271,14 +278,14 @@ export default function Index() {
         body: JSON.stringify({
           name: orderName,
           phone: orderPhone,
-          comment: `ЗАКАЗ:\n${items}\n\nДоставка: ${delivery === 0 ? 'Бесплатно' : delivery + ' ₽'}\nИТОГО: ${total} ₽${user ? `\n\nКлиент авторизован, баллов: ${user.points}` : ''}`,
+          comment: `📦 СОСТАВ ЗАКАЗА:\n${items}\n\n🚚 Доставка: ${delivery === 0 ? 'Бесплатно' : delivery + ' ₽'}\n💰 ИТОГО: ${total} ₽\n\n📍 Адрес: ${address}\n⏰ Время: ${timeLabel}${orderComment ? `\n💬 Комментарий: ${orderComment}` : ''}${user ? `\n\n⭐ Баллов у клиента: ${user.points}` : ''}`,
         }),
       });
       if (res.ok) {
         setOrderStatus('success');
         setCart([]);
-        setOrderName('');
-        setOrderPhone('');
+        setOrderName(''); setOrderPhone(''); setOrderAddress('');
+        setOrderFlat(''); setOrderComment(''); setOrderStep(1);
       } else {
         setOrderStatus('error');
       }
@@ -895,57 +902,147 @@ export default function Index() {
             </div>
 
             {cart.length > 0 && (
-              <div className="p-6 border-t bg-background">
-                <div className="flex justify-between items-center mb-1">
-                  <span className="text-muted-foreground">Вес заказа:</span>
-                  <span className="font-semibold">{totalWeight.toFixed(1)} кг</span>
-                </div>
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-muted-foreground">Доставка:</span>
-                  <span className="font-semibold">{freeDelivery ? "Бесплатно 🎉" : "199 ₽"}</span>
-                </div>
-                {!freeDelivery && (
-                  <p className="text-xs text-muted-foreground mb-3">До бесплатной доставки не хватает {(5 - totalWeight).toFixed(1)} кг</p>
-                )}
-                <div className="flex justify-between items-center text-xl font-heading font-bold mb-4">
-                  <span>Итого:</span>
-                  <span className="text-veggie-green">{totalPrice + (freeDelivery ? 0 : 199)} ₽</span>
+              <div className="border-t bg-background">
+                {/* Итого */}
+                <div className="px-6 pt-4 pb-3 border-b border-border">
+                  <div className="flex justify-between text-sm text-muted-foreground mb-1">
+                    <span>Вес заказа</span>
+                    <span>{totalWeight.toFixed(1)} кг</span>
+                  </div>
+                  <div className="flex justify-between text-sm text-muted-foreground mb-1">
+                    <span>Доставка</span>
+                    <span>{freeDelivery ? "Бесплатно 🎉" : "199 ₽"}</span>
+                  </div>
+                  {!freeDelivery && (
+                    <p className="text-xs text-muted-foreground/70 mb-1">До бесплатной — ещё {(5 - totalWeight).toFixed(1)} кг</p>
+                  )}
+                  <div className="flex justify-between items-center text-lg font-heading font-bold mt-2">
+                    <span>Итого</span>
+                    <span className="text-veggie-green">{totalPrice + (freeDelivery ? 0 : 199)} ₽</span>
+                  </div>
                 </div>
 
                 {orderStatus === 'success' ? (
-                  <div className="text-center py-4">
-                    <div className="text-4xl mb-2">✅</div>
-                    <p className="font-heading font-bold text-veggie-green text-lg">Заказ принят!</p>
-                    <p className="text-muted-foreground text-sm mt-1">Мы свяжемся с вами в ближайшее время</p>
-                    <button onClick={() => { setOrderStatus('idle'); setCartOpen(false); }} className="mt-4 text-sm text-muted-foreground hover:text-foreground underline">
-                      Закрыть
+                  <div className="text-center py-8 px-6">
+                    <div className="text-5xl mb-3">✅</div>
+                    <p className="font-heading font-bold text-veggie-green text-xl">Заказ принят!</p>
+                    <p className="text-muted-foreground text-sm mt-2">Мы свяжемся с вами в ближайшее время</p>
+                    <button onClick={() => { setOrderStatus('idle'); setCartOpen(false); }} className="mt-5 w-full btn-accent py-3 rounded-xl font-semibold">
+                      Отлично!
                     </button>
                   </div>
                 ) : (
-                  <>
-                    <div className="flex flex-col gap-2 mb-3">
-                      <input
-                        type="text" value={orderName} onChange={e => setOrderName(e.target.value)}
-                        placeholder="Ваше имя"
-                        className="w-full border border-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-veggie-green transition-colors"
-                      />
-                      <input
-                        type="tel" value={orderPhone} onChange={e => setOrderPhone(e.target.value)}
-                        placeholder="Номер телефона"
-                        className="w-full border border-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-veggie-green transition-colors"
-                      />
+                  <div className="px-6 pt-4 pb-6">
+                    {/* Шаги */}
+                    <div className="flex items-center gap-2 mb-5">
+                      <div className={`flex items-center gap-1.5 text-sm font-semibold ${orderStep === 1 ? 'text-veggie-green' : 'text-muted-foreground'}`}>
+                        <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${orderStep === 1 ? 'bg-veggie-green text-white' : 'bg-muted text-muted-foreground'}`}>1</span>
+                        Доставка
+                      </div>
+                      <div className="flex-1 h-px bg-border" />
+                      <div className={`flex items-center gap-1.5 text-sm font-semibold ${orderStep === 2 ? 'text-veggie-green' : 'text-muted-foreground'}`}>
+                        <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${orderStep === 2 ? 'bg-veggie-green text-white' : 'bg-muted text-muted-foreground'}`}>2</span>
+                        Контакты
+                      </div>
                     </div>
-                    {orderStatus === 'error' && (
-                      <p className="text-red-500 text-sm mb-2">Ошибка отправки. Попробуйте ещё раз.</p>
+
+                    {orderStep === 1 ? (
+                      <div className="flex flex-col gap-3">
+                        <div>
+                          <label className="text-xs text-muted-foreground font-medium mb-1 block">Адрес доставки</label>
+                          <input
+                            type="text" value={orderAddress} onChange={e => setOrderAddress(e.target.value)}
+                            placeholder="Улица, дом"
+                            className="w-full border border-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-veggie-green transition-colors"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-xs text-muted-foreground font-medium mb-1 block">Квартира / офис</label>
+                          <input
+                            type="text" value={orderFlat} onChange={e => setOrderFlat(e.target.value)}
+                            placeholder="Необязательно"
+                            className="w-full border border-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-veggie-green transition-colors"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-xs text-muted-foreground font-medium mb-2 block">Время доставки</label>
+                          <div className="grid grid-cols-2 gap-2">
+                            <button
+                              onClick={() => setOrderTime('morning')}
+                              className={`border rounded-xl p-3 text-left transition-colors ${orderTime === 'morning' ? 'border-veggie-green bg-veggie-green/5' : 'border-border hover:border-veggie-green/50'}`}
+                            >
+                              <div className="text-lg mb-0.5">🌅</div>
+                              <div className="text-sm font-semibold">Утро</div>
+                              <div className="text-xs text-muted-foreground">до 12:00</div>
+                            </button>
+                            <button
+                              onClick={() => setOrderTime('evening')}
+                              className={`border rounded-xl p-3 text-left transition-colors ${orderTime === 'evening' ? 'border-veggie-green bg-veggie-green/5' : 'border-border hover:border-veggie-green/50'}`}
+                            >
+                              <div className="text-lg mb-0.5">🌆</div>
+                              <div className="text-sm font-semibold">Вечер</div>
+                              <div className="text-xs text-muted-foreground">с 18:00</div>
+                            </button>
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => setOrderStep(2)}
+                          disabled={!orderAddress.trim()}
+                          className="w-full btn-accent py-3 rounded-xl font-heading font-semibold text-base mt-1 disabled:opacity-50"
+                        >
+                          Далее →
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="flex flex-col gap-3">
+                        <div className="bg-muted/50 rounded-xl px-4 py-3 flex items-start gap-2 mb-1">
+                          <Icon name="MapPin" size={16} className="text-veggie-green mt-0.5 shrink-0" />
+                          <div>
+                            <p className="text-sm font-medium">{orderAddress}{orderFlat ? `, кв. ${orderFlat}` : ''}</p>
+                            <p className="text-xs text-muted-foreground">{orderTime === 'morning' ? '🌅 Утро — до 12:00' : '🌆 Вечер — с 18:00'}</p>
+                          </div>
+                          <button onClick={() => setOrderStep(1)} className="ml-auto text-xs text-veggie-green hover:underline shrink-0">Изменить</button>
+                        </div>
+                        <div>
+                          <label className="text-xs text-muted-foreground font-medium mb-1 block">Ваше имя</label>
+                          <input
+                            type="text" value={orderName} onChange={e => setOrderName(e.target.value)}
+                            placeholder="Как вас зовут?"
+                            className="w-full border border-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-veggie-green transition-colors"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-xs text-muted-foreground font-medium mb-1 block">Телефон</label>
+                          <input
+                            type="tel" value={orderPhone} onChange={e => setOrderPhone(e.target.value)}
+                            placeholder="+7 900 000-00-00"
+                            className="w-full border border-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-veggie-green transition-colors"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-xs text-muted-foreground font-medium mb-1 block">Комментарий к заказу</label>
+                          <input
+                            type="text" value={orderComment} onChange={e => setOrderComment(e.target.value)}
+                            placeholder="Код домофона, пожелания..."
+                            className="w-full border border-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-veggie-green transition-colors"
+                          />
+                        </div>
+                        {orderStatus === 'error' && (
+                          <p className="text-red-500 text-sm">Ошибка отправки. Попробуйте ещё раз.</p>
+                        )}
+                        <button
+                          onClick={handleOrder}
+                          disabled={orderStatus === 'loading' || !orderName.trim() || !orderPhone.trim()}
+                          className="w-full btn-accent py-3.5 rounded-xl font-heading text-base font-semibold disabled:opacity-50"
+                        >
+                          {orderStatus === 'loading' ? 'Отправляем...' : `Оформить заказ — ${totalPrice + (freeDelivery ? 0 : 199)} ₽`}
+                        </button>
+                        <button onClick={() => setOrderStep(1)} className="text-xs text-muted-foreground hover:text-foreground text-center transition-colors">
+                          ← Назад
+                        </button>
+                      </div>
                     )}
-                    <button
-                      onClick={handleOrder}
-                      disabled={orderStatus === 'loading' || !orderName.trim() || !orderPhone.trim()}
-                      className="w-full btn-accent py-4 rounded-xl font-heading text-lg font-semibold tracking-wide disabled:opacity-50"
-                    >
-                      {orderStatus === 'loading' ? 'Отправляем...' : 'Оформить заказ →'}
-                    </button>
-                  </>
+                  </div>
                 )}
               </div>
             )}
