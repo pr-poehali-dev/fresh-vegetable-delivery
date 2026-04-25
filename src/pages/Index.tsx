@@ -172,6 +172,9 @@ export default function Index() {
     try { return JSON.parse(localStorage.getItem('user') || 'null'); } catch { return null; }
   });
   const [profileOpen, setProfileOpen] = useState(false);
+  const [orderName, setOrderName] = useState('');
+  const [orderPhone, setOrderPhone] = useState('');
+  const [orderStatus, setOrderStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
   useEffect(() => {
     const handler = (e: Event) => { e.preventDefault(); setInstallPrompt(e); };
@@ -254,6 +257,35 @@ export default function Index() {
   };
 
   const logout = () => { setUser(null); localStorage.removeItem('user'); setProfileOpen(false); };
+
+  const handleOrder = async () => {
+    if (!orderName.trim() || !orderPhone.trim()) return;
+    setOrderStatus('loading');
+    const items = cart.map(i => `• ${i.emoji} ${i.name} — ${i.qty} кг × ${i.price} ₽ = ${i.qty * i.price} ₽`).join('\n');
+    const delivery = freeDelivery ? 0 : 199;
+    const total = totalPrice + delivery;
+    try {
+      const res = await fetch('https://functions.poehali.dev/a913c03c-9fc0-4a9f-baef-df33289b1a86', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: orderName,
+          phone: orderPhone,
+          comment: `ЗАКАЗ:\n${items}\n\nДоставка: ${delivery === 0 ? 'Бесплатно' : delivery + ' ₽'}\nИТОГО: ${total} ₽${user ? `\n\nКлиент авторизован, баллов: ${user.points}` : ''}`,
+        }),
+      });
+      if (res.ok) {
+        setOrderStatus('success');
+        setCart([]);
+        setOrderName('');
+        setOrderPhone('');
+      } else {
+        setOrderStatus('error');
+      }
+    } catch {
+      setOrderStatus('error');
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background font-body">
@@ -879,9 +911,42 @@ export default function Index() {
                   <span>Итого:</span>
                   <span className="text-veggie-green">{totalPrice + (freeDelivery ? 0 : 199)} ₽</span>
                 </div>
-                <button className="w-full btn-accent py-4 rounded-xl font-heading text-lg font-semibold tracking-wide">
-                  Оформить заказ →
-                </button>
+
+                {orderStatus === 'success' ? (
+                  <div className="text-center py-4">
+                    <div className="text-4xl mb-2">✅</div>
+                    <p className="font-heading font-bold text-veggie-green text-lg">Заказ принят!</p>
+                    <p className="text-muted-foreground text-sm mt-1">Мы свяжемся с вами в ближайшее время</p>
+                    <button onClick={() => { setOrderStatus('idle'); setCartOpen(false); }} className="mt-4 text-sm text-muted-foreground hover:text-foreground underline">
+                      Закрыть
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    <div className="flex flex-col gap-2 mb-3">
+                      <input
+                        type="text" value={orderName} onChange={e => setOrderName(e.target.value)}
+                        placeholder="Ваше имя"
+                        className="w-full border border-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-veggie-green transition-colors"
+                      />
+                      <input
+                        type="tel" value={orderPhone} onChange={e => setOrderPhone(e.target.value)}
+                        placeholder="Номер телефона"
+                        className="w-full border border-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-veggie-green transition-colors"
+                      />
+                    </div>
+                    {orderStatus === 'error' && (
+                      <p className="text-red-500 text-sm mb-2">Ошибка отправки. Попробуйте ещё раз.</p>
+                    )}
+                    <button
+                      onClick={handleOrder}
+                      disabled={orderStatus === 'loading' || !orderName.trim() || !orderPhone.trim()}
+                      className="w-full btn-accent py-4 rounded-xl font-heading text-lg font-semibold tracking-wide disabled:opacity-50"
+                    >
+                      {orderStatus === 'loading' ? 'Отправляем...' : 'Оформить заказ →'}
+                    </button>
+                  </>
+                )}
               </div>
             )}
           </div>
