@@ -21,7 +21,14 @@ const VEGETABLES = [
 const FRUITS = [
   { id: 101, name: "Яблоки Голден", price: 120, unit: "кг", season: "осень", type: "яблоки", emoji: "🍎", badge: null, weight: "1кг", weightKg: 1 },
   { id: 102, name: "Яблоки Антоновка", price: 90, unit: "кг", season: "осень", type: "яблоки", emoji: "🍏", badge: null, weight: "1кг", weightKg: 1 },
+  { id: 109, name: "Яблоки Галла", price: 240, unit: "кг", season: "осень", type: "яблоки", emoji: "🍎", badge: null, weight: "1кг", weightKg: 1 },
+  { id: 110, name: "Яблоки Хекура", price: 150, unit: "кг", season: "осень", type: "яблоки", emoji: "🍏", badge: null, weight: "1кг", weightKg: 1 },
+  { id: 111, name: "Яблоки Грени Смит", price: 180, unit: "кг", season: "осень", type: "яблоки", emoji: "🍏", badge: null, weight: "1кг", weightKg: 1 },
+  { id: 112, name: "Яблоки Семеринка", price: 220, unit: "кг", season: "осень", type: "яблоки", emoji: "🍎", badge: null, weight: "1кг", weightKg: 1 },
   { id: 103, name: "Груши Конференц", price: 180, unit: "кг", season: "осень", type: "груши", emoji: "🍐", badge: "Хит", weight: "1кг", weightKg: 1 },
+  { id: 113, name: "Груша Аббат", price: 280, unit: "кг", season: "осень", type: "груши", emoji: "🍐", badge: null, weight: "1кг", weightKg: 1 },
+  { id: 114, name: "Груша Дюшес Аргентина", price: 220, unit: "кг", season: "осень", type: "груши", emoji: "🍐", badge: null, weight: "1кг", weightKg: 1 },
+  { id: 115, name: "Мандарин Турция", price: 220, unit: "кг", season: "зима", type: "цитрусы", emoji: "🍊", badge: null, weight: "1кг", weightKg: 1 },
   { id: 104, name: "Виноград Кишмиш", price: 250, unit: "кг", season: "лето", type: "виноград", emoji: "🍇", badge: null, weight: "1кг", weightKg: 1 },
   { id: 105, name: "Персики", price: 300, unit: "кг", season: "лето", type: "персики", emoji: "🍑", badge: null, weight: "1кг", weightKg: 1 },
   { id: 106, name: "Сливы синие", price: 200, unit: "кг", season: "лето", type: "сливы", emoji: "🍑", badge: null, weight: "1кг", weightKg: 1 },
@@ -30,7 +37,7 @@ const FRUITS = [
 ];
 
 const VEG_TYPES = ["все", "картофель", "капуста", "корнеплоды", "лук", "томаты", "огурцы"];
-const FRUIT_TYPES = ["все", "яблоки", "груши", "виноград", "персики", "сливы", "бахча"];
+const FRUIT_TYPES = ["все", "яблоки", "груши", "цитрусы", "виноград", "персики", "сливы", "бахча"];
 
 const PRODUCTS = [...VEGETABLES, ...FRUITS];
 
