@@ -1,4 +1,5 @@
 {
+  "loyalty-add-order": "https://functions.poehali.dev/d8e8eac1-b7f3-41b8-b041-69e6d80a1c03",
   "auth-send-code": "https://functions.poehali.dev/55e40474-9a2a-4db3-9880-7fdbfc00edf0",
   "auth-verify-code": "https://functions.poehali.dev/49670255-1338-4a0e-a466-50ed6b41136d",
   "auth-get-profile": "https://functions.poehali.dev/6789dd9b-f317-495e-8c12-94f4824aeda9",

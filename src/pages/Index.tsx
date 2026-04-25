@@ -282,6 +282,22 @@ export default function Index() {
         }),
       });
       if (res.ok) {
+        // Начисляем баллы за первый заказ если авторизован
+        if (user && !user.is_first_order_done) {
+          try {
+            const bonusRes = await fetch('https://functions.poehali.dev/d8e8eac1-b7f3-41b8-b041-69e6d80a1c03', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ user_id: user.id }),
+            });
+            if (bonusRes.ok) {
+              const bonusData = await bonusRes.json();
+              const updatedUser = { ...user, points: bonusData.points, is_first_order_done: true };
+              setUser(updatedUser);
+              localStorage.setItem('user', JSON.stringify(updatedUser));
+            }
+          } catch (e) { console.error(e); }
+        }
         setOrderStatus('success');
         setCart([]);
         setOrderName(''); setOrderPhone(''); setOrderAddress('');
@@ -927,6 +943,14 @@ export default function Index() {
                     <div className="text-5xl mb-3">✅</div>
                     <p className="font-heading font-bold text-veggie-green text-xl">Заказ принят!</p>
                     <p className="text-muted-foreground text-sm mt-2">Мы свяжемся с вами в ближайшее время</p>
+                    {user && (
+                      <div className="mt-4 bg-veggie-lime/10 border border-veggie-lime/30 rounded-xl p-3">
+                        {user.is_first_order_done ? (
+                          <p className="text-veggie-green font-semibold text-sm">🎉 +200 баллов за первый заказ начислены!</p>
+                        ) : null}
+                        <p className="text-muted-foreground text-xs mt-1">Ваш баланс: <b>{user.points} баллов</b></p>
+                      </div>
+                    )}
                     <button onClick={() => { setOrderStatus('idle'); setCartOpen(false); }} className="mt-5 w-full btn-accent py-3 rounded-xl font-semibold">
                       Отлично!
                     </button>
