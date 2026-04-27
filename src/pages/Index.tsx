@@ -90,6 +90,7 @@ export default function Index() {
   const [orderComment, setOrderComment] = useState('');
   const [orderStatus, setOrderStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [orderStep, setOrderStep] = useState<1 | 2>(1);
+  const [pointsToUse, setPointsToUse] = useState(0);
 
   useEffect(() => {
     const handler = (e: Event) => { e.preventDefault(); setInstallPrompt(e); };
@@ -193,11 +194,13 @@ export default function Index() {
     if (!orderName.trim() || !orderPhone.trim() || !orderAddress.trim()) return;
     setOrderStatus('loading');
     const delivery = freeDelivery ? 0 : 199;
-    const total = totalPrice + delivery;
+    const totalBeforeDiscount = totalPrice + delivery;
+    const discount = Math.min(pointsToUse, user?.points ?? 0, totalBeforeDiscount);
+    const total = totalBeforeDiscount - discount;
     const timeLabel = orderTime === 'morning' ? 'Утро (до 12:00)' : 'Вечер (с 18:00)';
     const address = orderFlat ? `${orderAddress}, кв. ${orderFlat}` : orderAddress;
     const items = cart.map(i => ({ name: i.name, quantity: i.qty, price: i.price }));
-    const comment = `⏰ ${timeLabel}${orderComment ? ` | 💬 ${orderComment}` : ''}`;
+    const comment = `⏰ ${timeLabel}${orderComment ? ` | 💬 ${orderComment}` : ''}${discount > 0 ? ` | ⭐ Списано ${discount} баллов` : ''}`;
     try {
       const res = await fetch('https://functions.poehali.dev/d8e8eac1-b7f3-41b8-b041-69e6d80a1c03', {
         method: 'POST',
@@ -210,17 +213,19 @@ export default function Index() {
           comment,
           items,
           total_price: total,
+          points_used: discount,
         }),
       });
       if (res.ok) {
         const data = await res.json();
-        if (user && data.bonus > 0) {
-          const updatedUser = { ...user, points: data.points, is_first_order_done: true };
+        if (user) {
+          const updatedUser = { ...user, points: data.points, is_first_order_done: data.is_first_order_done ?? user.is_first_order_done };
           setUser(updatedUser);
           localStorage.setItem('user', JSON.stringify(updatedUser));
         }
         setOrderStatus('success');
         setCart([]);
+        setPointsToUse(0);
         setOrderName(''); setOrderPhone(''); setOrderAddress('');
         setOrderFlat(''); setOrderComment(''); setOrderStep(1);
       } else {
@@ -659,6 +664,7 @@ export default function Index() {
           orderComment={orderComment} setOrderComment={setOrderComment}
           orderStatus={orderStatus} setOrderStatus={setOrderStatus}
           orderStep={orderStep} setOrderStep={setOrderStep}
+          pointsToUse={pointsToUse} setPointsToUse={setPointsToUse}
           onClose={() => setCartOpen(false)}
           onOrder={handleOrder}
           removeFromCart={removeFromCart}

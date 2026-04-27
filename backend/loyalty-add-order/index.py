@@ -107,6 +107,7 @@ def handler(event: dict, context) -> dict:
     comment = body.get('comment', '').strip()
     items = body.get('items', [])
     total_price = body.get('total_price', 0)
+    points_used = int(body.get('points_used', 0))
 
     if not name or not phone:
         return {'statusCode': 400, 'headers': CORS, 'body': json.dumps({'error': 'Имя и телефон обязательны'})}
@@ -122,23 +123,35 @@ def handler(event: dict, context) -> dict:
 
     bonus = 0
     points = 0
+    is_first_order_done = False
 
     if user_id:
         cur.execute(f"SELECT points, is_first_order_done FROM {SCHEMA}.users WHERE id=%s", (user_id,))
-        user = cur.fetchone()
-        if user:
-            points, is_first_order_done = user
+        user_row = cur.fetchone()
+        if user_row:
+            points, is_first_order_done = user_row
+
+            if points_used > 0:
+                actual_used = min(points_used, points)
+                points = points - actual_used
+                cur.execute(
+                    f"INSERT INTO {SCHEMA}.loyalty_transactions (user_id, points, reason) VALUES (%s, %s, %s)",
+                    (user_id, -actual_used, f'Списание баллов за заказ #{order_id}')
+                )
+
             if not is_first_order_done:
                 bonus = BONUS_FIRST_ORDER
                 points = points + bonus
-                cur.execute(
-                    f"UPDATE {SCHEMA}.users SET points=%s, is_first_order_done=TRUE WHERE id=%s",
-                    (points, user_id)
-                )
+                is_first_order_done = True
                 cur.execute(
                     f"INSERT INTO {SCHEMA}.loyalty_transactions (user_id, points, reason) VALUES (%s, %s, %s)",
                     (user_id, bonus, 'Бонус за первый заказ')
                 )
+
+            cur.execute(
+                f"UPDATE {SCHEMA}.users SET points=%s, is_first_order_done=%s WHERE id=%s",
+                (points, is_first_order_done, user_id)
+            )
 
     conn.commit()
     cur.close()
@@ -149,5 +162,5 @@ def handler(event: dict, context) -> dict:
     return {
         'statusCode': 200,
         'headers': CORS,
-        'body': json.dumps({'ok': True, 'order_id': order_id, 'bonus': bonus, 'points': points})
+        'body': json.dumps({'ok': True, 'order_id': order_id, 'bonus': bonus, 'points': points, 'is_first_order_done': is_first_order_done})
     }

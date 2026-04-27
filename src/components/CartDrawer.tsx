@@ -19,6 +19,7 @@ interface CartDrawerProps {
   orderStatus: 'idle' | 'loading' | 'success' | 'error';
   setOrderStatus: (v: 'idle' | 'loading' | 'success' | 'error') => void;
   orderStep: 1 | 2; setOrderStep: (v: 1 | 2) => void;
+  pointsToUse: number; setPointsToUse: (v: number) => void;
   onClose: () => void;
   onOrder: () => void;
   removeFromCart: (id: number) => void;
@@ -32,6 +33,7 @@ export default function CartDrawer({
   orderAddress, setOrderAddress, orderFlat, setOrderFlat,
   orderTime, setOrderTime, orderComment, setOrderComment,
   orderStatus, setOrderStatus, orderStep, setOrderStep,
+  pointsToUse, setPointsToUse,
   onClose, onOrder, removeFromCart, updateQty, scrollTo,
 }: CartDrawerProps) {
   return (
@@ -100,9 +102,17 @@ export default function CartDrawer({
               {!freeDelivery && (
                 <p className="text-xs text-muted-foreground/70 mb-1">До бесплатной — ещё {(5 - totalWeight).toFixed(1)} кг</p>
               )}
+              {pointsToUse > 0 && (
+                <div className="flex justify-between text-sm text-veggie-lime mb-1">
+                  <span>⭐ Баллы</span>
+                  <span>−{Math.min(pointsToUse, user?.points ?? 0, totalPrice + (freeDelivery ? 0 : 199))} ₽</span>
+                </div>
+              )}
               <div className="flex justify-between items-center text-lg font-heading font-bold mt-2">
                 <span>Итого</span>
-                <span className="text-veggie-green">{totalPrice + (freeDelivery ? 0 : 199)} ₽</span>
+                <span className="text-veggie-green">
+                  {Math.max(0, totalPrice + (freeDelivery ? 0 : 199) - Math.min(pointsToUse, user?.points ?? 0, totalPrice + (freeDelivery ? 0 : 199)))} ₽
+                </span>
               </div>
             </div>
 
@@ -218,6 +228,29 @@ export default function CartDrawer({
                         className="w-full border border-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-veggie-green transition-colors"
                       />
                     </div>
+                    {user && user.points > 0 && (() => {
+                      const total = totalPrice + (freeDelivery ? 0 : 199);
+                      const maxPoints = Math.min(user.points, total);
+                      return (
+                        <div className="bg-veggie-lime/10 border border-veggie-lime/30 rounded-xl p-3">
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="text-sm font-semibold text-veggie-green">⭐ Оплатить баллами</span>
+                            <span className="text-xs text-muted-foreground">Доступно: {user.points} б.</span>
+                          </div>
+                          <input
+                            type="range" min={0} max={maxPoints} step={1}
+                            value={Math.min(pointsToUse, maxPoints)}
+                            onChange={e => setPointsToUse(Number(e.target.value))}
+                            className="w-full accent-veggie-green mb-1"
+                          />
+                          <div className="flex justify-between text-xs text-muted-foreground">
+                            <span>0 ₽</span>
+                            <span className="text-veggie-green font-semibold">−{Math.min(pointsToUse, maxPoints)} ₽</span>
+                            <span>{maxPoints} ₽</span>
+                          </div>
+                        </div>
+                      );
+                    })()}
                     {orderStatus === 'error' && (
                       <p className="text-red-500 text-sm">Ошибка отправки. Попробуйте ещё раз.</p>
                     )}
@@ -226,7 +259,7 @@ export default function CartDrawer({
                       disabled={orderStatus === 'loading' || !orderName.trim() || !orderPhone.trim()}
                       className="w-full btn-accent py-3.5 rounded-xl font-heading text-base font-semibold disabled:opacity-50"
                     >
-                      {orderStatus === 'loading' ? 'Отправляем...' : `Оформить заказ — ${totalPrice + (freeDelivery ? 0 : 199)} ₽`}
+                      {orderStatus === 'loading' ? 'Отправляем...' : `Оформить заказ — ${Math.max(0, totalPrice + (freeDelivery ? 0 : 199) - Math.min(pointsToUse, user?.points ?? 0, totalPrice + (freeDelivery ? 0 : 199)))} ₽`}
                     </button>
                     <button onClick={() => setOrderStep(1)} className="text-xs text-muted-foreground hover:text-foreground text-center transition-colors">
                       ← Назад
