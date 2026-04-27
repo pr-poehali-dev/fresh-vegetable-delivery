@@ -42,7 +42,7 @@ def handler(event: dict, context) -> dict:
     cur.close()
     conn.close()
 
-    smtp_user = 'filimono_86@mail.ru'
+    smtp_user = 'filini_ufa@mail.ru'
     smtp_password = os.environ['SMTP_PASSWORD']
 
     msg = MIMEMultipart('alternative')

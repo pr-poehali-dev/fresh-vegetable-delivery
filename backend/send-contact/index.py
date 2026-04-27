@@ -5,7 +5,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 def handler(event: dict, context) -> dict:
-    """Отправка заявки с сайта ОвощиМаркет на почту filimono_86@mail.ru"""
+    """Отправка заявки с сайта ОвощиМаркет на почту filini_ufa@mail.ru"""
 
     cors_headers = {
         'Access-Control-Allow-Origin': '*',
@@ -28,7 +28,7 @@ def handler(event: dict, context) -> dict:
             'body': {'error': 'Имя и телефон обязательны'}
         }
 
-    smtp_user = 'filimono_86@mail.ru'
+    smtp_user = 'filini_ufa@mail.ru'
     smtp_password = os.environ['SMTP_PASSWORD']
 
     msg = MIMEMultipart('alternative')

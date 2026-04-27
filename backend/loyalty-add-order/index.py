@@ -15,7 +15,7 @@ BONUS_FIRST_ORDER = 200
 
 
 def send_email(name, phone, address, comment, items, total_price, order_id):
-    smtp_user = 'filimono_86@mail.ru'
+    smtp_user = 'filini_ufa@mail.ru'
     smtp_password = os.environ['SMTP_PASSWORD']
 
     items_html = ''.join([
