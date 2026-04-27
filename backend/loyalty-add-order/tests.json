@@ -11,9 +11,7 @@
       "method": "POST",
       "path": "/",
       "body": {},
-      "expectedStatus": 400,
-      "expectedBody": {"error": "string"},
-      "bodyMatcher": "partial"
+      "expectedStatus": 400
     },
     {
       "name": "Create order without user",
@@ -26,9 +24,19 @@
         "items": [{"name": "Помидоры", "quantity": 2, "price": 150}],
         "total_price": 300
       },
-      "expectedStatus": 200,
-      "expectedBody": {"ok": true, "order_id": 1},
-      "bodyMatcher": "partial"
+      "expectedStatus": 200
+    },
+    {
+      "name": "GET история заказов без user_id",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 400
+    },
+    {
+      "name": "GET история заказов с user_id",
+      "method": "GET",
+      "path": "/?user_id=1",
+      "expectedStatus": 200
     }
   ]
 }

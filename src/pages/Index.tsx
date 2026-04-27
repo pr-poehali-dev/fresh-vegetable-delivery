@@ -78,6 +78,8 @@ export default function Index() {
     try { return JSON.parse(localStorage.getItem('user') || 'null'); } catch { return null; }
   });
   const [profileOpen, setProfileOpen] = useState(false);
+  const [orders, setOrders] = useState<Array<{id: number; address: string; items: Array<{name: string; quantity: number; price: number}>; total_price: number; status: string; created_at: string}>>([]);
+  const [ordersLoading, setOrdersLoading] = useState(false);
   const [orderName, setOrderName] = useState('');
   const [orderPhone, setOrderPhone] = useState('');
   const [orderAddress, setOrderAddress] = useState('');
@@ -168,41 +170,51 @@ export default function Index() {
     localStorage.setItem('pwa-banner-dismissed', '1');
   };
 
-  const logout = () => { setUser(null); localStorage.removeItem('user'); setProfileOpen(false); };
+  const logout = () => { setUser(null); localStorage.removeItem('user'); setProfileOpen(false); setOrders([]); };
+
+  const openProfile = async () => {
+    setProfileOpen(true);
+    if (!user) return;
+    setOrdersLoading(true);
+    try {
+      const res = await fetch(`https://functions.poehali.dev/d8e8eac1-b7f3-41b8-b041-69e6d80a1c03?user_id=${user.id}`);
+      if (res.ok) {
+        const data = await res.json();
+        setOrders(data.orders || []);
+      }
+    } catch { /* ignore */ }
+    setOrdersLoading(false);
+  };
 
   const handleOrder = async () => {
     if (!orderName.trim() || !orderPhone.trim() || !orderAddress.trim()) return;
     setOrderStatus('loading');
-    const items = cart.map(i => `• ${i.emoji} ${i.name} — ${i.qty} кг × ${i.price} ₽ = ${i.qty * i.price} ₽`).join('\n');
     const delivery = freeDelivery ? 0 : 199;
     const total = totalPrice + delivery;
     const timeLabel = orderTime === 'morning' ? 'Утро (до 12:00)' : 'Вечер (с 18:00)';
     const address = orderFlat ? `${orderAddress}, кв. ${orderFlat}` : orderAddress;
+    const items = cart.map(i => ({ name: i.name, quantity: i.qty, price: i.price }));
+    const comment = `⏰ ${timeLabel}${orderComment ? ` | 💬 ${orderComment}` : ''}`;
     try {
-      const res = await fetch('https://functions.poehali.dev/a913c03c-9fc0-4a9f-baef-df33289b1a86', {
+      const res = await fetch('https://functions.poehali.dev/d8e8eac1-b7f3-41b8-b041-69e6d80a1c03', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          user_id: user?.id || null,
           name: orderName,
           phone: orderPhone,
-          comment: `📦 СОСТАВ ЗАКАЗА:\n${items}\n\n🚚 Доставка: ${delivery === 0 ? 'Бесплатно' : delivery + ' ₽'}\n💰 ИТОГО: ${total} ₽\n\n📍 Адрес: ${address}\n⏰ Время: ${timeLabel}${orderComment ? `\n💬 Комментарий: ${orderComment}` : ''}${user ? `\n\n⭐ Баллов у клиента: ${user.points}` : ''}`,
+          address,
+          comment,
+          items,
+          total_price: total,
         }),
       });
       if (res.ok) {
-        if (user && !user.is_first_order_done) {
-          try {
-            const bonusRes = await fetch('https://functions.poehali.dev/d8e8eac1-b7f3-41b8-b041-69e6d80a1c03', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ user_id: user.id }),
-            });
-            if (bonusRes.ok) {
-              const bonusData = await bonusRes.json();
-              const updatedUser = { ...user, points: bonusData.points, is_first_order_done: true };
-              setUser(updatedUser);
-              localStorage.setItem('user', JSON.stringify(updatedUser));
-            }
-          } catch (e) { console.error(e); }
+        const data = await res.json();
+        if (user && data.bonus > 0) {
+          const updatedUser = { ...user, points: data.points, is_first_order_done: true };
+          setUser(updatedUser);
+          localStorage.setItem('user', JSON.stringify(updatedUser));
         }
         setOrderStatus('success');
         setCart([]);
@@ -247,6 +259,34 @@ export default function Index() {
                 <p className="text-veggie-orange text-sm font-medium">+200 баллов за первый заказ!</p>
               </div>
             )}
+
+            <div className="mb-4">
+              <p className="text-white/60 text-xs uppercase tracking-wider mb-2 font-semibold">История заказов</p>
+              {ordersLoading ? (
+                <div className="text-center py-4 text-white/40 text-sm">Загрузка...</div>
+              ) : orders.length === 0 ? (
+                <div className="text-center py-4 text-white/30 text-sm">Заказов пока нет</div>
+              ) : (
+                <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
+                  {orders.map(order => (
+                    <div key={order.id} className="bg-white/5 border border-white/10 rounded-xl p-3">
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-white/50 text-xs">#{order.id} · {new Date(order.created_at).toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' })}</span>
+                        <span className="text-veggie-lime text-sm font-bold">{order.total_price} ₽</span>
+                      </div>
+                      {order.address && <p className="text-white/40 text-xs mb-1">📍 {order.address}</p>}
+                      <div className="text-white/60 text-xs">
+                        {order.items.slice(0, 3).map((item, i) => (
+                          <span key={i}>{item.name} ×{item.quantity}{i < Math.min(order.items.length, 3) - 1 ? ', ' : ''}</span>
+                        ))}
+                        {order.items.length > 3 && <span className="text-white/30"> +ещё {order.items.length - 3}</span>}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
             <button onClick={logout} className="w-full border border-white/20 text-white/60 hover:text-white hover:border-white/40 py-2.5 rounded-xl text-sm transition-colors">
               Выйти
             </button>
@@ -266,7 +306,7 @@ export default function Index() {
         showBanner={showBanner}
         onCartOpen={() => setCartOpen(true)}
         onAuthOpen={() => setAuthOpen(true)}
-        onProfileOpen={() => setProfileOpen(true)}
+        onProfileOpen={openProfile}
         onInstall={handleInstall}
         onDismissBanner={dismissBanner}
         scrollTo={scrollTo}

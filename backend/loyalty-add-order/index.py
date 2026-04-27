@@ -7,7 +7,7 @@ from email.mime.multipart import MIMEMultipart
 
 CORS = {
     'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
 }
 SCHEMA = os.environ['MAIN_DB_SCHEMA']
@@ -54,10 +54,37 @@ def send_email(name, phone, address, comment, items, total_price, order_id):
 
 
 def handler(event: dict, context) -> dict:
-    """Оформление заказа: сохранение в БД, начисление бонусов, отправка письма"""
+    """Оформление заказа (POST) и получение истории заказов (GET)"""
 
     if event.get('httpMethod') == 'OPTIONS':
         return {'statusCode': 200, 'headers': CORS, 'body': ''}
+
+    if event.get('httpMethod') == 'GET':
+        params = event.get('queryStringParameters') or {}
+        user_id = params.get('user_id')
+        if not user_id:
+            return {'statusCode': 400, 'headers': CORS, 'body': json.dumps({'error': 'user_id обязателен'})}
+        conn = psycopg2.connect(os.environ['DATABASE_URL'])
+        cur = conn.cursor()
+        cur.execute(
+            f"SELECT id, address, comment, items, total_price, status, created_at FROM {SCHEMA}.orders WHERE user_id=%s ORDER BY created_at DESC LIMIT 50",
+            (user_id,)
+        )
+        rows = cur.fetchall()
+        cur.close()
+        conn.close()
+        orders = []
+        for row in rows:
+            orders.append({
+                'id': row[0],
+                'address': row[1],
+                'comment': row[2],
+                'items': row[3] if row[3] else [],
+                'total_price': float(row[4]),
+                'status': row[5],
+                'created_at': row[6].isoformat(),
+            })
+        return {'statusCode': 200, 'headers': CORS, 'body': json.dumps({'orders': orders}, ensure_ascii=False)}
 
     body = json.loads(event.get('body') or '{}')
     user_id = body.get('user_id')
