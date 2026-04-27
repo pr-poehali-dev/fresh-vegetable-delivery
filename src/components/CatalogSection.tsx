@@ -3,6 +3,7 @@ import Icon from "@/components/ui/icon";
 type Product = {
   id: number; name: string; price: number; unit: string; season: string;
   type: string; emoji: string; badge: string | null; weight: string; weightKg: number;
+  image?: string;
 };
 
 type CartItem = { id: number; name: string; price: number; emoji: string; qty: number; weightKg: number };
@@ -94,8 +95,11 @@ export default function CatalogSection({
               const inCart = cart.find(c => c.id === product.id);
               return (
                 <div key={product.id} className="card-hover bg-white rounded-2xl overflow-hidden border border-border shadow-sm animate-fade-in" style={{ animationDelay: `${i * 0.05}s` }}>
-                  <div className="bg-gradient-to-br from-veggie-green/5 to-veggie-lime/10 p-8 flex items-center justify-center relative">
-                    <span className="text-6xl">{product.emoji}</span>
+                  <div className="bg-gradient-to-br from-veggie-green/5 to-veggie-lime/10 flex items-center justify-center relative overflow-hidden" style={{ height: '160px' }}>
+                    {product.image
+                      ? <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                      : <span className="text-6xl">{product.emoji}</span>
+                    }
                     {product.badge && (
                       <span className={`absolute top-3 right-3 text-xs px-2 py-1 rounded-full font-semibold ${product.badge === 'Органик' ? 'bg-veggie-lime/20 text-veggie-green border border-veggie-lime/40' : product.badge === 'Хит' ? 'bg-veggie-orange/20 text-veggie-orange border border-veggie-orange/40' : 'tag-seasonal'}`}>
                         {product.badge}
