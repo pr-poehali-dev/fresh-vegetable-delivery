@@ -63,7 +63,7 @@ export default function Navbar({
               </div>
               <div className="flex items-start gap-3 bg-white/5 rounded-xl p-3">
                 <span className="text-2xl shrink-0">2️⃣</span>
-                <p className="text-white/80 text-sm leading-relaxed">Прокрути список вниз и нажми <strong className="text-veggie-lime">«На экран «Домой»»</strong></p>
+                <p className="text-white/80 text-sm leading-relaxed">Прокрути список вниз и нажми <strong className="text-veggie-lime">«На экран "Домой"»</strong></p>
               </div>
               <div className="flex items-start gap-3 bg-white/5 rounded-xl p-3">
                 <span className="text-2xl shrink-0">3️⃣</span>

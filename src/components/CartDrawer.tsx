@@ -216,7 +216,7 @@ export default function CartDrawer({
                   <label className="text-xs text-muted-foreground font-medium mb-1 block">Ваше имя</label>
                   <input
                     type="text" value={orderName} onChange={e => setOrderName(e.target.value)}
-                    placeholder="Ваше имя!"
+                    placeholder="Ваше имя"
                     className="w-full border border-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-veggie-green transition-colors"
                   />
                 </div>
@@ -224,7 +224,7 @@ export default function CartDrawer({
                   <label className="text-xs text-muted-foreground font-medium mb-1 block">Телефон</label>
                   <input
                     type="tel" value={orderPhone} onChange={e => setOrderPhone(e.target.value)}
-                    placeholder="Телефон для связи!"
+                    placeholder="Телефон для связи"
                     className="w-full border border-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-veggie-green transition-colors"
                   />
                 </div>
@@ -244,7 +244,7 @@ export default function CartDrawer({
                     <div className="bg-veggie-lime/10 border border-veggie-lime/30 rounded-xl p-3">
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-sm font-semibold text-veggie-green">⭐ Оплатить баллами</span>
-                        <span className="text-xs text-muted-foreground">Доступно: {user.points} б.</span>
+                        <span className="text-xs text-muted-foreground">Доступно: {user.points} баллов</span>
                       </div>
                       <input
                         type="range" min={0} max={maxPoints} step={1}
