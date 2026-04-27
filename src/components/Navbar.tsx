@@ -127,22 +127,22 @@ export default function Navbar({
             <span className="font-heading text-xl font-bold text-white tracking-wide">ФИЛИНИ<span className="text-veggie-lime"> ФЕРМЕРСКИЕ ПРОДУКТЫ</span></span>
           </div>
 
-          <div className="hidden md:flex items-center gap-6">
+          <div className="hidden md:flex items-center gap-3 xl:gap-6">
             {NAV_LINKS.map(link => (
-              <button key={link} onClick={() => scrollTo(link)} className="text-white/75 hover:text-veggie-lime text-sm font-medium transition-colors duration-200">
+              <button key={link} onClick={() => scrollTo(link)} className="text-white/75 hover:text-veggie-lime text-xs xl:text-sm font-medium transition-colors duration-200 whitespace-nowrap">
                 {link}
               </button>
             ))}
           </div>
 
-          <div className="hidden md:flex items-center relative">
+          <div className="hidden lg:flex items-center relative">
             <Icon name="Search" size={16} className="absolute left-3 text-white/40 pointer-events-none" />
             <input
               type="text"
               value={search}
               onChange={e => { setSearch(e.target.value); if (e.target.value) scrollTo("Каталог"); }}
               placeholder="Поиск..."
-              className="bg-white/10 border border-white/20 text-white placeholder:text-white/40 pl-9 pr-8 py-2 rounded-full text-sm focus:outline-none focus:border-veggie-lime/60 transition-colors w-44 focus:w-56"
+              className="bg-white/10 border border-white/20 text-white placeholder:text-white/40 pl-9 pr-8 py-2 rounded-full text-sm focus:outline-none focus:border-veggie-lime/60 transition-colors w-36 focus:w-48"
             />
             {search && (
               <button onClick={() => setSearch("")} className="absolute right-3 text-white/40 hover:text-white transition-colors">
