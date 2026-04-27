@@ -109,7 +109,7 @@ export default function CartDrawer({
                     <span className="text-3xl">{item.emoji}</span>
                     <div className="flex-1 min-w-0">
                       <div className="font-semibold text-foreground truncate">{item.name}</div>
-                      <div className="text-sm text-muted-foreground">{item.price} ₽ / шт</div>
+                      <div className="text-sm text-muted-foreground">{item.price} ₽ / Вес</div>
                     </div>
                     <div className="flex items-center gap-2">
                       <button onClick={() => updateQty(item.id, -1)} className="w-7 h-7 rounded-full bg-veggie-green/10 text-veggie-green flex items-center justify-center hover:bg-veggie-green/20 transition-colors">
