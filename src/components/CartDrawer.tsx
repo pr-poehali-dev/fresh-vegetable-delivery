@@ -216,7 +216,7 @@ export default function CartDrawer({
                   <label className="text-xs text-muted-foreground font-medium mb-1 block">Ваше имя</label>
                   <input
                     type="text" value={orderName} onChange={e => setOrderName(e.target.value)}
-                    placeholder="Как вас зовут?"
+                    placeholder="Ваше имя!"
                     className="w-full border border-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-veggie-green transition-colors"
                   />
                 </div>
