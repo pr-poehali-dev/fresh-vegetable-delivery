@@ -1,103 +1,9 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Icon from "@/components/ui/icon";
-
-const API_SEND_CODE = "https://functions.poehali.dev/55e40474-9a2a-4db3-9880-7fdbfc00edf0";
-const API_VERIFY_CODE = "https://functions.poehali.dev/49670255-1338-4a0e-a466-50ed6b41136d";
-
-type User = { id: number; phone: string; name: string; points: number; is_first_order_done: boolean; is_new?: boolean };
-
-function AuthModal({ onClose, onAuth }: { onClose: () => void; onAuth: (user: User) => void }) {
-  const [step, setStep] = useState<'phone' | 'code'>('phone');
-  const [phone, setPhone] = useState('');
-  const [code, setCode] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [devCode, setDevCode] = useState('');
-  const codeRef = useRef<HTMLInputElement>(null);
-
-  const sendCode = async () => {
-    if (!phone.trim()) return;
-    setLoading(true); setError('');
-    try {
-      const res = await fetch(API_SEND_CODE, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone }) });
-      const data = await res.json();
-      if (res.ok) { setStep('code'); setDevCode(data.dev_code || ''); setTimeout(() => codeRef.current?.focus(), 100); }
-      else setError(data.error || 'Ошибка');
-    } catch { setError('Ошибка соединения'); }
-    setLoading(false);
-  };
-
-  const verifyCode = async () => {
-    if (!code.trim()) return;
-    setLoading(true); setError('');
-    try {
-      const res = await fetch(API_VERIFY_CODE, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone, code }) });
-      const data = await res.json();
-      if (res.ok) {
-        localStorage.setItem('user', JSON.stringify(data.user));
-        onAuth(data.user);
-        onClose();
-      } else setError(data.error || 'Неверный код');
-    } catch { setError('Ошибка соединения'); }
-    setLoading(false);
-  };
-
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={onClose}>
-      <div className="bg-veggie-dark border border-veggie-green/40 rounded-2xl p-6 w-full max-w-sm shadow-2xl" onClick={e => e.stopPropagation()}>
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h2 className="font-heading text-xl font-bold text-white">Войти</h2>
-            <p className="text-white/50 text-sm mt-0.5">Накапливайте баллы с каждым заказом</p>
-          </div>
-          <button onClick={onClose} className="text-white/40 hover:text-white transition-colors"><Icon name="X" size={20} /></button>
-        </div>
-
-        {step === 'phone' ? (
-          <>
-            <label className="text-white/60 text-sm mb-2 block">Номер телефона</label>
-            <input
-              type="tel" value={phone} onChange={e => setPhone(e.target.value)} placeholder="+7 900 000-00-00"
-              onKeyDown={e => e.key === 'Enter' && sendCode()}
-              className="w-full bg-white/10 border border-white/20 text-white placeholder:text-white/30 px-4 py-3 rounded-xl text-base focus:outline-none focus:border-veggie-lime/60 transition-colors mb-4"
-              autoFocus
-            />
-            {error && <p className="text-red-400 text-sm mb-3">{error}</p>}
-            <button onClick={sendCode} disabled={loading || !phone.trim()} className="w-full bg-veggie-lime text-veggie-dark py-3 rounded-xl font-bold text-base hover:bg-white transition-colors disabled:opacity-50">
-              {loading ? 'Отправляем...' : 'Получить код'}
-            </button>
-          </>
-        ) : (
-          <>
-            <p className="text-white/60 text-sm mb-2">Код отправлен на <span className="text-white font-medium">{phone}</span></p>
-            {devCode && <p className="text-veggie-lime text-sm mb-2 bg-veggie-lime/10 rounded-lg px-3 py-2">Код для входа: <b>{devCode}</b></p>}
-            <input
-              ref={codeRef} type="text" value={code} onChange={e => setCode(e.target.value)} placeholder="Введите 6-значный код"
-              onKeyDown={e => e.key === 'Enter' && verifyCode()}
-              maxLength={6}
-              className="w-full bg-white/10 border border-white/20 text-white placeholder:text-white/30 px-4 py-3 rounded-xl text-base text-center tracking-widest font-mono focus:outline-none focus:border-veggie-lime/60 transition-colors mb-4"
-            />
-            {error && <p className="text-red-400 text-sm mb-3">{error}</p>}
-            <button onClick={verifyCode} disabled={loading || code.length < 4} className="w-full bg-veggie-lime text-veggie-dark py-3 rounded-xl font-bold text-base hover:bg-white transition-colors disabled:opacity-50">
-              {loading ? 'Проверяем...' : 'Войти'}
-            </button>
-            <button onClick={() => { setStep('phone'); setCode(''); setError(''); }} className="w-full text-white/40 hover:text-white text-sm mt-3 transition-colors">
-              Изменить номер
-            </button>
-          </>
-        )}
-
-        <div className="mt-6 bg-veggie-lime/10 border border-veggie-lime/20 rounded-xl p-3 flex items-center gap-3">
-          <span className="text-2xl">🎁</span>
-          <div>
-            <p className="text-veggie-lime font-semibold text-sm">200 баллов за регистрацию</p>
-            <p className="text-white/50 text-xs">+ 200 баллов за первый заказ. 1 балл = 1 ₽</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
+import AuthModal, { User } from "@/components/AuthModal";
+import Navbar from "@/components/Navbar";
+import CatalogSection from "@/components/CatalogSection";
+import CartDrawer from "@/components/CartDrawer";
 
 const HERO_IMAGE = "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/58f8e18c-3a1d-4321-a0d0-d558c40958c4.jpg";
 
@@ -190,8 +96,9 @@ export default function Index() {
 
   const handleInstall = async () => {
     if (!installPrompt) return;
-    installPrompt.prompt();
-    const { outcome } = await installPrompt.userChoice;
+    const prompt = installPrompt as Event & { prompt: () => void; userChoice: Promise<{ outcome: string }> };
+    prompt.prompt();
+    const { outcome } = await prompt.userChoice;
     if (outcome === 'accepted') setInstalled(true);
     setInstallPrompt(null);
   };
@@ -282,7 +189,6 @@ export default function Index() {
         }),
       });
       if (res.ok) {
-        // Начисляем баллы за первый заказ если авторизован
         if (user && !user.is_first_order_done) {
           try {
             const bonusRes = await fetch('https://functions.poehali.dev/d8e8eac1-b7f3-41b8-b041-69e6d80a1c03', {
@@ -348,117 +254,23 @@ export default function Index() {
         </div>
       )}
 
-      {/* PWA INSTALL BANNER */}
-      {showBanner && (
-        <div className="fixed bottom-0 left-0 right-0 z-50 p-4 animate-fade-in">
-          <div className="max-w-lg mx-auto bg-veggie-dark border border-veggie-lime/40 rounded-2xl p-4 shadow-2xl flex items-center gap-4">
-            <div className="text-4xl shrink-0">🥬</div>
-            <div className="flex-1 min-w-0">
-              <p className="font-heading font-bold text-white text-base leading-tight">Установите приложение!</p>
-              <p className="text-white/60 text-sm mt-0.5">Быстрый доступ к заказу овощей прямо с экрана телефона</p>
-            </div>
-            <div className="flex flex-col gap-2 shrink-0">
-              <button onClick={() => { handleInstall(); dismissBanner(); }}
-                className="bg-veggie-lime text-veggie-dark px-4 py-2 rounded-xl text-sm font-bold hover:bg-white transition-colors whitespace-nowrap">
-                Установить
-              </button>
-              <button onClick={dismissBanner} className="text-white/40 hover:text-white/70 text-xs text-center transition-colors">
-                Не сейчас
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* NAVBAR */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-veggie-dark/95 backdrop-blur-md border-b border-veggie-green/30">
-        <div className="container flex items-center justify-between h-16">
-          <div className="flex items-center gap-2">
-            <img src="https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/ac61ce7a-2d22-4c12-af30-055ce3380771.jpg" alt="Филини" className="h-10 w-10 rounded-xl object-cover" />
-            <span className="font-heading text-xl font-bold text-white tracking-wide">ФИЛИНИ<span className="text-veggie-lime"> ФЕРМЕРСКИЕ ПРОДУКТЫ</span></span>
-          </div>
-
-          <div className="hidden md:flex items-center gap-6">
-            {NAV_LINKS.map(link => (
-              <button key={link} onClick={() => scrollTo(link)} className="text-white/75 hover:text-veggie-lime text-sm font-medium transition-colors duration-200">
-                {link}
-              </button>
-            ))}
-          </div>
-
-          <div className="hidden md:flex items-center relative">
-            <Icon name="Search" size={16} className="absolute left-3 text-white/40 pointer-events-none" />
-            <input
-              type="text"
-              value={search}
-              onChange={e => { setSearch(e.target.value); if (e.target.value) scrollTo("Каталог"); }}
-              placeholder="Поиск..."
-              className="bg-white/10 border border-white/20 text-white placeholder:text-white/40 pl-9 pr-8 py-2 rounded-full text-sm focus:outline-none focus:border-veggie-lime/60 transition-colors w-44 focus:w-56"
-            />
-            {search && (
-              <button onClick={() => setSearch("")} className="absolute right-3 text-white/40 hover:text-white transition-colors">
-                <Icon name="X" size={14} />
-              </button>
-            )}
-          </div>
-
-          <div className="flex items-center gap-3">
-            {installPrompt && !installed && (
-              <button onClick={handleInstall} className="hidden md:flex items-center gap-2 border border-veggie-lime/50 text-veggie-lime px-3 py-2 rounded-full text-sm font-medium hover:bg-veggie-lime/10 transition-colors">
-                <Icon name="Download" size={14} />
-                Установить
-              </button>
-            )}
-            {installed && (
-              <span className="hidden md:flex items-center gap-1 text-veggie-lime/60 text-xs">
-                <Icon name="CheckCircle" size={14} />Установлено
-              </span>
-            )}
-            {user ? (
-              <button onClick={() => setProfileOpen(true)} className="hidden md:flex items-center gap-2 border border-veggie-lime/40 text-veggie-lime px-3 py-2 rounded-full text-sm font-medium hover:bg-veggie-lime/10 transition-colors">
-                <span>⭐</span>
-                <span>{user.points} баллов</span>
-              </button>
-            ) : (
-              <button onClick={() => setAuthOpen(true)} className="hidden md:flex items-center gap-2 border border-white/20 text-white/70 px-3 py-2 rounded-full text-sm font-medium hover:bg-white/10 transition-colors">
-                <Icon name="User" size={14} />
-                Войти
-              </button>
-            )}
-            <button onClick={() => setCartOpen(true)} className="relative flex items-center gap-2 bg-veggie-lime text-veggie-dark px-4 py-2 rounded-full font-semibold text-sm hover:bg-white transition-colors">
-              <Icon name="ShoppingCart" size={16} />
-              <span>Корзина</span>
-              {totalItems > 0 && (
-                <span className="absolute -top-2 -right-2 bg-veggie-orange text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">
-                  {totalItems}
-                </span>
-              )}
-            </button>
-            <button className="md:hidden text-white" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-              <Icon name={mobileMenuOpen ? "X" : "Menu"} size={24} />
-            </button>
-          </div>
-        </div>
-
-        {mobileMenuOpen && (
-          <div className="md:hidden bg-veggie-dark border-t border-veggie-green/30 px-4 py-4 flex flex-col gap-3">
-            {NAV_LINKS.map(link => (
-              <button key={link} onClick={() => scrollTo(link)} className="text-white/80 hover:text-veggie-lime text-left py-2 border-b border-white/10 last:border-0">
-                {link}
-              </button>
-            ))}
-            {user ? (
-              <button onClick={() => { setProfileOpen(true); setMobileMenuOpen(false); }} className="flex items-center gap-2 text-veggie-lime font-semibold py-2">
-                <span>⭐</span> {user.points} баллов
-              </button>
-            ) : (
-              <button onClick={() => { setAuthOpen(true); setMobileMenuOpen(false); }} className="flex items-center gap-2 text-white/70 py-2">
-                <Icon name="User" size={16} /> Войти и получить баллы
-              </button>
-            )}
-          </div>
-        )}
-      </nav>
+      <Navbar
+        search={search}
+        setSearch={setSearch}
+        totalItems={totalItems}
+        installPrompt={installPrompt}
+        installed={installed}
+        user={user}
+        mobileMenuOpen={mobileMenuOpen}
+        setMobileMenuOpen={setMobileMenuOpen}
+        showBanner={showBanner}
+        onCartOpen={() => setCartOpen(true)}
+        onAuthOpen={() => setAuthOpen(true)}
+        onProfileOpen={() => setProfileOpen(true)}
+        onInstall={handleInstall}
+        onDismissBanner={dismissBanner}
+        scrollTo={scrollTo}
+      />
 
       {/* HERO */}
       <section className="relative min-h-screen flex items-center hero-bg overflow-hidden noise-overlay pt-16">
@@ -519,115 +331,19 @@ export default function Index() {
         </div>
       </section>
 
-      {/* CATALOG */}
-      <section id="catalog" className="py-20 bg-background">
-        <div className="container">
-          <div className="text-center mb-12">
-            <h2 className="font-heading text-5xl font-bold text-veggie-green mb-3">КАТАЛОГ</h2>
-            <div className="section-divider w-24 mx-auto mb-4" />
-            <p className="text-muted-foreground text-lg">Выбирайте по разделу — всё самое свежее</p>
-          </div>
-
-          <div className="max-w-md mx-auto mb-8">
-            <div className="relative">
-              <Icon name="Search" size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
-              <input
-                type="text"
-                value={search}
-                onChange={e => setSearch(e.target.value)}
-                placeholder="Поиск по товарам..."
-                className="w-full pl-11 pr-10 py-3 rounded-2xl border border-border bg-white text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-veggie-lime transition-colors text-base"
-              />
-              {search && (
-                <button onClick={() => setSearch("")} className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors">
-                  <Icon name="X" size={16} />
-                </button>
-              )}
-            </div>
-          </div>
-
-          <div className="flex justify-center mb-8">
-            <div className="flex bg-muted rounded-2xl p-1 gap-1">
-              <button
-                onClick={() => { setActiveSection("vegetables"); setActiveType("все"); }}
-                className={`px-6 py-3 rounded-xl font-heading font-semibold text-base transition-all ${activeSection === "vegetables" ? "bg-veggie-green text-white shadow" : "text-muted-foreground hover:text-veggie-green"}`}>
-                🥬 Овощи
-              </button>
-              <button
-                onClick={() => { setActiveSection("fruits"); setActiveType("все"); }}
-                className={`px-6 py-3 rounded-xl font-heading font-semibold text-base transition-all ${activeSection === "fruits" ? "bg-veggie-green text-white shadow" : "text-muted-foreground hover:text-veggie-green"}`}>
-                🍎 Фрукты
-              </button>
-            </div>
-          </div>
-
-          <div className="mb-8">
-            <div>
-              <div className="text-sm font-semibold text-veggie-green mb-2 uppercase tracking-wider flex items-center gap-2">
-                <Icon name="Filter" size={14} />По типу
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {currentTypes.map(t => (
-                  <button key={t} onClick={() => setActiveType(t)}
-                    className={`px-3 py-1.5 rounded-full text-sm capitalize transition-all border ${activeType === t ? 'bg-veggie-lime text-veggie-dark font-semibold border-veggie-lime' : 'bg-white text-muted-foreground border-border hover:border-veggie-lime/50'}`}>
-                    {t === "все" ? "Все типы" : t}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {filteredProducts.length === 0 ? (
-            <div className="text-center py-20 text-muted-foreground">
-              <div className="text-6xl mb-4">🌱</div>
-              <p className="text-lg">Нет овощей по выбранным фильтрам</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-              {filteredProducts.map((product, i) => {
-                const inCart = cart.find(c => c.id === product.id);
-                return (
-                  <div key={product.id} className="card-hover bg-white rounded-2xl overflow-hidden border border-border shadow-sm animate-fade-in" style={{ animationDelay: `${i * 0.05}s` }}>
-                    <div className="bg-gradient-to-br from-veggie-green/5 to-veggie-lime/10 p-8 flex items-center justify-center relative">
-                      <span className="text-6xl">{product.emoji}</span>
-                      {product.badge && (
-                        <span className={`absolute top-3 right-3 text-xs px-2 py-1 rounded-full font-semibold ${product.badge === 'Органик' ? 'bg-veggie-lime/20 text-veggie-green border border-veggie-lime/40' : product.badge === 'Хит' ? 'bg-veggie-orange/20 text-veggie-orange border border-veggie-orange/40' : 'tag-seasonal'}`}>
-                          {product.badge}
-                        </span>
-                      )}
-                    </div>
-                    <div className="p-4">
-                      <h3 className="font-semibold text-foreground mb-1 leading-tight">{product.name}</h3>
-                      <div className="flex items-center gap-2 mb-3">
-                        <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-full">{product.weight}</span>
-
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="font-heading text-xl font-bold text-veggie-green">{product.price} ₽/{product.unit}</span>
-                        {inCart ? (
-                          <div className="flex items-center gap-2">
-                            <button onClick={() => updateQty(product.id, -1)} className="w-7 h-7 rounded-full bg-veggie-green/10 hover:bg-veggie-green/20 text-veggie-green font-bold flex items-center justify-center transition-colors">
-                              <Icon name="Minus" size={12} />
-                            </button>
-                            <span className="font-semibold text-sm w-4 text-center">{inCart.qty}</span>
-                            <button onClick={() => addToCart(product)} className="w-7 h-7 rounded-full bg-veggie-green text-white hover:bg-veggie-green-light flex items-center justify-center transition-colors">
-                              <Icon name="Plus" size={12} />
-                            </button>
-                          </div>
-                        ) : (
-                          <button onClick={() => addToCart(product)} className="btn-primary w-9 h-9 rounded-full flex items-center justify-center">
-                            <Icon name="Plus" size={16} />
-                          </button>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </div>
-      </section>
+      <CatalogSection
+        search={search}
+        setSearch={setSearch}
+        activeSection={activeSection}
+        setActiveSection={setActiveSection}
+        activeType={activeType}
+        setActiveType={setActiveType}
+        currentTypes={currentTypes}
+        filteredProducts={filteredProducts}
+        cart={cart}
+        addToCart={addToCart}
+        updateQty={updateQty}
+      />
 
       {/* DELIVERY */}
       <section id="delivery" className="py-20 bg-veggie-dark text-white relative overflow-hidden">
@@ -778,9 +494,7 @@ export default function Index() {
                   <Icon name={faqOpen === i ? "ChevronUp" : "ChevronDown"} size={20} className="text-veggie-lime shrink-0" />
                 </button>
                 {faqOpen === i && (
-                  <div className="px-6 pb-6 text-white/60 leading-relaxed border-t border-white/10 pt-4">
-                    {item.a}
-                  </div>
+                  <div className="px-6 pb-6 text-white/60 leading-relaxed">{item.a}</div>
                 )}
               </div>
             ))}
@@ -864,214 +578,28 @@ export default function Index() {
         </div>
       </footer>
 
-      {/* CART DRAWER */}
       {cartOpen && (
-        <div className="fixed inset-0 z-50 flex">
-          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setCartOpen(false)} />
-          <div className="relative ml-auto w-full max-w-md bg-white h-full flex flex-col shadow-2xl animate-slide-in">
-            <div className="flex items-center justify-between p-6 border-b">
-              <h2 className="font-heading text-2xl font-bold text-veggie-green flex items-center gap-2">
-                <Icon name="ShoppingCart" size={24} />КОРЗИНА
-                {totalItems > 0 && <span className="bg-veggie-lime text-veggie-dark text-sm px-2 py-0.5 rounded-full font-body font-semibold">{totalItems}</span>}
-              </h2>
-              <button onClick={() => setCartOpen(false)} className="text-muted-foreground hover:text-foreground transition-colors">
-                <Icon name="X" size={24} />
-              </button>
-            </div>
-
-            <div className="flex-1 overflow-y-auto p-6">
-              {cart.length === 0 ? (
-                <div className="text-center py-16 text-muted-foreground">
-                  <div className="text-6xl mb-4">🛒</div>
-                  <p className="font-semibold">Корзина пуста</p>
-                  <p className="text-sm mt-1">Добавьте овощи из каталога</p>
-                  <button onClick={() => { setCartOpen(false); scrollTo("Каталог"); }} className="mt-4 btn-primary px-6 py-2 rounded-full text-sm font-semibold">
-                    Перейти в каталог
-                  </button>
-                </div>
-              ) : (
-                <div className="space-y-3">
-                  {cart.map(item => (
-                    <div key={item.id} className="flex items-center gap-4 bg-background rounded-xl p-4">
-                      <span className="text-3xl">{item.emoji}</span>
-                      <div className="flex-1 min-w-0">
-                        <div className="font-semibold text-foreground truncate">{item.name}</div>
-                        <div className="text-sm text-muted-foreground">{item.price} ₽ / шт</div>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <button onClick={() => updateQty(item.id, -1)} className="w-7 h-7 rounded-full bg-veggie-green/10 text-veggie-green flex items-center justify-center hover:bg-veggie-green/20 transition-colors">
-                          <Icon name="Minus" size={12} />
-                        </button>
-                        <span className="w-6 text-center font-semibold">{item.qty}</span>
-                        <button onClick={() => updateQty(item.id, 1)} className="w-7 h-7 rounded-full bg-veggie-green text-white flex items-center justify-center transition-colors">
-                          <Icon name="Plus" size={12} />
-                        </button>
-                      </div>
-                      <div className="text-right">
-                        <div className="font-bold text-veggie-green">{item.price * item.qty} ₽</div>
-                        <button onClick={() => removeFromCart(item.id)} className="text-xs text-muted-foreground hover:text-destructive transition-colors">удалить</button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {cart.length > 0 && (
-              <div className="border-t bg-background">
-                {/* Итого */}
-                <div className="px-6 pt-4 pb-3 border-b border-border">
-                  <div className="flex justify-between text-sm text-muted-foreground mb-1">
-                    <span>Вес заказа</span>
-                    <span>{totalWeight.toFixed(1)} кг</span>
-                  </div>
-                  <div className="flex justify-between text-sm text-muted-foreground mb-1">
-                    <span>Доставка</span>
-                    <span>{freeDelivery ? "Бесплатно 🎉" : "199 ₽"}</span>
-                  </div>
-                  {!freeDelivery && (
-                    <p className="text-xs text-muted-foreground/70 mb-1">До бесплатной — ещё {(5 - totalWeight).toFixed(1)} кг</p>
-                  )}
-                  <div className="flex justify-between items-center text-lg font-heading font-bold mt-2">
-                    <span>Итого</span>
-                    <span className="text-veggie-green">{totalPrice + (freeDelivery ? 0 : 199)} ₽</span>
-                  </div>
-                </div>
-
-                {orderStatus === 'success' ? (
-                  <div className="text-center py-8 px-6">
-                    <div className="text-5xl mb-3">✅</div>
-                    <p className="font-heading font-bold text-veggie-green text-xl">Заказ принят!</p>
-                    <p className="text-muted-foreground text-sm mt-2">Мы свяжемся с вами в ближайшее время</p>
-                    {user && (
-                      <div className="mt-4 bg-veggie-lime/10 border border-veggie-lime/30 rounded-xl p-3">
-                        {user.is_first_order_done ? (
-                          <p className="text-veggie-green font-semibold text-sm">🎉 +200 баллов за первый заказ начислены!</p>
-                        ) : null}
-                        <p className="text-muted-foreground text-xs mt-1">Ваш баланс: <b>{user.points} баллов</b></p>
-                      </div>
-                    )}
-                    <button onClick={() => { setOrderStatus('idle'); setCartOpen(false); }} className="mt-5 w-full btn-accent py-3 rounded-xl font-semibold">
-                      Отлично!
-                    </button>
-                  </div>
-                ) : (
-                  <div className="px-6 pt-4 pb-6">
-                    {/* Шаги */}
-                    <div className="flex items-center gap-2 mb-5">
-                      <div className={`flex items-center gap-1.5 text-sm font-semibold ${orderStep === 1 ? 'text-veggie-green' : 'text-muted-foreground'}`}>
-                        <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${orderStep === 1 ? 'bg-veggie-green text-white' : 'bg-muted text-muted-foreground'}`}>1</span>
-                        Доставка
-                      </div>
-                      <div className="flex-1 h-px bg-border" />
-                      <div className={`flex items-center gap-1.5 text-sm font-semibold ${orderStep === 2 ? 'text-veggie-green' : 'text-muted-foreground'}`}>
-                        <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${orderStep === 2 ? 'bg-veggie-green text-white' : 'bg-muted text-muted-foreground'}`}>2</span>
-                        Контакты
-                      </div>
-                    </div>
-
-                    {orderStep === 1 ? (
-                      <div className="flex flex-col gap-3">
-                        <div>
-                          <label className="text-xs text-muted-foreground font-medium mb-1 block">Адрес доставки</label>
-                          <input
-                            type="text" value={orderAddress} onChange={e => setOrderAddress(e.target.value)}
-                            placeholder="Улица, дом"
-                            className="w-full border border-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-veggie-green transition-colors"
-                          />
-                        </div>
-                        <div>
-                          <label className="text-xs text-muted-foreground font-medium mb-1 block">Квартира / офис</label>
-                          <input
-                            type="text" value={orderFlat} onChange={e => setOrderFlat(e.target.value)}
-                            placeholder="Необязательно"
-                            className="w-full border border-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-veggie-green transition-colors"
-                          />
-                        </div>
-                        <div>
-                          <label className="text-xs text-muted-foreground font-medium mb-2 block">Время доставки</label>
-                          <div className="grid grid-cols-2 gap-2">
-                            <button
-                              onClick={() => setOrderTime('morning')}
-                              className={`border rounded-xl p-3 text-left transition-colors ${orderTime === 'morning' ? 'border-veggie-green bg-veggie-green/5' : 'border-border hover:border-veggie-green/50'}`}
-                            >
-                              <div className="text-lg mb-0.5">🌅</div>
-                              <div className="text-sm font-semibold">Утро</div>
-                              <div className="text-xs text-muted-foreground">до 12:00</div>
-                            </button>
-                            <button
-                              onClick={() => setOrderTime('evening')}
-                              className={`border rounded-xl p-3 text-left transition-colors ${orderTime === 'evening' ? 'border-veggie-green bg-veggie-green/5' : 'border-border hover:border-veggie-green/50'}`}
-                            >
-                              <div className="text-lg mb-0.5">🌆</div>
-                              <div className="text-sm font-semibold">Вечер</div>
-                              <div className="text-xs text-muted-foreground">с 18:00</div>
-                            </button>
-                          </div>
-                        </div>
-                        <button
-                          onClick={() => setOrderStep(2)}
-                          disabled={!orderAddress.trim()}
-                          className="w-full btn-accent py-3 rounded-xl font-heading font-semibold text-base mt-1 disabled:opacity-50"
-                        >
-                          Далее →
-                        </button>
-                      </div>
-                    ) : (
-                      <div className="flex flex-col gap-3">
-                        <div className="bg-muted/50 rounded-xl px-4 py-3 flex items-start gap-2 mb-1">
-                          <Icon name="MapPin" size={16} className="text-veggie-green mt-0.5 shrink-0" />
-                          <div>
-                            <p className="text-sm font-medium">{orderAddress}{orderFlat ? `, кв. ${orderFlat}` : ''}</p>
-                            <p className="text-xs text-muted-foreground">{orderTime === 'morning' ? '🌅 Утро — до 12:00' : '🌆 Вечер — с 18:00'}</p>
-                          </div>
-                          <button onClick={() => setOrderStep(1)} className="ml-auto text-xs text-veggie-green hover:underline shrink-0">Изменить</button>
-                        </div>
-                        <div>
-                          <label className="text-xs text-muted-foreground font-medium mb-1 block">Ваше имя</label>
-                          <input
-                            type="text" value={orderName} onChange={e => setOrderName(e.target.value)}
-                            placeholder="Как вас зовут?"
-                            className="w-full border border-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-veggie-green transition-colors"
-                          />
-                        </div>
-                        <div>
-                          <label className="text-xs text-muted-foreground font-medium mb-1 block">Телефон</label>
-                          <input
-                            type="tel" value={orderPhone} onChange={e => setOrderPhone(e.target.value)}
-                            placeholder="+7 900 000-00-00"
-                            className="w-full border border-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-veggie-green transition-colors"
-                          />
-                        </div>
-                        <div>
-                          <label className="text-xs text-muted-foreground font-medium mb-1 block">Комментарий к заказу</label>
-                          <input
-                            type="text" value={orderComment} onChange={e => setOrderComment(e.target.value)}
-                            placeholder="Код домофона, пожелания..."
-                            className="w-full border border-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-veggie-green transition-colors"
-                          />
-                        </div>
-                        {orderStatus === 'error' && (
-                          <p className="text-red-500 text-sm">Ошибка отправки. Попробуйте ещё раз.</p>
-                        )}
-                        <button
-                          onClick={handleOrder}
-                          disabled={orderStatus === 'loading' || !orderName.trim() || !orderPhone.trim()}
-                          className="w-full btn-accent py-3.5 rounded-xl font-heading text-base font-semibold disabled:opacity-50"
-                        >
-                          {orderStatus === 'loading' ? 'Отправляем...' : `Оформить заказ — ${totalPrice + (freeDelivery ? 0 : 199)} ₽`}
-                        </button>
-                        <button onClick={() => setOrderStep(1)} className="text-xs text-muted-foreground hover:text-foreground text-center transition-colors">
-                          ← Назад
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-        </div>
+        <CartDrawer
+          cart={cart}
+          totalItems={totalItems}
+          totalPrice={totalPrice}
+          totalWeight={totalWeight}
+          freeDelivery={freeDelivery}
+          user={user}
+          orderName={orderName} setOrderName={setOrderName}
+          orderPhone={orderPhone} setOrderPhone={setOrderPhone}
+          orderAddress={orderAddress} setOrderAddress={setOrderAddress}
+          orderFlat={orderFlat} setOrderFlat={setOrderFlat}
+          orderTime={orderTime} setOrderTime={setOrderTime}
+          orderComment={orderComment} setOrderComment={setOrderComment}
+          orderStatus={orderStatus} setOrderStatus={setOrderStatus}
+          orderStep={orderStep} setOrderStep={setOrderStep}
+          onClose={() => setCartOpen(false)}
+          onOrder={handleOrder}
+          removeFromCart={removeFromCart}
+          updateQty={updateQty}
+          scrollTo={scrollTo}
+        />
       )}
     </div>
   );
