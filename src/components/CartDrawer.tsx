@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Icon from "@/components/ui/icon";
 import { User } from "@/components/AuthModal";
 
@@ -37,10 +37,18 @@ export default function CartDrawer({
   pointsToUse, setPointsToUse,
   onClose, onOrder, removeFromCart, updateQty, scrollTo,
 }: CartDrawerProps) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     return () => { document.body.style.overflow = ''; };
   }, []);
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [cart.length, orderStep]);
 
   return (
     <div className="fixed inset-0 z-50 flex">
@@ -56,7 +64,7 @@ export default function CartDrawer({
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto overscroll-contain p-6">
+        <div ref={scrollRef} className="flex-1 overflow-y-auto overscroll-contain p-6">
           {cart.length === 0 ? (
             <div className="text-center py-16 text-muted-foreground">
               <div className="text-6xl mb-4">🛒</div>
