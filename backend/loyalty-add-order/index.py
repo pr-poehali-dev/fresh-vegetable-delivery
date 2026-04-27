@@ -53,11 +53,88 @@ def send_email(name, phone, address, comment, items, total_price, order_id):
         server.sendmail(smtp_user, smtp_user, msg.as_string())
 
 
+def calc_monthly_bonus(total: float) -> int:
+    """Рассчитывает % кэшбэка: 1% до 10000, 3% до 20000, 10% до 2000000"""
+    if total <= 0:
+        return 0
+    elif total <= 10000:
+        return int(total * 0.01)
+    elif total <= 20000:
+        return int(total * 0.03)
+    else:
+        return int(min(total, 2000000) * 0.10)
+
+
 def handler(event: dict, context) -> dict:
-    """Оформление заказа (POST) и получение истории заказов (GET)"""
+    """Оформление заказа (POST), история заказов (GET), ежемесячный кэшбэк (POST ?action=monthly_bonus)"""
 
     if event.get('httpMethod') == 'OPTIONS':
         return {'statusCode': 200, 'headers': CORS, 'body': ''}
+
+    params = event.get('queryStringParameters') or {}
+
+    # --- Ежемесячное начисление баллов ---
+    if event.get('httpMethod') == 'POST' and params.get('action') == 'monthly_bonus':
+        secret = params.get('secret', '')
+        if secret != os.environ.get('CRON_SECRET', ''):
+            return {'statusCode': 403, 'headers': CORS, 'body': json.dumps({'error': 'Forbidden'})}
+
+        from datetime import datetime, timezone
+        now = datetime.now(timezone.utc)
+        # Предыдущий месяц
+        if now.month == 1:
+            prev_year, prev_month = now.year - 1, 12
+        else:
+            prev_year, prev_month = now.year, now.month - 1
+
+        period_start = f"{prev_year}-{prev_month:02d}-01"
+        period_end = f"{now.year}-{now.month:02d}-01"
+        period_label = f"{prev_year}-{prev_month:02d}"
+
+        conn = psycopg2.connect(os.environ['DATABASE_URL'])
+        cur = conn.cursor()
+
+        # Суммы заказов за предыдущий месяц по каждому пользователю
+        cur.execute(
+            f"""SELECT user_id, SUM(total_price)
+                FROM {SCHEMA}.orders
+                WHERE user_id IS NOT NULL
+                  AND created_at >= %s AND created_at < %s
+                GROUP BY user_id""",
+            (period_start, period_end)
+        )
+        rows = cur.fetchall()
+
+        processed = 0
+        for user_id, total_sum in rows:
+            bonus = calc_monthly_bonus(float(total_sum))
+            if bonus <= 0:
+                continue
+            # Проверяем, не начисляли ли уже за этот период
+            cur.execute(
+                f"SELECT id FROM {SCHEMA}.loyalty_transactions WHERE user_id=%s AND reason=%s",
+                (user_id, f'Кэшбэк за {period_label}')
+            )
+            if cur.fetchone():
+                continue
+            cur.execute(
+                f"UPDATE {SCHEMA}.users SET points = points + %s WHERE id = %s",
+                (bonus, user_id)
+            )
+            cur.execute(
+                f"INSERT INTO {SCHEMA}.loyalty_transactions (user_id, points, reason) VALUES (%s, %s, %s)",
+                (user_id, bonus, f'Кэшбэк за {period_label}')
+            )
+            processed += 1
+
+        conn.commit()
+        cur.close()
+        conn.close()
+
+        return {
+            'statusCode': 200, 'headers': CORS,
+            'body': json.dumps({'ok': True, 'period': period_label, 'users_credited': processed})
+        }
 
     if event.get('httpMethod') == 'GET':
         params = event.get('queryStringParameters') or {}
