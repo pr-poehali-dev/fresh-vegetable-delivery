@@ -564,7 +564,7 @@ export default function Index() {
       <footer className="bg-veggie-dark border-t border-veggie-green/30 py-8">
         <div className="container flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <span className="text-xl">🥬</span>
+            <img src="https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/fe802481-ab1d-4857-a0a0-f911323e758e.jpeg" alt="Филини" className="h-8 w-8 rounded-lg object-cover" />
             <span className="font-heading text-lg font-bold text-white">ФИЛИНИ<span className="text-veggie-lime"> ФЕРМЕРСКИЕ ПРОДУКТЫ</span></span>
           </div>
           <p className="text-white/40 text-sm">© 2026 Филини Фермерские Продукты. Все права защищены.</p>
