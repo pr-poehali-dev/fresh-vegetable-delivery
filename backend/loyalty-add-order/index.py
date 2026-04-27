@@ -70,11 +70,16 @@ def handler(event: dict, context) -> dict:
             f"SELECT id, address, comment, items, total_price, status, created_at FROM {SCHEMA}.orders WHERE user_id=%s ORDER BY created_at DESC LIMIT 50",
             (user_id,)
         )
-        rows = cur.fetchall()
+        order_rows = cur.fetchall()
+        cur.execute(
+            f"SELECT id, points, reason, created_at FROM {SCHEMA}.loyalty_transactions WHERE user_id=%s ORDER BY created_at DESC LIMIT 50",
+            (user_id,)
+        )
+        tx_rows = cur.fetchall()
         cur.close()
         conn.close()
         orders = []
-        for row in rows:
+        for row in order_rows:
             orders.append({
                 'id': row[0],
                 'address': row[1],
@@ -84,7 +89,15 @@ def handler(event: dict, context) -> dict:
                 'status': row[5],
                 'created_at': row[6].isoformat(),
             })
-        return {'statusCode': 200, 'headers': CORS, 'body': json.dumps({'orders': orders}, ensure_ascii=False)}
+        transactions = []
+        for row in tx_rows:
+            transactions.append({
+                'id': row[0],
+                'points': row[1],
+                'reason': row[2],
+                'created_at': row[3].isoformat(),
+            })
+        return {'statusCode': 200, 'headers': CORS, 'body': json.dumps({'orders': orders, 'transactions': transactions}, ensure_ascii=False)}
 
     body = json.loads(event.get('body') or '{}')
     user_id = body.get('user_id')

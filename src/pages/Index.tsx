@@ -79,7 +79,9 @@ export default function Index() {
   });
   const [profileOpen, setProfileOpen] = useState(false);
   const [orders, setOrders] = useState<Array<{id: number; address: string; items: Array<{name: string; quantity: number; price: number}>; total_price: number; status: string; created_at: string}>>([]);
+  const [transactions, setTransactions] = useState<Array<{id: number; points: number; reason: string; created_at: string}>>([]);
   const [ordersLoading, setOrdersLoading] = useState(false);
+  const [profileTab, setProfileTab] = useState<'orders' | 'points'>('orders');
   const [orderName, setOrderName] = useState('');
   const [orderPhone, setOrderPhone] = useState('');
   const [orderAddress, setOrderAddress] = useState('');
@@ -181,6 +183,7 @@ export default function Index() {
       if (res.ok) {
         const data = await res.json();
         setOrders(data.orders || []);
+        setTransactions(data.transactions || []);
       }
     } catch { /* ignore */ }
     setOrdersLoading(false);
@@ -260,30 +263,52 @@ export default function Index() {
               </div>
             )}
 
+            <div className="flex bg-white/5 rounded-xl p-1 mb-3 gap-1">
+              <button onClick={() => setProfileTab('orders')} className={`flex-1 py-1.5 rounded-lg text-xs font-semibold transition-all ${profileTab === 'orders' ? 'bg-veggie-green text-white' : 'text-white/50 hover:text-white'}`}>Заказы</button>
+              <button onClick={() => setProfileTab('points')} className={`flex-1 py-1.5 rounded-lg text-xs font-semibold transition-all ${profileTab === 'points' ? 'bg-veggie-green text-white' : 'text-white/50 hover:text-white'}`}>Баллы</button>
+            </div>
+
             <div className="mb-4">
-              <p className="text-white/60 text-xs uppercase tracking-wider mb-2 font-semibold">История заказов</p>
               {ordersLoading ? (
                 <div className="text-center py-4 text-white/40 text-sm">Загрузка...</div>
-              ) : orders.length === 0 ? (
-                <div className="text-center py-4 text-white/30 text-sm">Заказов пока нет</div>
+              ) : profileTab === 'orders' ? (
+                orders.length === 0 ? (
+                  <div className="text-center py-4 text-white/30 text-sm">Заказов пока нет</div>
+                ) : (
+                  <div className="space-y-2 max-h-52 overflow-y-auto pr-1">
+                    {orders.map(order => (
+                      <div key={order.id} className="bg-white/5 border border-white/10 rounded-xl p-3">
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="text-white/50 text-xs">#{order.id} · {new Date(order.created_at).toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' })}</span>
+                          <span className="text-veggie-lime text-sm font-bold">{order.total_price} ₽</span>
+                        </div>
+                        {order.address && <p className="text-white/40 text-xs mb-1">📍 {order.address}</p>}
+                        <div className="text-white/60 text-xs">
+                          {order.items.slice(0, 3).map((item, i) => (
+                            <span key={i}>{item.name} ×{item.quantity}{i < Math.min(order.items.length, 3) - 1 ? ', ' : ''}</span>
+                          ))}
+                          {order.items.length > 3 && <span className="text-white/30"> +ещё {order.items.length - 3}</span>}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )
               ) : (
-                <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
-                  {orders.map(order => (
-                    <div key={order.id} className="bg-white/5 border border-white/10 rounded-xl p-3">
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="text-white/50 text-xs">#{order.id} · {new Date(order.created_at).toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' })}</span>
-                        <span className="text-veggie-lime text-sm font-bold">{order.total_price} ₽</span>
+                transactions.length === 0 ? (
+                  <div className="text-center py-4 text-white/30 text-sm">Начислений пока нет</div>
+                ) : (
+                  <div className="space-y-2 max-h-52 overflow-y-auto pr-1">
+                    {transactions.map(tx => (
+                      <div key={tx.id} className="bg-white/5 border border-white/10 rounded-xl p-3 flex items-center justify-between">
+                        <div>
+                          <p className="text-white/80 text-xs">{tx.reason}</p>
+                          <p className="text-white/40 text-xs">{new Date(tx.created_at).toLocaleDateString('ru-RU', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
+                        </div>
+                        <span className="text-veggie-lime font-bold text-sm">+{tx.points} ⭐</span>
                       </div>
-                      {order.address && <p className="text-white/40 text-xs mb-1">📍 {order.address}</p>}
-                      <div className="text-white/60 text-xs">
-                        {order.items.slice(0, 3).map((item, i) => (
-                          <span key={i}>{item.name} ×{item.quantity}{i < Math.min(order.items.length, 3) - 1 ? ', ' : ''}</span>
-                        ))}
-                        {order.items.length > 3 && <span className="text-white/30"> +ещё {order.items.length - 3}</span>}
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                    ))}
+                  </div>
+                )
               )}
             </div>
 
