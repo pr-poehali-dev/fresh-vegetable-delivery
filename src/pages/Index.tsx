@@ -391,7 +391,7 @@ export default function Index() {
         </div>
 
         <div className="absolute right-20 top-1/2 -translate-y-1/2 hidden lg:flex flex-col gap-6">
-          {["🍅", "🥦", "🥕", "🫑", "🥒"].map((emoji, i) => (
+          {["🍅", "🥦", "🥕", "🌽", "🥒"].map((emoji, i) => (
             <div key={emoji} className="text-5xl animate-float" style={{ animationDelay: `${i * 0.4}s` }}>{emoji}</div>
           ))}
         </div>
