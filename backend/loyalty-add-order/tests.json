@@ -7,11 +7,28 @@
       "expectedStatus": 200
     },
     {
-      "name": "Missing user_id",
+      "name": "Missing name and phone",
       "method": "POST",
       "path": "/",
       "body": {},
-      "expectedStatus": 400
+      "expectedStatus": 400,
+      "expectedBody": {"error": "string"},
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Create order without user",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "name": "Тест",
+        "phone": "+79001234567",
+        "address": "ул. Тестовая, 1",
+        "items": [{"name": "Помидоры", "quantity": 2, "price": 150}],
+        "total_price": 300
+      },
+      "expectedStatus": 200,
+      "expectedBody": {"ok": true, "order_id": 1},
+      "bodyMatcher": "partial"
     }
   ]
 }
