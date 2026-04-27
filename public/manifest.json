@@ -9,10 +9,16 @@
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/22ac6a84-88d1-497c-b4d1-4b86c37cdec1.jpg",
+      "src": "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/ba264fef-fac5-447b-8f03-5083ffea94a9.jpeg",
       "sizes": "512x512",
       "type": "image/jpeg",
       "purpose": "any maskable"
+    },
+    {
+      "src": "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/ba264fef-fac5-447b-8f03-5083ffea94a9.jpeg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any"
     }
   ],
   "categories": ["food", "shopping"],
