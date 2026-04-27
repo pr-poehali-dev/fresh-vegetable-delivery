@@ -124,7 +124,7 @@ export default function Navbar({
         <div className="container flex items-center justify-between h-16">
           <div className="flex items-center gap-2">
             <img src="https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/fe802481-ab1d-4857-a0a0-f911323e758e.jpeg" alt="Филини" className="h-10 w-10 rounded-xl object-cover" />
-            <span className="font-heading text-xl font-bold text-white tracking-wide">ФИЛИНИ<span className="text-veggie-lime"> ФЕРМЕРСКИЕ ПРОДУКТЫ</span></span>
+            <span className="font-heading text-xl font-bold text-white tracking-wide">ФИЛИНИ<span className="text-veggie-lime hidden lg:inline"> ФЕРМЕРСКИЕ ПРОДУКТЫ</span></span>
           </div>
 
           <div className="hidden md:flex items-center gap-3 xl:gap-6">
