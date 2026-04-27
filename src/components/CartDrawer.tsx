@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import Icon from "@/components/ui/icon";
 import { User } from "@/components/AuthModal";
 
@@ -36,10 +37,15 @@ export default function CartDrawer({
   pointsToUse, setPointsToUse,
   onClose, onOrder, removeFromCart, updateQty, scrollTo,
 }: CartDrawerProps) {
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = ''; };
+  }, []);
+
   return (
     <div className="fixed inset-0 z-50 flex">
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative ml-auto w-full max-w-md bg-white h-full flex flex-col shadow-2xl animate-slide-in">
+      <div className="relative ml-auto w-full max-w-md bg-white h-full flex flex-col shadow-2xl animate-slide-in overflow-hidden">
         <div className="flex items-center justify-between p-6 border-b">
           <h2 className="font-heading text-2xl font-bold text-veggie-green flex items-center gap-2">
             <Icon name="ShoppingCart" size={24} />КОРЗИНА
@@ -50,7 +56,7 @@ export default function CartDrawer({
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-6">
+        <div className="flex-1 overflow-y-auto overscroll-contain p-6">
           {cart.length === 0 ? (
             <div className="text-center py-16 text-muted-foreground">
               <div className="text-6xl mb-4">🛒</div>
