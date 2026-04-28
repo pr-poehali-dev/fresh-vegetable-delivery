@@ -332,6 +332,13 @@ export default function Index() {
                             )}
                           </div>
                         </div>
+                        <div className="mb-1">
+                          {order.status === 'new' && <span className="inline-flex items-center gap-1 text-[10px] bg-white/10 text-white/60 px-2 py-0.5 rounded-full">🕐 Новый</span>}
+                          {order.status === 'processing' && <span className="inline-flex items-center gap-1 text-[10px] bg-yellow-500/20 text-yellow-400 px-2 py-0.5 rounded-full">⚙️ В обработке</span>}
+                          {order.status === 'delivering' && <span className="inline-flex items-center gap-1 text-[10px] bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded-full">🚚 Доставляется</span>}
+                          {order.status === 'done' && <span className="inline-flex items-center gap-1 text-[10px] bg-veggie-lime/20 text-veggie-lime px-2 py-0.5 rounded-full">✅ Выполнен</span>}
+                          {order.status === 'cancelled' && <span className="inline-flex items-center gap-1 text-[10px] bg-red-500/20 text-red-400 px-2 py-0.5 rounded-full">❌ Отменён</span>}
+                        </div>
                         {order.address && <p className="text-white/40 text-xs mb-1">📍 {order.address}</p>}
                         <div className="text-white/60 text-xs">
                           {order.items.slice(0, 3).map((item, i) => (

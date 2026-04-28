@@ -44,6 +44,13 @@
       "path": "/",
       "body": {"user_id": 1},
       "expectedStatus": 400
+    },
+    {
+      "name": "PATCH смена статуса без ключа",
+      "method": "PATCH",
+      "path": "/",
+      "body": {"order_id": 1, "status": "processing"},
+      "expectedStatus": 403
     }
   ]
 }

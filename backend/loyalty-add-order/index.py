@@ -7,9 +7,10 @@ from email.mime.multipart import MIMEMultipart
 
 CORS = {
     'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET, POST, PUT, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Methods': 'GET, POST, PUT, PATCH, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, X-Admin-Key',
 }
+VALID_STATUSES = ['new', 'processing', 'delivering', 'done', 'cancelled']
 SCHEMA = os.environ['MAIN_DB_SCHEMA']
 BONUS_FIRST_ORDER = 200
 
@@ -135,6 +136,25 @@ def handler(event: dict, context) -> dict:
             'statusCode': 200, 'headers': CORS,
             'body': json.dumps({'ok': True, 'period': period_label, 'users_credited': processed})
         }
+
+    if event.get('httpMethod') == 'PATCH':
+        admin_key = (event.get('headers') or {}).get('X-Admin-Key', '')
+        expected = os.environ.get('ADMIN_KEY', 'unset')
+        if admin_key != expected:
+            return {'statusCode': 403, 'headers': CORS, 'body': json.dumps({'error': 'Forbidden'})}
+        body = json.loads(event.get('body') or '{}')
+        order_id = body.get('order_id')
+        new_status = body.get('status', '')
+        if not order_id or new_status not in VALID_STATUSES:
+            return {'statusCode': 400, 'headers': CORS, 'body': json.dumps({'error': 'order_id и корректный status обязательны'})}
+        conn = psycopg2.connect(os.environ['DATABASE_URL'])
+        cur = conn.cursor()
+        cur.execute(f"UPDATE {SCHEMA}.orders SET status=%s WHERE id=%s RETURNING id", (new_status, order_id))
+        if not cur.fetchone():
+            cur.close(); conn.close()
+            return {'statusCode': 404, 'headers': CORS, 'body': json.dumps({'error': 'Заказ не найден'})}
+        conn.commit(); cur.close(); conn.close()
+        return {'statusCode': 200, 'headers': CORS, 'body': json.dumps({'ok': True})}
 
     if event.get('httpMethod') == 'PUT':
         body = json.loads(event.get('body') or '{}')
