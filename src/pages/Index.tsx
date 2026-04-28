@@ -574,7 +574,7 @@ export default function Index() {
       />
 
       {/* HERO */}
-      <section className="relative min-h-screen flex items-center hero-bg overflow-hidden noise-overlay pt-16">
+      <section className="relative min-h-screen flex items-center hero-bg overflow-hidden noise-overlay pt-24">
         <div className="absolute inset-0 opacity-30">
           <img src={HERO_IMAGE} alt="Свежие овощи" className="w-full h-full object-cover" />
         </div>
