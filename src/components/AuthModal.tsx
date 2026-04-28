@@ -13,6 +13,7 @@ export default function AuthModal({ onClose, onAuth }: { onClose: () => void; on
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [devCode, setDevCode] = useState('');
+  const [isHuman, setIsHuman] = useState(false);
   const codeRef = useRef<HTMLInputElement>(null);
 
   const sendCode = async () => {
@@ -62,8 +63,17 @@ export default function AuthModal({ onClose, onAuth }: { onClose: () => void; on
               className="w-full bg-white/10 border border-white/20 text-white placeholder:text-white/30 px-4 py-3 rounded-xl text-base focus:outline-none focus:border-veggie-lime/60 transition-colors mb-4"
               autoFocus
             />
+            <label className="flex items-center gap-3 cursor-pointer mb-4 select-none">
+              <div
+                onClick={() => setIsHuman(v => !v)}
+                className={`w-5 h-5 rounded flex items-center justify-center border-2 transition-all shrink-0 ${isHuman ? 'bg-veggie-lime border-veggie-lime' : 'border-white/30 bg-white/5'}`}
+              >
+                {isHuman && <Icon name="Check" size={12} className="text-veggie-dark" />}
+              </div>
+              <span className="text-white/60 text-sm">Я человек</span>
+            </label>
             {error && <p className="text-red-400 text-sm mb-3">{error}</p>}
-            <button onClick={sendCode} disabled={loading || !phone.trim()} className="w-full bg-veggie-lime text-veggie-dark py-3 rounded-xl font-bold text-base hover:bg-white transition-colors disabled:opacity-50">
+            <button onClick={sendCode} disabled={loading || !phone.trim() || !isHuman} className="w-full bg-veggie-lime text-veggie-dark py-3 rounded-xl font-bold text-base hover:bg-white transition-colors disabled:opacity-50">
               {loading ? 'Отправляем...' : 'Получить код'}
             </button>
           </>
