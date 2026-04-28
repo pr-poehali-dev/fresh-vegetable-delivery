@@ -90,7 +90,40 @@ const FAQ_ITEMS = [
   { q: "Как выбрать сезонные овощи?", a: "Используйте фильтр по сезонности в каталоге. Сезонные овощи вкуснее, питательнее и дешевле — они в приоритете." },
 ];
 
-const NAV_LINKS = ["Каталог", "Доставка", "О сервисе", "Отзывы", "FAQ", "Контакты"];
+const TIPS = [
+  {
+    id: 1, emoji: "🥕", title: "Как выбрать свежую морковь",
+    tag: "Выбор продуктов",
+    text: "Свежая морковь должна быть твёрдой, без трещин и мягких пятен. Яркий оранжевый цвет говорит о высоком содержании бета-каротина. Хвостик должен быть зелёным, а не засохшим — это признак недавней уборки.",
+  },
+  {
+    id: 2, emoji: "🍅", title: "Помидоры: как хранить правильно",
+    tag: "Хранение",
+    text: "Никогда не кладите помидоры в холодильник — холод разрушает вкус и аромат. Храните при комнатной температуре подальше от прямых солнечных лучей. Спелые томаты лучше съесть в течение 2–3 дней.",
+  },
+  {
+    id: 3, emoji: "🥦", title: "Почему стоит есть сезонные овощи",
+    tag: "Польза",
+    text: "Сезонные овощи содержат в 2–3 раза больше витаминов, чем выращенные в теплице зимой. Они не проходят долгую транспортировку и не обрабатываются консервантами. Плюс — они значительно вкуснее и дешевле.",
+  },
+  {
+    id: 4, emoji: "🧅", title: "Лук: польза для иммунитета",
+    tag: "Польза",
+    text: "Лук содержит кверцетин — мощный антиоксидант, который укрепляет иммунитет и борется с воспалениями. Особенно полезен в сыром виде. Добавляйте в салаты, маринады и закуски для максимальной пользы.",
+  },
+  {
+    id: 5, emoji: "🥒", title: "Огурцы: освежают и очищают",
+    tag: "Польза",
+    text: "Огурцы на 95% состоят из воды и отлично утоляют жажду в жаркий день. Они содержат калий, который полезен для сердца, и клетчатку для нормальной работы кишечника. Лучше есть со шкуркой — в ней больше всего питательных веществ.",
+  },
+  {
+    id: 6, emoji: "🥔", title: "Картофель: как варить с пользой",
+    tag: "Приготовление",
+    text: "Варите картофель в мундире — так сохраняется максимум витамина C и калия. Не оставляйте очищенный картофель в воде надолго: витамины вымываются. Молодой картофель особенно полезен — в нём много антиоксидантов.",
+  },
+];
+
+const NAV_LINKS = ["Каталог", "Доставка", "О сервисе", "Советы", "Отзывы", "FAQ", "Контакты"];
 
 type CartItem = { id: number; name: string; price: number; emoji: string; qty: number; weightKg: number; minWeightG?: number; pricePerKg?: number; grams?: number };
 
@@ -251,7 +284,7 @@ export default function Index() {
   const scrollTo = (section: string) => {
     const map: Record<string, string> = {
       "Каталог": "catalog", "Доставка": "delivery", "О сервисе": "about",
-      "Отзывы": "reviews", "FAQ": "faq", "Контакты": "contacts"
+      "Советы": "tips", "Отзывы": "reviews", "FAQ": "faq", "Контакты": "contacts"
     };
     const el = document.getElementById(map[section]);
     if (el) el.scrollIntoView({ behavior: "smooth" });
@@ -690,6 +723,29 @@ export default function Index() {
                 </div>
               ))}
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* TIPS */}
+      <section id="tips" className="py-20 bg-white">
+        <div className="container">
+          <div className="text-center mb-12">
+            <h2 className="font-heading text-5xl font-bold text-veggie-green mb-3">ПОЛЕЗНЫЕ СОВЕТЫ</h2>
+            <div className="section-divider w-24 mx-auto mb-4" />
+            <p className="text-muted-foreground text-lg">Как выбирать, хранить и готовить с пользой для здоровья</p>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {TIPS.map(tip => (
+              <div key={tip.id} className="card-hover bg-background rounded-2xl p-6 border border-border shadow-sm flex flex-col gap-3">
+                <div className="flex items-center gap-3">
+                  <span className="text-4xl">{tip.emoji}</span>
+                  <span className="text-xs font-semibold bg-veggie-lime/20 text-veggie-green px-3 py-1 rounded-full">{tip.tag}</span>
+                </div>
+                <h3 className="font-heading text-lg font-bold text-foreground">{tip.title}</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">{tip.text}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
