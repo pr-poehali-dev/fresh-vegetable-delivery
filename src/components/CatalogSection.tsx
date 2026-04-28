@@ -106,7 +106,7 @@ export default function CatalogSection({
                       : <span className="text-6xl">{product.emoji}</span>
                     }
                     {product.badge && (
-                      <span className={`absolute top-3 right-3 text-xs px-2 py-1 rounded-full font-semibold ${product.badge === 'Нет' ? 'bg-red-500/20 text-red-400 border border-red-500/40' : product.badge === 'Органик' ? 'bg-veggie-lime/20 text-veggie-green border border-veggie-lime/40' : product.badge === 'Хит' ? 'bg-veggie-orange/20 text-veggie-orange border border-veggie-orange/40' : 'tag-seasonal'}`}>
+                      <span className={`absolute top-3 right-3 text-xs px-2 py-1 rounded-full font-semibold ${product.badge === 'Нет' || product.badge === 'Нет в наличии' ? 'bg-red-500/20 text-red-400 border border-red-500/40' : product.badge === 'Органик' ? 'bg-veggie-lime/20 text-veggie-green border border-veggie-lime/40' : product.badge === 'Хит' ? 'bg-veggie-orange/20 text-veggie-orange border border-veggie-orange/40' : 'tag-seasonal'}`}>
                         {product.badge}
                       </span>
                     )}

@@ -27,7 +27,7 @@ const VEGETABLES = [
 
 const FRUITS = [
   { id: 101, name: "Яблоки Голден", price: 200, unit: "кг", season: "осень", type: "яблоки", emoji: "🍎", badge: null, weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/e46b761d-297e-44b6-8825-2132c0ceb0b8.jpg" },
-  { id: 102, name: "Яблоки Антоновка", price: 90, unit: "кг", season: "осень", type: "яблоки", emoji: "🍏", badge: "Нет", weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/60cc751a-7ba8-41ee-b44b-b2768970c560.jpg" },
+  { id: 102, name: "Яблоки Антоновка", price: 90, unit: "кг", season: "осень", type: "яблоки", emoji: "🍏", badge: "Нет в наличии", weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/60cc751a-7ba8-41ee-b44b-b2768970c560.jpg" },
   { id: 109, name: "Яблоки Галла", price: 240, unit: "кг", season: "осень", type: "яблоки", emoji: "🍎", badge: null, weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/64b62730-8841-40cd-9717-456d2318cca4.jpg" },
   { id: 110, name: "Яблоки Кехура", price: 150, unit: "кг", season: "осень", type: "яблоки", emoji: "🍏", badge: null, weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/8352f768-a88f-4157-8a5f-f60a08b6bf02.jpg" },
   { id: 111, name: "Яблоки Грени Смит", price: 180, unit: "кг", season: "осень", type: "яблоки", emoji: "🍏", badge: null, weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/49188ad8-ab1d-4578-9134-0ff9200e2a59.jpg" },
