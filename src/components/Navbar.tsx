@@ -119,25 +119,18 @@ export default function Navbar({
         </div>
       )}
 
-      {/* TOP BAR */}
-      <div className="fixed top-0 left-0 right-0 z-40 bg-veggie-lime">
-        <div className="container flex items-center justify-center gap-3 py-2">
-          <span className="text-veggie-dark text-sm font-medium">Свежие овощи и фрукты с доставкой по Уфе</span>
-          <button
-            onClick={() => scrollTo("Контакты")}
-            className="bg-veggie-dark text-veggie-lime text-xs font-bold px-4 py-1.5 rounded-full hover:bg-veggie-green transition-colors whitespace-nowrap"
-          >
-            Оставить заявку
-          </button>
-        </div>
-      </div>
-
       {/* NAVBAR */}
-      <nav className="fixed top-[36px] left-0 right-0 z-50 bg-veggie-dark/95 backdrop-blur-md border-b border-veggie-green/30">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-veggie-dark/95 backdrop-blur-md border-b border-veggie-green/30">
         <div className="container flex items-center justify-between h-16">
           <div className="flex items-center gap-2">
             <img src="https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/fe802481-ab1d-4857-a0a0-f911323e758e.jpeg" alt="Филини" className="h-10 w-10 rounded-xl object-cover" />
             <span className="font-heading text-xl font-bold text-white tracking-wide">ФИЛИНИ<span className="text-veggie-lime hidden lg:inline"> ФЕРМЕРСКИЕ ПРОДУКТЫ</span></span>
+            <button
+              onClick={() => scrollTo("Контакты")}
+              className="hidden md:flex ml-3 bg-veggie-lime text-veggie-dark text-xs font-bold px-4 py-1.5 rounded-full hover:bg-white transition-colors whitespace-nowrap"
+            >
+              Оставить заявку
+            </button>
           </div>
 
           <div className="hidden md:flex items-center gap-3 xl:gap-6">
