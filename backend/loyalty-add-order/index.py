@@ -149,10 +149,33 @@ def handler(event: dict, context) -> dict:
             return {'statusCode': 400, 'headers': CORS, 'body': json.dumps({'error': 'order_id и корректный status обязательны'})}
         conn = psycopg2.connect(os.environ['DATABASE_URL'])
         cur = conn.cursor()
-        cur.execute(f"UPDATE {SCHEMA}.orders SET status=%s WHERE id=%s RETURNING id", (new_status, order_id))
-        if not cur.fetchone():
+        cur.execute(f"SELECT id, user_id, status FROM {SCHEMA}.orders WHERE id=%s", (order_id,))
+        order_row = cur.fetchone()
+        if not order_row:
             cur.close(); conn.close()
             return {'statusCode': 404, 'headers': CORS, 'body': json.dumps({'error': 'Заказ не найден'})}
+        _, order_user_id, old_status = order_row
+
+        cur.execute(f"UPDATE {SCHEMA}.orders SET status=%s WHERE id=%s", (new_status, order_id))
+
+        # Возврат баллов при отмене (только если раньше не был отменён)
+        if new_status == 'cancelled' and old_status != 'cancelled' and order_user_id:
+            cur.execute(
+                f"SELECT ABS(points) FROM {SCHEMA}.loyalty_transactions WHERE user_id=%s AND reason=%s",
+                (order_user_id, f'Списание баллов за заказ #{order_id}')
+            )
+            spent_row = cur.fetchone()
+            if spent_row and spent_row[0] > 0:
+                refund = spent_row[0]
+                cur.execute(
+                    f"UPDATE {SCHEMA}.users SET points = points + %s WHERE id=%s",
+                    (refund, order_user_id)
+                )
+                cur.execute(
+                    f"INSERT INTO {SCHEMA}.loyalty_transactions (user_id, points, reason) VALUES (%s, %s, %s)",
+                    (order_user_id, refund, f'Возврат баллов за отменённый заказ #{order_id}')
+                )
+
         conn.commit(); cur.close(); conn.close()
         return {'statusCode': 200, 'headers': CORS, 'body': json.dumps({'ok': True})}
 
