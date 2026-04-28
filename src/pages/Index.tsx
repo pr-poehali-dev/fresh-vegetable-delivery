@@ -408,7 +408,9 @@ export default function Index() {
             <div className="bg-white/5 border border-white/10 rounded-xl p-3 mb-3">
               <p className="text-white/60 text-xs leading-relaxed">
                 💡 Бонусы зачисляются <span className="text-veggie-lime font-medium">1-го числа каждого месяца</span>:<br />
-                от 1 ₽ до 10 000 ₽ — <span className="text-veggie-lime font-medium">1%</span> от суммы заказов
+                от 1 ₽ до 10 000 ₽ — <span className="text-veggie-lime font-medium">1%</span><br />
+                от 10 000 ₽ до 20 000 ₽ — <span className="text-veggie-lime font-medium">3%</span><br />
+                от 20 000 ₽ — <span className="text-veggie-lime font-medium">10%</span>
               </p>
             </div>
             {!user.is_first_order_done ? (
