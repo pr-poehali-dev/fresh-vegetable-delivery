@@ -103,6 +103,8 @@ export default function Index() {
 
   useEffect(() => {
     if (!user) return;
+    if (!orderName && user.name) setOrderName(user.name);
+    if (!orderPhone && user.phone) setOrderPhone(user.phone);
     fetch(`https://functions.poehali.dev/d8e8eac1-b7f3-41b8-b041-69e6d80a1c03?user_id=${user.id}`)
       .then(r => r.ok ? r.json() : null)
       .then(data => {
