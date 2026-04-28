@@ -289,18 +289,9 @@ def handler(event: dict, context) -> dict:
                     (user_id, -actual_used, f'Списание баллов за заказ #{order_id}')
                 )
 
-            if not is_first_order_done:
-                bonus = BONUS_FIRST_ORDER
-                points = points + bonus
-                is_first_order_done = True
-                cur.execute(
-                    f"INSERT INTO {SCHEMA}.loyalty_transactions (user_id, points, reason) VALUES (%s, %s, %s)",
-                    (user_id, bonus, 'Бонус за первый заказ')
-                )
-
             cur.execute(
-                f"UPDATE {SCHEMA}.users SET points=%s, is_first_order_done=%s WHERE id=%s",
-                (points, is_first_order_done, user_id)
+                f"UPDATE {SCHEMA}.users SET points=%s WHERE id=%s",
+                (points, user_id)
             )
 
     conn.commit()
