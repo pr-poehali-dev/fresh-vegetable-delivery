@@ -289,12 +289,23 @@ export default function Index() {
                 <p className="text-white/50 text-sm">1 балл = 1 ₽ скидки</p>
               </div>
             </div>
-            <div className="bg-white/5 border border-white/10 rounded-xl p-3 mb-4">
+            <div className="bg-white/5 border border-white/10 rounded-xl p-3 mb-3">
               <p className="text-white/60 text-xs leading-relaxed">
                 💡 Бонусы зачисляются <span className="text-veggie-lime font-medium">1-го числа каждого месяца</span>:<br />
                 от 1 ₽ до 10 000 ₽ — <span className="text-veggie-lime font-medium">1%</span> от суммы заказов
               </p>
             </div>
+            {!user.is_first_order_done ? (
+              <div className="bg-orange-500/10 border border-orange-500/30 rounded-xl p-3 mb-4 flex items-center gap-2">
+                <span>🔒</span>
+                <p className="text-orange-400 text-xs">Баллы можно тратить после первого заказа</p>
+              </div>
+            ) : (
+              <div className="bg-veggie-lime/10 border border-veggie-lime/20 rounded-xl p-3 mb-4 flex items-center gap-2">
+                <span>🔓</span>
+                <p className="text-veggie-lime text-xs">Баллы разблокированы — можно тратить при заказе</p>
+              </div>
+            )}
 
 
             <div className="flex bg-white/5 rounded-xl p-1 mb-3 gap-1">
