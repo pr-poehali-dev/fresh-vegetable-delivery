@@ -2,6 +2,8 @@ import json
 import os
 import random
 import smtplib
+import urllib.request
+import urllib.parse
 from datetime import datetime, timedelta
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -42,26 +44,23 @@ def handler(event: dict, context) -> dict:
     cur.close()
     conn.close()
 
-    smtp_user = 'filini_ufa@mail.ru'
-    smtp_password = os.environ['SMTP_PASSWORD']
+    sms_sent = False
+    smsc_login = os.environ.get('SMSC_LOGIN', '')
+    smsc_password = os.environ.get('SMSC_PASSWORD', '')
 
-    msg = MIMEMultipart('alternative')
-    msg['Subject'] = f'Код подтверждения — {code}'
-    msg['From'] = smtp_user
-    msg['To'] = smtp_user
+    if smsc_login and smsc_password:
+        sms_text = f'Ваш код входа в Филини: {code}. Действителен 10 минут.'
+        params = urllib.parse.urlencode({
+            'login': smsc_login,
+            'psw': smsc_password,
+            'phones': phone,
+            'mes': sms_text,
+            'fmt': 3,
+            'charset': 'utf-8',
+        })
+        req = urllib.request.urlopen(f'https://smsc.ru/sys/send.php?{params}', timeout=10)
+        resp = json.loads(req.read().decode('utf-8'))
+        sms_sent = 'error' not in resp
 
-    html = f"""
-    <div style="font-family: Arial, sans-serif; max-width: 400px; padding: 24px; background: #f9f9f9; border-radius: 12px;">
-        <h2 style="color: #1a6b3c;">Код подтверждения</h2>
-        <p>Номер телефона: <b>{phone}</b></p>
-        <p style="font-size: 32px; font-weight: bold; color: #1a6b3c; letter-spacing: 6px;">{code}</p>
-        <p style="color: #999; font-size: 12px;">Код действителен 10 минут</p>
-    </div>
-    """
-    msg.attach(MIMEText(html, 'html'))
-
-    with smtplib.SMTP_SSL('smtp.mail.ru', 465) as server:
-        server.login(smtp_user, smtp_password)
-        server.sendmail(smtp_user, smtp_user, msg.as_string())
-
-    return {'statusCode': 200, 'headers': CORS, 'body': json.dumps({'ok': True, 'dev_code': code})}
+    dev_code = code if not sms_sent else None
+    return {'statusCode': 200, 'headers': CORS, 'body': json.dumps({'ok': True, 'dev_code': dev_code})}
