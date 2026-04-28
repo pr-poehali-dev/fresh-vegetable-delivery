@@ -89,7 +89,7 @@ const FAQ_ITEMS = [
 
 const NAV_LINKS = ["Каталог", "Доставка", "О сервисе", "Отзывы", "FAQ", "Контакты"];
 
-type CartItem = { id: number; name: string; price: number; emoji: string; qty: number; weightKg: number };
+type CartItem = { id: number; name: string; price: number; emoji: string; qty: number; weightKg: number; minWeightG?: number; pricePerKg?: number; grams?: number };
 
 export default function Index() {
   const [activeSection, setActiveSection] = useState<"vegetables" | "fruits" | "berries" | "juices" | "mushrooms" | "greens">("vegetables");
@@ -222,13 +222,27 @@ export default function Index() {
     setCart(prev => {
       const existing = prev.find(i => i.id === product.id);
       if (existing) return prev.map(i => i.id === product.id ? { ...i, qty: i.qty + 1 } : i);
-      return [...prev, { id: product.id, name: product.name, price: product.price, emoji: product.emoji, qty: 1, weightKg: product.weightKg }];
+      const isGram = !!product.minWeightG;
+      return [...prev, {
+        id: product.id, name: product.name,
+        price: isGram ? Math.round((product.pricePerKg ?? product.price) * (product.minWeightG! / 1000)) : product.price,
+        emoji: product.emoji, qty: 1, weightKg: product.weightKg,
+        minWeightG: product.minWeightG, pricePerKg: product.pricePerKg ?? (isGram ? product.price : undefined),
+        grams: isGram ? product.minWeightG : undefined,
+      }];
     });
   };
 
   const removeFromCart = (id: number) => setCart(prev => prev.filter(i => i.id !== id));
   const updateQty = (id: number, delta: number) => {
     setCart(prev => prev.map(i => i.id === id ? { ...i, qty: Math.max(0, i.qty + delta) } : i).filter(i => i.qty > 0));
+  };
+  const updateGrams = (id: number, grams: number) => {
+    setCart(prev => prev.map(i => {
+      if (i.id !== id || !i.pricePerKg) return i;
+      const g = Math.max(i.minWeightG ?? 100, grams);
+      return { ...i, grams: g, price: Math.round(i.pricePerKg * g / 1000), weightKg: g / 1000 };
+    }));
   };
 
   const scrollTo = (section: string) => {
