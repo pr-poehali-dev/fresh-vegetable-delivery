@@ -84,10 +84,10 @@ export default function Index() {
   const [transactions, setTransactions] = useState<Array<{id: number; points: number; reason: string; created_at: string}>>([]);
   const [ordersLoading, setOrdersLoading] = useState(false);
   const [profileTab, setProfileTab] = useState<'orders' | 'points'>('orders');
-  const [orderName, setOrderName] = useState('');
-  const [orderPhone, setOrderPhone] = useState('');
-  const [orderAddress, setOrderAddress] = useState('');
-  const [orderFlat, setOrderFlat] = useState('');
+  const [orderName, setOrderName] = useState(() => localStorage.getItem('order_name') || '');
+  const [orderPhone, setOrderPhone] = useState(() => localStorage.getItem('order_phone') || '');
+  const [orderAddress, setOrderAddress] = useState(() => localStorage.getItem('order_address') || '');
+  const [orderFlat, setOrderFlat] = useState(() => localStorage.getItem('order_flat') || '');
   const [orderTime, setOrderTime] = useState<'morning' | 'evening'>('morning');
   const [orderComment, setOrderComment] = useState('');
   const [orderStatus, setOrderStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
@@ -117,6 +117,11 @@ export default function Index() {
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
+
+  useEffect(() => { localStorage.setItem('order_name', orderName); }, [orderName]);
+  useEffect(() => { localStorage.setItem('order_phone', orderPhone); }, [orderPhone]);
+  useEffect(() => { localStorage.setItem('order_address', orderAddress); }, [orderAddress]);
+  useEffect(() => { localStorage.setItem('order_flat', orderFlat); }, [orderFlat]);
 
   const handleInstall = async () => {
     if (!installPrompt) return;
