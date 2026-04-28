@@ -391,11 +391,33 @@ export default function Index() {
               <h2 className="font-heading text-xl font-bold text-white">Мой профиль</h2>
               <button onClick={() => setProfileOpen(false)} className="text-white/40 hover:text-white transition-colors"><Icon name="X" size={20} /></button>
             </div>
-            <div className="flex items-center gap-3 mb-5">
+            <div className="flex items-center gap-3 mb-4">
               <div className="w-12 h-12 rounded-full bg-veggie-lime/20 flex items-center justify-center text-2xl">👤</div>
               <div>
                 <p className="text-white font-semibold">{user.name}</p>
                 <p className="text-white/50 text-sm">{user.phone}</p>
+              </div>
+            </div>
+            <div className="flex flex-col gap-2 mb-4">
+              <div>
+                <label className="text-white/50 text-xs mb-1 block">Имя для заказа</label>
+                <input
+                  type="text"
+                  value={orderName}
+                  onChange={e => { setOrderName(e.target.value); localStorage.setItem('order_name', e.target.value); }}
+                  placeholder="Как к вам обращаться"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm text-white placeholder-white/30 focus:outline-none focus:border-veggie-green transition-colors"
+                />
+              </div>
+              <div>
+                <label className="text-white/50 text-xs mb-1 block">Адрес доставки</label>
+                <input
+                  type="text"
+                  value={orderAddress}
+                  onChange={e => { setOrderAddress(e.target.value); localStorage.setItem('order_address', e.target.value); }}
+                  placeholder="Улица, дом"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm text-white placeholder-white/30 focus:outline-none focus:border-veggie-green transition-colors"
+                />
               </div>
             </div>
             <div className="bg-veggie-lime/10 border border-veggie-lime/30 rounded-xl p-4 mb-3 flex items-center gap-4">
