@@ -120,7 +120,7 @@ export default function Navbar({
       )}
 
       {/* TOP BAR */}
-      <div className="fixed top-0 left-0 right-0 z-[51] bg-veggie-lime">
+      <div className="fixed top-0 left-0 right-0 z-40 bg-veggie-lime">
         <div className="container flex items-center justify-center gap-3 py-2">
           <span className="text-veggie-dark text-sm font-medium">Свежие овощи и фрукты с доставкой по Уфе</span>
           <button
