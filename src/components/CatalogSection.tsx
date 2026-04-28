@@ -119,7 +119,9 @@ export default function CatalogSection({
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="font-heading text-xl font-bold text-veggie-green">{product.pricePerKg ? `${product.pricePerKg} ₽/кг` : `${product.price} ₽/${product.unit}`}</span>
-                      {inCart ? (
+                      {product.badge === 'Нет в наличии' || product.badge === 'Нет' ? (
+                        <span className="text-xs text-red-400 font-medium">Нет</span>
+                      ) : inCart ? (
                         <div className="flex items-center gap-2">
                           <button onClick={() => updateQty(product.id, -1)} className="w-7 h-7 rounded-full bg-veggie-green/10 hover:bg-veggie-green/20 text-veggie-green font-bold flex items-center justify-center transition-colors">
                             <Icon name="Minus" size={12} />
