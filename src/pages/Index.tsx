@@ -99,6 +99,19 @@ export default function Index() {
     return () => window.removeEventListener('beforeinstallprompt', handler);
   }, []);
 
+  useEffect(() => {
+    if (!user) return;
+    fetch(`https://functions.poehali.dev/d8e8eac1-b7f3-41b8-b041-69e6d80a1c03?user_id=${user.id}`)
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        if (!data) return;
+        const updated = { ...user, points: data.points ?? user.points, is_first_order_done: data.is_first_order_done ?? user.is_first_order_done };
+        setUser(updated);
+        localStorage.setItem('user', JSON.stringify(updated));
+      })
+      .catch(() => {});
+  }, []);
+
   const handleInstall = async () => {
     if (!installPrompt) return;
     const prompt = installPrompt as Event & { prompt: () => void; userChoice: Promise<{ outcome: string }> };
