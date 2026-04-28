@@ -3,7 +3,7 @@ import Icon from "@/components/ui/icon";
 type Product = {
   id: number; name: string; price: number; unit: string; season: string;
   type: string; emoji: string; badge: string | null; weight: string; weightKg: number;
-  image?: string;
+  image?: string; minWeightG?: number; pricePerKg?: number;
 };
 
 type CartItem = { id: number; name: string; price: number; emoji: string; qty: number; weightKg: number };
@@ -11,8 +11,8 @@ type CartItem = { id: number; name: string; price: number; emoji: string; qty: n
 interface CatalogSectionProps {
   search: string;
   setSearch: (v: string) => void;
-  activeSection: "vegetables" | "fruits";
-  setActiveSection: (v: "vegetables" | "fruits") => void;
+  activeSection: "vegetables" | "fruits" | "berries" | "juices" | "mushrooms" | "greens";
+  setActiveSection: (v: "vegetables" | "fruits" | "berries" | "juices" | "mushrooms" | "greens") => void;
   activeType: string;
   setActiveType: (v: string) => void;
   currentTypes: string[];
@@ -54,17 +54,22 @@ export default function CatalogSection({
         </div>
 
         <div className="flex justify-center mb-8">
-          <div className="flex bg-muted rounded-2xl p-1 gap-1">
-            <button
-              onClick={() => { setActiveSection("vegetables"); setActiveType("все"); }}
-              className={`px-6 py-3 rounded-xl font-heading font-semibold text-base transition-all ${activeSection === "vegetables" ? "bg-veggie-green text-white shadow" : "text-muted-foreground hover:text-veggie-green"}`}>
-              🥬 Овощи
-            </button>
-            <button
-              onClick={() => { setActiveSection("fruits"); setActiveType("все"); }}
-              className={`px-6 py-3 rounded-xl font-heading font-semibold text-base transition-all ${activeSection === "fruits" ? "bg-veggie-green text-white shadow" : "text-muted-foreground hover:text-veggie-green"}`}>
-              🍎 Фрукты
-            </button>
+          <div className="flex flex-wrap justify-center bg-muted rounded-2xl p-1 gap-1">
+            {([
+              { key: "vegetables", label: "🥬 Овощи" },
+              { key: "fruits", label: "🍎 Фрукты" },
+              { key: "berries", label: "🍓 Ягоды" },
+              { key: "juices", label: "🧃 Соки" },
+              { key: "mushrooms", label: "🍄 Грибы" },
+              { key: "greens", label: "🌿 Зелень" },
+            ] as const).map(({ key, label }) => (
+              <button
+                key={key}
+                onClick={() => { setActiveSection(key); setActiveType("все"); }}
+                className={`px-4 py-2.5 rounded-xl font-heading font-semibold text-sm transition-all ${activeSection === key ? "bg-veggie-green text-white shadow" : "text-muted-foreground hover:text-veggie-green"}`}>
+                {label}
+              </button>
+            ))}
           </div>
         </div>
 
@@ -110,9 +115,10 @@ export default function CatalogSection({
                     <h3 className="font-semibold text-foreground mb-1 leading-tight">{product.name}</h3>
                     <div className="flex items-center gap-2 mb-3">
                       <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-full">{product.weight}</span>
+                      {product.minWeightG && <span className="text-xs text-veggie-green bg-veggie-lime/10 px-2 py-0.5 rounded-full">мин. {product.minWeightG}г</span>}
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="font-heading text-xl font-bold text-veggie-green">{product.price} ₽/{product.unit}</span>
+                      <span className="font-heading text-xl font-bold text-veggie-green">{product.pricePerKg ? `${product.pricePerKg} ₽/кг` : `${product.price} ₽/${product.unit}`}</span>
                       {inCart ? (
                         <div className="flex items-center gap-2">
                           <button onClick={() => updateQty(product.id, -1)} className="w-7 h-7 rounded-full bg-veggie-green/10 hover:bg-veggie-green/20 text-veggie-green font-bold flex items-center justify-center transition-colors">

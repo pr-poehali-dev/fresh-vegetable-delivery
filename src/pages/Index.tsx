@@ -29,17 +29,49 @@ const FRUITS = [
   { id: 110, name: "Яблоки Кехура", price: 150, unit: "кг", season: "осень", type: "яблоки", emoji: "🍏", badge: null, weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/8352f768-a88f-4157-8a5f-f60a08b6bf02.jpg" },
   { id: 111, name: "Яблоки Грени Смит", price: 180, unit: "кг", season: "осень", type: "яблоки", emoji: "🍏", badge: null, weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/49188ad8-ab1d-4578-9134-0ff9200e2a59.jpg" },
   { id: 112, name: "Яблоки Семеринка", price: 220, unit: "кг", season: "осень", type: "яблоки", emoji: "🍎", badge: null, weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/783479ba-7a96-4e43-8be6-1ea2f4aa6796.jpg" },
-  { id: 103, name: "Груши Конференц", price: 180, unit: "кг", season: "осень", type: "груши", emoji: "🍐", badge: "Хит", weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/38b75f43-6100-41cd-8bfb-34db957bbd2b.jpg" },
+  { id: 103, name: "Груша Конференц", price: 370, unit: "кг", season: "осень", type: "груши", emoji: "🍐", badge: "Хит", weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/38b75f43-6100-41cd-8bfb-34db957bbd2b.jpg" },
   { id: 113, name: "Груша Аббат", price: 280, unit: "кг", season: "осень", type: "груши", emoji: "🍐", badge: null, weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/9321f6a1-b081-4cfe-94a7-02c21a918024.jpg" },
   { id: 114, name: "Груша Дюшес Аргентина", price: 220, unit: "кг", season: "осень", type: "груши", emoji: "🍐", badge: null, weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/3a04e590-17d0-4141-bdc9-64348e3e9ee9.jpg" },
   { id: 115, name: "Мандарин Турция", price: 220, unit: "кг", season: "зима", type: "цитрусы", emoji: "🍊", badge: null, weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/a9e42def-2ecd-476b-a668-8cfae87eb129.jpg" },
   { id: 106, name: "Сливы синие", price: 200, unit: "кг", season: "лето", type: "сливы", emoji: "🍑", badge: null, weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/0a031ca2-f15a-4f25-997c-114466e7e4bc.jpg" },
+  { id: 120, name: "Виноград зелёный", price: 400, unit: "кг", season: "лето", type: "виноград", emoji: "🍇", badge: null, weight: "1кг", weightKg: 1, image: "" },
+  { id: 121, name: "Виноград Кишмиш", price: 500, unit: "кг", season: "лето", type: "виноград", emoji: "🍇", badge: "Хит", weight: "1кг", weightKg: 1, image: "" },
+  { id: 122, name: "Киви", price: 240, unit: "кг", season: "зима", type: "экзотика", emoji: "🥝", badge: null, weight: "1кг", weightKg: 1, image: "" },
+  { id: 123, name: "Бананы", price: 200, unit: "кг", season: "всесезонно", type: "экзотика", emoji: "🍌", badge: null, weight: "1кг", weightKg: 1, image: "" },
+  { id: 124, name: "Ананас", price: 700, unit: "шт", season: "всесезонно", type: "экзотика", emoji: "🍍", badge: null, weight: "1шт", weightKg: 1, image: "" },
+  { id: 125, name: "Лимон", price: 350, unit: "кг", season: "всесезонно", type: "цитрусы", emoji: "🍋", badge: null, weight: "100г", weightKg: 0.1, minWeightG: 100, pricePerKg: 350, image: "" },
+  { id: 126, name: "Чеснок", price: 280, unit: "кг", season: "осень", type: "чеснок", emoji: "🧄", badge: null, weight: "100г", weightKg: 0.1, minWeightG: 100, pricePerKg: 280, image: "" },
+  { id: 127, name: "Имбирь", price: 500, unit: "кг", season: "всесезонно", type: "специи", emoji: "🫚", badge: null, weight: "100г", weightKg: 0.1, minWeightG: 100, pricePerKg: 500, image: "" },
 ];
 
-const VEG_TYPES = ["все", "картофель", "капуста", "корнеплоды", "лук", "томаты", "огурцы"];
-const FRUIT_TYPES = ["все", "яблоки", "груши", "цитрусы", "сливы"];
+const BERRIES = [
+  { id: 201, name: "Клубника", price: 380, unit: "кг", season: "лето", type: "ягоды", emoji: "🍓", badge: null, weight: "1кг", weightKg: 1, image: "" },
+  { id: 202, name: "Арбуз", price: 100, unit: "кг", season: "лето", type: "ягоды", emoji: "🍉", badge: null, weight: "1кг", weightKg: 1, image: "" },
+];
 
-const PRODUCTS = [...VEGETABLES, ...FRUITS];
+const JUICES = [
+  { id: 301, name: "Гранатовый сок", price: 150, unit: "л", season: "всесезонно", type: "соки", emoji: "🧃", badge: null, weight: "1л", weightKg: 1, image: "" },
+];
+
+const MUSHROOMS = [
+  { id: 401, name: "Шампиньоны", price: 400, unit: "кг", season: "всесезонно", type: "грибы", emoji: "🍄", badge: null, weight: "500г", weightKg: 0.5, minWeightG: 500, pricePerKg: 400, image: "" },
+];
+
+const GREENS = [
+  { id: 501, name: "Лук зелёный", price: 100, unit: "150г", season: "всесезонно", type: "зелень", emoji: "🌿", badge: null, weight: "150г", weightKg: 0.15, image: "" },
+  { id: 502, name: "Укроп", price: 100, unit: "150г", season: "всесезонно", type: "зелень", emoji: "🌿", badge: null, weight: "150г", weightKg: 0.15, image: "" },
+  { id: 503, name: "Петрушка", price: 100, unit: "150г", season: "всесезонно", type: "зелень", emoji: "🌿", badge: null, weight: "150г", weightKg: 0.15, image: "" },
+  { id: 504, name: "Редиска", price: 200, unit: "кг", season: "лето", type: "зелень", emoji: "🌰", badge: null, weight: "1кг", weightKg: 1, image: "" },
+];
+
+const VEG_TYPES = ["все", "картофель", "капуста", "корнеплоды", "лук", "томаты", "огурцы", "чеснок", "специи"];
+const FRUIT_TYPES = ["все", "яблоки", "груши", "цитрусы", "сливы", "виноград", "экзотика"];
+const BERRY_TYPES = ["все", "ягоды"];
+const JUICE_TYPES = ["все", "соки"];
+const MUSHROOM_TYPES = ["все", "грибы"];
+const GREEN_TYPES = ["все", "зелень"];
+
+const PRODUCTS = [...VEGETABLES, ...FRUITS, ...BERRIES, ...JUICES, ...MUSHROOMS, ...GREENS];
 
 const REVIEWS = [
   { id: 1, name: "Анна К.", text: "Уже третий месяц заказываю каждую неделю! Овощи всегда свежайшие, как с грядки. Брокколи и шпинат — просто объедение!", rating: 5, avatar: "👩‍🦰", location: "Уфа" },
@@ -60,7 +92,7 @@ const NAV_LINKS = ["Каталог", "Доставка", "О сервисе", "�
 type CartItem = { id: number; name: string; price: number; emoji: string; qty: number; weightKg: number };
 
 export default function Index() {
-  const [activeSection, setActiveSection] = useState<"vegetables" | "fruits">("vegetables");
+  const [activeSection, setActiveSection] = useState<"vegetables" | "fruits" | "berries" | "juices" | "mushrooms" | "greens">("vegetables");
   const [activeType, setActiveType] = useState("все");
   const [search, setSearch] = useState("");
   const [cart, setCart] = useState<CartItem[]>(() => {
@@ -157,8 +189,24 @@ export default function Index() {
   };
 
   const isSearching = search.trim().length > 0;
-  const currentProducts = isSearching ? PRODUCTS : (activeSection === "vegetables" ? VEGETABLES : FRUITS);
-  const currentTypes = activeSection === "vegetables" ? VEG_TYPES : FRUIT_TYPES;
+  const SECTION_MAP = {
+    vegetables: VEGETABLES,
+    fruits: FRUITS,
+    berries: BERRIES,
+    juices: JUICES,
+    mushrooms: MUSHROOMS,
+    greens: GREENS,
+  };
+  const TYPES_MAP = {
+    vegetables: VEG_TYPES,
+    fruits: FRUIT_TYPES,
+    berries: BERRY_TYPES,
+    juices: JUICE_TYPES,
+    mushrooms: MUSHROOM_TYPES,
+    greens: GREEN_TYPES,
+  };
+  const currentProducts = isSearching ? PRODUCTS : SECTION_MAP[activeSection];
+  const currentTypes = TYPES_MAP[activeSection];
   const filteredProducts = currentProducts.filter(p => {
     const matchesType = isSearching || activeType === "все" || p.type === activeType;
     const matchesSearch = !isSearching || p.name.toLowerCase().includes(search.toLowerCase());
