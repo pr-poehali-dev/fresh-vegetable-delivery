@@ -295,12 +295,7 @@ export default function Index() {
                 от 1 ₽ до 10 000 ₽ — <span className="text-veggie-lime font-medium">1%</span> от суммы заказов
               </p>
             </div>
-            {!user.is_first_order_done && (
-              <div className="bg-veggie-orange/10 border border-veggie-orange/30 rounded-xl p-3 mb-4 flex items-center gap-2">
-                <span>🎁</span>
-                <p className="text-veggie-orange text-sm font-medium">+200 баллов за первый заказ!</p>
-              </div>
-            )}
+
 
             <div className="flex bg-white/5 rounded-xl p-1 mb-3 gap-1">
               <button onClick={() => setProfileTab('orders')} className={`flex-1 py-1.5 rounded-lg text-xs font-semibold transition-all ${profileTab === 'orders' ? 'bg-veggie-green text-white' : 'text-white/50 hover:text-white'}`}>Заказы</button>

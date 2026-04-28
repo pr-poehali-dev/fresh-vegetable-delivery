@@ -91,7 +91,7 @@ export default function AuthModal({ onClose, onAuth }: { onClose: () => void; on
           <span className="text-2xl">🎁</span>
           <div>
             <p className="text-veggie-lime font-semibold text-sm">200 баллов за регистрацию</p>
-            <p className="text-white/50 text-xs">+ 200 баллов за первый заказ. 1 балл = 1 ₽</p>
+            <p className="text-white/50 text-xs">1 балл = 1 ₽ скидки</p>
           </div>
         </div>
       </div>

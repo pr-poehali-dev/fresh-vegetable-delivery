@@ -89,10 +89,7 @@ export default function CartDrawer({
               <p className="text-muted-foreground text-sm mt-2">Мы свяжемся с вами в ближайшее время</p>
               {user && (
                 <div className="mt-4 bg-veggie-lime/10 border border-veggie-lime/30 rounded-xl p-3">
-                  {user.is_first_order_done && (
-                    <p className="text-veggie-green font-semibold text-sm">🎉 +200 баллов за первый заказ начислены!</p>
-                  )}
-                  <p className="text-muted-foreground text-xs mt-1">Ваш баланс: <b>{user.points} баллов</b></p>
+                  <p className="text-muted-foreground text-xs">Ваш баланс: <b>{user.points} баллов</b></p>
                 </div>
               )}
               <button onClick={() => { setOrderStatus('idle'); onClose(); }} className="mt-5 w-full btn-accent py-3 rounded-xl font-semibold">
