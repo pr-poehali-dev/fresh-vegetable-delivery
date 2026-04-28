@@ -63,7 +63,9 @@ export default function Index() {
   const [activeSection, setActiveSection] = useState<"vegetables" | "fruits">("vegetables");
   const [activeType, setActiveType] = useState("все");
   const [search, setSearch] = useState("");
-  const [cart, setCart] = useState<CartItem[]>([]);
+  const [cart, setCart] = useState<CartItem[]>(() => {
+    try { return JSON.parse(localStorage.getItem('cart') || '[]'); } catch { return []; }
+  });
   const [cartOpen, setCartOpen] = useState(false);
   const [faqOpen, setFaqOpen] = useState<number | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -111,6 +113,10 @@ export default function Index() {
       })
       .catch(() => {});
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }, [cart]);
 
   const handleInstall = async () => {
     if (!installPrompt) return;
