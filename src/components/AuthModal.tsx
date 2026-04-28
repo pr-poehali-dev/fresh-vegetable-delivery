@@ -7,7 +7,7 @@ const API_VERIFY_CODE = "https://functions.poehali.dev/49670255-1338-4a0e-a466-5
 export type User = { id: number; phone: string; name: string; points: number; is_first_order_done: boolean; is_new?: boolean };
 
 export default function AuthModal({ onClose, onAuth }: { onClose: () => void; onAuth: (user: User) => void }) {
-  const [step, setStep] = useState<'phone' | 'code'>('phone');
+  const [step, setStep] = useState<'phone' | 'code' | 'profile'>('phone');
   const [phone, setPhone] = useState('');
   const [code, setCode] = useState('');
   const [loading, setLoading] = useState(false);
@@ -15,6 +15,11 @@ export default function AuthModal({ onClose, onAuth }: { onClose: () => void; on
   const [devCode, setDevCode] = useState('');
   const [isHuman, setIsHuman] = useState(false);
   const codeRef = useRef<HTMLInputElement>(null);
+
+  const [profileUser, setProfileUser] = useState<User | null>(null);
+  const [profileName, setProfileName] = useState('');
+  const [profileAddress, setProfileAddress] = useState('');
+  const [profileFlat, setProfileFlat] = useState('');
 
   const sendCode = async () => {
     if (!phone.trim()) return;
@@ -36,11 +41,26 @@ export default function AuthModal({ onClose, onAuth }: { onClose: () => void; on
       const data = await res.json();
       if (res.ok) {
         localStorage.setItem('user', JSON.stringify(data.user));
-        onAuth(data.user);
-        onClose();
+        if (data.user.is_new) {
+          setProfileUser(data.user);
+          setProfileName(data.user.name || '');
+          setStep('profile');
+        } else {
+          onAuth(data.user);
+          onClose();
+        }
       } else setError(data.error || 'Неверный код');
     } catch { setError('Ошибка соединения'); }
     setLoading(false);
+  };
+
+  const saveProfile = () => {
+    if (!profileUser) return;
+    if (profileName.trim()) localStorage.setItem('order_name', profileName.trim());
+    if (profileAddress.trim()) localStorage.setItem('order_address', profileAddress.trim());
+    if (profileFlat.trim()) localStorage.setItem('order_flat', profileFlat.trim());
+    onAuth(profileUser);
+    onClose();
   };
 
   return (
@@ -48,13 +68,17 @@ export default function AuthModal({ onClose, onAuth }: { onClose: () => void; on
       <div className="bg-veggie-dark border border-veggie-green/40 rounded-2xl p-6 w-full max-w-sm shadow-2xl" onClick={e => e.stopPropagation()}>
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="font-heading text-xl font-bold text-white">Войти</h2>
-            <p className="text-white/50 text-sm mt-0.5">Накапливайте баллы с каждым заказом</p>
+            <h2 className="font-heading text-xl font-bold text-white">
+              {step === 'profile' ? 'Данные для доставки' : 'Войти'}
+            </h2>
+            <p className="text-white/50 text-sm mt-0.5">
+              {step === 'profile' ? 'Заполните один раз — подставятся при заказе' : 'Накапливайте баллы с каждым заказом'}
+            </p>
           </div>
           <button onClick={onClose} className="text-white/40 hover:text-white transition-colors"><Icon name="X" size={20} /></button>
         </div>
 
-        {step === 'phone' ? (
+        {step === 'phone' && (
           <>
             <label className="text-white/60 text-sm mb-2 block">Номер телефона</label>
             <input
@@ -77,7 +101,9 @@ export default function AuthModal({ onClose, onAuth }: { onClose: () => void; on
               {loading ? 'Отправляем...' : 'Получить код'}
             </button>
           </>
-        ) : (
+        )}
+
+        {step === 'code' && (
           <>
             <p className="text-white/60 text-sm mb-2">Код отправлен на <span className="text-white font-medium">{phone}</span></p>
             {devCode && <p className="text-veggie-lime text-sm mb-2 bg-veggie-lime/10 rounded-lg px-3 py-2">Код для входа: <b>{devCode}</b></p>}
@@ -97,13 +123,53 @@ export default function AuthModal({ onClose, onAuth }: { onClose: () => void; on
           </>
         )}
 
-        <div className="mt-6 bg-veggie-lime/10 border border-veggie-lime/20 rounded-xl p-3 flex items-center gap-3">
-          <span className="text-2xl">🎁</span>
-          <div>
-            <p className="text-veggie-lime font-semibold text-sm">200 баллов за регистрацию</p>
-            <p className="text-white/50 text-xs">1 балл = 1 ₽ скидки</p>
+        {step === 'profile' && (
+          <>
+            <div className="flex flex-col gap-3 mb-5">
+              <div>
+                <label className="text-white/60 text-xs mb-1 block">Имя для заказа</label>
+                <input
+                  type="text" value={profileName} onChange={e => setProfileName(e.target.value)}
+                  placeholder="Как к вам обращаться"
+                  autoFocus
+                  className="w-full bg-white/10 border border-white/20 text-white placeholder:text-white/30 px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-veggie-lime/60 transition-colors"
+                />
+              </div>
+              <div>
+                <label className="text-white/60 text-xs mb-1 block">Адрес доставки</label>
+                <input
+                  type="text" value={profileAddress} onChange={e => setProfileAddress(e.target.value)}
+                  placeholder="Улица, дом"
+                  className="w-full bg-white/10 border border-white/20 text-white placeholder:text-white/30 px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-veggie-lime/60 transition-colors"
+                />
+              </div>
+              <div>
+                <label className="text-white/60 text-xs mb-1 block">Квартира / офис</label>
+                <input
+                  type="text" value={profileFlat} onChange={e => setProfileFlat(e.target.value)}
+                  placeholder="Необязательно"
+                  className="w-full bg-white/10 border border-white/20 text-white placeholder:text-white/30 px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-veggie-lime/60 transition-colors"
+                />
+              </div>
+            </div>
+            <button onClick={saveProfile} className="w-full bg-veggie-lime text-veggie-dark py-3 rounded-xl font-bold text-base hover:bg-white transition-colors">
+              Сохранить и войти
+            </button>
+            <button onClick={() => { onAuth(profileUser!); onClose(); }} className="w-full text-white/40 hover:text-white text-sm mt-3 transition-colors">
+              Пропустить
+            </button>
+          </>
+        )}
+
+        {step !== 'profile' && (
+          <div className="mt-6 bg-veggie-lime/10 border border-veggie-lime/20 rounded-xl p-3 flex items-center gap-3">
+            <span className="text-2xl">🎁</span>
+            <div>
+              <p className="text-veggie-lime font-semibold text-sm">200 баллов за регистрацию</p>
+              <p className="text-white/50 text-xs">1 балл = 1 ₽ скидки</p>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

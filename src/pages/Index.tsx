@@ -419,6 +419,16 @@ export default function Index() {
                   className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm text-white placeholder-white/30 focus:outline-none focus:border-veggie-green transition-colors"
                 />
               </div>
+              <div>
+                <label className="text-white/50 text-xs mb-1 block">Квартира / офис</label>
+                <input
+                  type="text"
+                  value={orderFlat}
+                  onChange={e => { setOrderFlat(e.target.value); localStorage.setItem('order_flat', e.target.value); }}
+                  placeholder="Необязательно"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm text-white placeholder-white/30 focus:outline-none focus:border-veggie-green transition-colors"
+                />
+              </div>
             </div>
             <div className="bg-veggie-lime/10 border border-veggie-lime/30 rounded-xl p-4 mb-3 flex items-center gap-4">
               <span className="text-3xl">⭐</span>
