@@ -188,6 +188,30 @@ def handler(event: dict, context) -> dict:
     if event.get('httpMethod') == 'GET':
         params = event.get('queryStringParameters') or {}
         user_id = params.get('user_id')
+
+        # Админский запрос — все заказы
+        if not user_id and params.get('admin') == '1':
+            admin_key = (event.get('headers') or {}).get('X-Admin-Key', '')
+            expected = os.environ.get('ADMIN_KEY', 'unset')
+            if admin_key != expected:
+                return {'statusCode': 403, 'headers': CORS, 'body': json.dumps({'error': 'Forbidden'})}
+            status_filter = params.get('status', '')
+            conn = psycopg2.connect(os.environ['DATABASE_URL'])
+            cur = conn.cursor()
+            if status_filter and status_filter in VALID_STATUSES:
+                cur.execute(
+                    f"SELECT id, name, phone, address, comment, items, total_price, status, created_at, user_id FROM {SCHEMA}.orders WHERE status=%s ORDER BY created_at DESC LIMIT 200",
+                    (status_filter,)
+                )
+            else:
+                cur.execute(
+                    f"SELECT id, name, phone, address, comment, items, total_price, status, created_at, user_id FROM {SCHEMA}.orders ORDER BY created_at DESC LIMIT 200"
+                )
+            rows = cur.fetchall()
+            cur.close(); conn.close()
+            orders = [{'id': r[0], 'name': r[1], 'phone': r[2], 'address': r[3], 'comment': r[4], 'items': r[5] or [], 'total_price': float(r[6]), 'status': r[7], 'created_at': r[8].isoformat(), 'user_id': r[9]} for r in rows]
+            return {'statusCode': 200, 'headers': CORS, 'body': json.dumps({'orders': orders}, ensure_ascii=False)}
+
         if not user_id:
             return {'statusCode': 400, 'headers': CORS, 'body': json.dumps({'error': 'user_id обязателен'})}
         conn = psycopg2.connect(os.environ['DATABASE_URL'])
