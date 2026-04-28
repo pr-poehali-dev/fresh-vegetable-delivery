@@ -90,6 +90,23 @@ const FAQ_ITEMS = [
   { q: "Как выбрать сезонные овощи?", a: "Используйте фильтр по сезонности в каталоге. Сезонные овощи вкуснее, питательнее и дешевле — они в приоритете." },
 ];
 
+const ARTICLES = [
+  {
+    id: 1, emoji: "🥒", title: "Полезные советы по выращиванию огурцов", tag: "Выращивание",
+    intro: "Огурцы — популярная овощная культура, которая при правильном уходе даёт богатый урожай. Разберём ключевые рекомендации для успешного выращивания.",
+    sections: [
+      { title: "1. Выбор места и подготовка почвы", text: "Огурцы любят тепло, свет (но без палящего солнца в полдень) и плодородную рыхлую почву с нейтральной или слабокислой реакцией (pH 6–7). Осенью перекопайте участок и внесите органические удобрения (перегной, компост). Весной снова разрыхлите, добавьте комплексные минеральные удобрения. Идеально подходят «тёплые грядки» — они прогреваются быстрее." },
+      { title: "2. Посев и высадка рассады", text: "В открытый грунт — когда почва прогреется и минует угроза заморозков. Для рассады — за 30–35 дней до высадки. Расстояние между растениями — 50–60 см, между рядами — 100–120 см. Семена сажают острым краем вверх — из него прорастают корни." },
+      { title: "3. Полив", text: "Используйте тёплую воду (+23…+25°C). В период роста поливайте каждые 6–7 дней, после начала плодоношения — каждые 3–4 дня. На куст — не менее 2 л воды. Лучшее время для полива — вечер. Избегайте сильного напора воды." },
+      { title: "4. Подкормка", text: "За сезон — не менее 5 подкормок. Органические: перегной, компост, перепревший навоз. Минеральные: азот (для роста), фосфор (для корней), калий (для плодоношения). Народные средства: раствор молока 1:2 каждые 2 недели; зольный раствор (1 стакан золы на ведро воды)." },
+      { title: "5. Мульчирование", text: "Мульча сохраняет влагу, сдерживает сорняки и улучшает структуру почвы. Материалы: перепревший навоз, опилки, торф, солома. Слой мульчи не должен касаться стеблей. В жару тёмную мульчу прикройте светлым материалом." },
+      { title: "6. Формирование растений", text: "Удаляйте нижние побеги, касающиеся земли. Формируйте в один стебель или прищипывайте после 5–6 листа для ветвления. Укрепляйте корневую систему: прижмите стебель к земле и присыпьте влажной почвой." },
+      { title: "7. Опыление и защита от болезней", text: "При недостатке насекомых проводите искусственное опыление мягкой кисточкой. Соблюдайте севооборот, хорошие предшественники: лук, горох, капуста, свёкла. Обрабатывайте почву «Фитоспорином» перед посадкой." },
+      { title: "8. Сбор урожая и соседство", text: "Собирайте огурцы регулярно — чем чаще, тем выше урожайность. Не дожидайтесь максимального размера плодов. Хорошие соседи: фасоль, горох, капуста, кукуруза, салат. Плохие соседи: томаты." },
+    ],
+  },
+];
+
 const TIPS = [
   {
     id: 1, emoji: "🥕", title: "Как выбрать свежую морковь",
@@ -129,6 +146,7 @@ type CartItem = { id: number; name: string; price: number; emoji: string; qty: n
 
 export default function Index() {
   const [activeSection, setActiveSection] = useState<"vegetables" | "fruits" | "berries" | "juices" | "mushrooms" | "greens">("vegetables");
+  const [openArticle, setOpenArticle] = useState<number | null>(null);
   const [activeType, setActiveType] = useState("все");
   const [search, setSearch] = useState("");
   const [cart, setCart] = useState<CartItem[]>(() => {
@@ -735,6 +753,41 @@ export default function Index() {
             <div className="section-divider w-24 mx-auto mb-4" />
             <p className="text-muted-foreground text-lg">Как выбирать, хранить и готовить с пользой для здоровья</p>
           </div>
+
+          {/* Статьи */}
+          <div className="flex flex-col gap-4 mb-10">
+            {ARTICLES.map(article => (
+              <div key={article.id} className="border border-border rounded-2xl overflow-hidden shadow-sm">
+                <button
+                  onClick={() => setOpenArticle(openArticle === article.id ? null : article.id)}
+                  className="w-full flex items-center gap-4 px-6 py-5 bg-background hover:bg-muted/50 transition-colors text-left"
+                >
+                  <span className="text-3xl shrink-0">{article.emoji}</span>
+                  <div className="flex-1 min-w-0">
+                    <span className="text-xs font-semibold bg-veggie-lime/20 text-veggie-green px-3 py-1 rounded-full mb-2 inline-block">{article.tag}</span>
+                    <h3 className="font-heading text-lg font-bold text-foreground">{article.title}</h3>
+                    <p className="text-muted-foreground text-sm mt-1 line-clamp-2">{article.intro}</p>
+                  </div>
+                  <Icon name={openArticle === article.id ? "ChevronUp" : "ChevronDown"} size={20} className="text-muted-foreground shrink-0" />
+                </button>
+                {openArticle === article.id && (
+                  <div className="px-6 pb-6 pt-2 bg-background border-t border-border">
+                    <p className="text-muted-foreground text-sm leading-relaxed mb-5">{article.intro}</p>
+                    <div className="flex flex-col gap-4">
+                      {article.sections.map((s, i) => (
+                        <div key={i} className="bg-veggie-lime/5 border border-veggie-lime/20 rounded-xl p-4">
+                          <h4 className="font-semibold text-veggie-green mb-2 text-sm">{s.title}</h4>
+                          <p className="text-muted-foreground text-sm leading-relaxed">{s.text}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          {/* Карточки советов */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {TIPS.map(tip => (
               <div key={tip.id} className="card-hover bg-background rounded-2xl p-6 border border-border shadow-sm flex flex-col gap-3">
