@@ -25,17 +25,30 @@ type Order = {
   user_id: number | null;
 };
 
+type UserProfile = {
+  id: number;
+  phone: string;
+  name: string;
+  points: number;
+  is_first_order_done: boolean;
+  created_at: string | null;
+  last_seen_at: string | null;
+  order_count: number;
+};
+
 export default function Admin() {
   const [adminKey, setAdminKey] = useState(() => localStorage.getItem("admin_key") || "");
   const [keyInput, setKeyInput] = useState("");
   const [authed, setAuthed] = useState(false);
   const [orders, setOrders] = useState<Order[]>([]);
+  const [users, setUsers] = useState<UserProfile[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [search, setSearch] = useState("");
   const [expandedId, setExpandedId] = useState<number | null>(null);
   const [updatingId, setUpdatingId] = useState<number | null>(null);
+  const [adminTab, setAdminTab] = useState<"orders" | "users">("orders");
 
   const login = async () => {
     setLoading(true); setError("");
@@ -63,6 +76,16 @@ export default function Admin() {
     setLoading(false);
   };
 
+  const loadUsers = async (key = adminKey) => {
+    setLoading(true);
+    const res = await fetch(`${API}?admin=1&tab=users`, { headers: { "X-Admin-Key": key } });
+    if (res.ok) {
+      const data = await res.json();
+      setUsers(data.users || []);
+    }
+    setLoading(false);
+  };
+
   useEffect(() => {
     if (adminKey) {
       setAuthed(false);
@@ -79,6 +102,10 @@ export default function Admin() {
   useEffect(() => {
     if (authed) loadOrders(adminKey, statusFilter);
   }, [statusFilter]);
+
+  useEffect(() => {
+    if (authed && adminTab === "users") loadUsers();
+  }, [adminTab, authed]);
 
   const changeStatus = async (orderId: number, newStatus: string) => {
     setUpdatingId(orderId);
@@ -134,6 +161,16 @@ export default function Admin() {
 
   const countByStatus = (s: string) => orders.filter(o => o.status === s).length;
 
+  const fmtDate = (iso: string | null) => {
+    if (!iso) return "—";
+    return new Date(iso).toLocaleDateString("ru-RU", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
+  };
+
+  const userSearch = search.toLowerCase();
+  const filteredUsers = users.filter(u =>
+    !search.trim() || u.phone.includes(userSearch) || (u.name || "").toLowerCase().includes(userSearch)
+  );
+
   return (
     <div className="min-h-screen bg-veggie-dark text-white">
       <div className="border-b border-veggie-green/30 px-4 py-4 flex items-center justify-between">
@@ -141,11 +178,11 @@ export default function Admin() {
           <span className="text-2xl">🥬</span>
           <div>
             <h1 className="font-heading text-lg font-bold">ФИЛИНИ — Панель управления</h1>
-            <p className="text-white/40 text-xs">Всего заказов: {orders.length}</p>
+            <p className="text-white/40 text-xs">{adminTab === "orders" ? `Заказов: ${orders.length}` : `Пользователей: ${users.length}`}</p>
           </div>
         </div>
         <button
-          onClick={() => loadOrders()}
+          onClick={() => adminTab === "orders" ? loadOrders() : loadUsers()}
           disabled={loading}
           className="flex items-center gap-2 border border-white/20 text-white/60 hover:text-white px-3 py-1.5 rounded-lg text-xs transition-colors"
         >
@@ -154,7 +191,74 @@ export default function Admin() {
         </button>
       </div>
 
+      {/* Вкладки */}
+      <div className="px-4 pt-4 flex gap-2 mb-0">
+        <button
+          onClick={() => { setAdminTab("orders"); setSearch(""); }}
+          className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all ${adminTab === "orders" ? "bg-veggie-green text-white" : "bg-white/5 text-white/50 hover:text-white"}`}
+        >
+          📦 Заказы
+        </button>
+        <button
+          onClick={() => { setAdminTab("users"); setSearch(""); }}
+          className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all ${adminTab === "users" ? "bg-veggie-green text-white" : "bg-white/5 text-white/50 hover:text-white"}`}
+        >
+          👤 Профили
+        </button>
+      </div>
+
       <div className="p-4">
+
+        {/* === ВКЛАДКА ПРОФИЛИ === */}
+        {adminTab === "users" && (
+          <>
+            <div className="relative mb-4">
+              <Icon name="Search" size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30" />
+              <input
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+                placeholder="Поиск по телефону или имени..."
+                className="w-full bg-white/5 border border-white/10 text-white placeholder:text-white/30 pl-9 pr-4 py-2.5 rounded-xl text-sm focus:outline-none focus:border-veggie-lime/40 transition-colors"
+              />
+            </div>
+            {loading ? (
+              <div className="text-center py-12 text-white/30">Загрузка...</div>
+            ) : filteredUsers.length === 0 ? (
+              <div className="text-center py-12 text-white/30">Нет пользователей</div>
+            ) : (
+              <div className="space-y-2">
+                {filteredUsers.map(u => (
+                  <div key={u.id} className="bg-white/5 border border-white/10 rounded-2xl p-4">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1 flex-wrap">
+                          <span className="text-white/30 text-xs">#{u.id}</span>
+                          {u.is_first_order_done && <span className="text-[11px] px-2 py-0.5 rounded-full bg-veggie-lime/20 text-veggie-lime">Покупал</span>}
+                        </div>
+                        <p className="text-white font-semibold text-sm">{u.name || "—"}</p>
+                        <p className="text-veggie-lime text-sm">{u.phone}</p>
+                        <div className="flex gap-4 mt-2 text-xs text-white/40">
+                          <span>Заказов: <span className="text-white/70">{u.order_count}</span></span>
+                          <span>Баллов: <span className="text-veggie-lime">{u.points}</span></span>
+                        </div>
+                      </div>
+                      <div className="text-right text-xs text-white/30 shrink-0">
+                        <p>Регистрация:</p>
+                        <p className="text-white/50">{fmtDate(u.created_at)}</p>
+                        <p className="mt-2">Последний визит:</p>
+                        <p className={u.last_seen_at ? "text-veggie-lime" : "text-white/30"}>{fmtDate(u.last_seen_at)}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </>
+        )}
+
+        {/* === ВКЛАДКА ЗАКАЗЫ === */}
+        {adminTab === "orders" && <>
+
         {/* Статистика */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5">
           {[
@@ -272,6 +376,8 @@ export default function Admin() {
             })}
           </div>
         )}
+        </>}
+
       </div>
     </div>
   );

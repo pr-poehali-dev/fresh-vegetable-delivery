@@ -1,0 +1,1 @@
+ALTER TABLE t_p20462627_fresh_vegetable_deli.users ADD COLUMN IF NOT EXISTS last_seen_at timestamp without time zone NULL;

@@ -212,6 +212,28 @@ def handler(event: dict, context) -> dict:
         params = event.get('queryStringParameters') or {}
         user_id = params.get('user_id')
 
+        # Админский запрос — список пользователей
+        if not user_id and params.get('admin') == '1' and params.get('tab') == 'users':
+            admin_key = (event.get('headers') or {}).get('X-Admin-Key', '')
+            expected = os.environ.get('ADMIN_KEY', 'unset')
+            if admin_key != expected:
+                return {'statusCode': 403, 'headers': CORS, 'body': json.dumps({'error': 'Forbidden'})}
+            conn = psycopg2.connect(os.environ['DATABASE_URL'])
+            cur = conn.cursor()
+            cur.execute(
+                f"SELECT u.id, u.phone, u.name, u.points, u.is_first_order_done, u.created_at, u.last_seen_at, COUNT(o.id) as order_count FROM {SCHEMA}.users u LEFT JOIN {SCHEMA}.orders o ON o.user_id = u.id GROUP BY u.id ORDER BY u.last_seen_at DESC NULLS LAST, u.created_at DESC LIMIT 500"
+            )
+            rows = cur.fetchall()
+            cur.close(); conn.close()
+            users = [{
+                'id': r[0], 'phone': r[1], 'name': r[2], 'points': r[3],
+                'is_first_order_done': r[4],
+                'created_at': r[5].isoformat() if r[5] else None,
+                'last_seen_at': r[6].isoformat() if r[6] else None,
+                'order_count': r[7],
+            } for r in rows]
+            return {'statusCode': 200, 'headers': CORS, 'body': json.dumps({'users': users}, ensure_ascii=False)}
+
         # Админский запрос — все заказы
         if not user_id and params.get('admin') == '1':
             admin_key = (event.get('headers') or {}).get('X-Admin-Key', '')

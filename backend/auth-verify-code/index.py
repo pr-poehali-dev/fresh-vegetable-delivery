@@ -53,7 +53,7 @@ def handler(event: dict, context) -> dict:
     if not user:
         is_new = True
         cur.execute(
-            f"INSERT INTO {SCHEMA}.users (phone, name, points) VALUES (%s, %s, %s) RETURNING id, name, points, is_first_order_done",
+            f"INSERT INTO {SCHEMA}.users (phone, name, points, last_seen_at) VALUES (%s, %s, %s, NOW()) RETURNING id, name, points, is_first_order_done",
             (phone, name or phone, BONUS_REGISTRATION)
         )
         user = cur.fetchone()
@@ -64,6 +64,7 @@ def handler(event: dict, context) -> dict:
         )
     else:
         user_id = user[0]
+        cur.execute(f"UPDATE {SCHEMA}.users SET last_seen_at=NOW() WHERE id=%s", (user_id,))
         if name and not user[1]:
             cur.execute(f"UPDATE {SCHEMA}.users SET name=%s WHERE id=%s", (name, user_id))
 
