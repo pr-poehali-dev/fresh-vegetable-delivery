@@ -51,7 +51,8 @@ export default function CartDrawer({
   }, [cart.length, orderStep]);
 
   const delivery = freeDelivery ? 0 : 199;
-  const discount = Math.min(pointsToUse, user?.points ?? 0, totalPrice + delivery);
+  const canSpendPoints = user?.is_first_order_done ?? false;
+  const discount = canSpendPoints ? Math.min(pointsToUse, user?.points ?? 0, totalPrice + delivery) : 0;
   const finalTotal = Math.max(0, totalPrice + delivery - discount);
 
   return (
@@ -243,17 +244,25 @@ export default function CartDrawer({
                         <span className="text-sm font-semibold text-veggie-green">⭐ Оплатить баллами</span>
                         <span className="text-xs text-muted-foreground">Доступно: {user.points} баллов</span>
                       </div>
-                      <input
-                        type="range" min={0} max={maxPoints} step={1}
-                        value={Math.min(pointsToUse, maxPoints)}
-                        onChange={e => setPointsToUse(Number(e.target.value))}
-                        className="w-full accent-veggie-green mb-1"
-                      />
-                      <div className="flex justify-between text-xs text-muted-foreground">
-                        <span>0 ₽</span>
-                        <span className="text-veggie-green font-semibold">−{Math.min(pointsToUse, maxPoints)} ₽</span>
-                        <span>{maxPoints} ₽</span>
-                      </div>
+                      {canSpendPoints ? (
+                        <>
+                          <input
+                            type="range" min={0} max={maxPoints} step={1}
+                            value={Math.min(pointsToUse, maxPoints)}
+                            onChange={e => setPointsToUse(Number(e.target.value))}
+                            className="w-full accent-veggie-green mb-1"
+                          />
+                          <div className="flex justify-between text-xs text-muted-foreground">
+                            <span>0 ₽</span>
+                            <span className="text-veggie-green font-semibold">−{Math.min(pointsToUse, maxPoints)} ₽</span>
+                            <span>{maxPoints} ₽</span>
+                          </div>
+                        </>
+                      ) : (
+                        <p className="text-xs text-muted-foreground">
+                          🔒 Баллы станут доступны после первого заказа
+                        </p>
+                      )}
                     </div>
                   );
                 })()}
