@@ -7,7 +7,7 @@ from email.mime.multipart import MIMEMultipart
 
 CORS = {
     'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Methods': 'GET, POST, PUT, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
 }
 SCHEMA = os.environ['MAIN_DB_SCHEMA']
@@ -135,6 +135,35 @@ def handler(event: dict, context) -> dict:
             'statusCode': 200, 'headers': CORS,
             'body': json.dumps({'ok': True, 'period': period_label, 'users_credited': processed})
         }
+
+    if event.get('httpMethod') == 'PUT':
+        body = json.loads(event.get('body') or '{}')
+        order_id = body.get('order_id')
+        user_id = body.get('user_id')
+        address = body.get('address', '').strip()
+        comment = body.get('comment', '').strip()
+        items = body.get('items', [])
+        if not order_id or not user_id:
+            return {'statusCode': 400, 'headers': CORS, 'body': json.dumps({'error': 'order_id и user_id обязательны'})}
+        conn = psycopg2.connect(os.environ['DATABASE_URL'])
+        cur = conn.cursor()
+        cur.execute(
+            f"SELECT status FROM {SCHEMA}.orders WHERE id=%s AND user_id=%s",
+            (order_id, user_id)
+        )
+        row = cur.fetchone()
+        if not row:
+            cur.close(); conn.close()
+            return {'statusCode': 404, 'headers': CORS, 'body': json.dumps({'error': 'Заказ не найден'})}
+        if row[0] != 'new':
+            cur.close(); conn.close()
+            return {'statusCode': 400, 'headers': CORS, 'body': json.dumps({'error': 'Заказ уже нельзя изменить'})}
+        cur.execute(
+            f"UPDATE {SCHEMA}.orders SET address=%s, comment=%s, items=%s WHERE id=%s",
+            (address, comment, json.dumps(items), order_id)
+        )
+        conn.commit(); cur.close(); conn.close()
+        return {'statusCode': 200, 'headers': CORS, 'body': json.dumps({'ok': True})}
 
     if event.get('httpMethod') == 'GET':
         params = event.get('queryStringParameters') or {}

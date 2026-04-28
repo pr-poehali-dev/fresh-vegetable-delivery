@@ -37,6 +37,13 @@
       "method": "GET",
       "path": "/?user_id=1",
       "expectedStatus": 200
+    },
+    {
+      "name": "PUT без order_id",
+      "method": "PUT",
+      "path": "/",
+      "body": {"user_id": 1},
+      "expectedStatus": 400
     }
   ]
 }

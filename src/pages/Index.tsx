@@ -84,6 +84,8 @@ export default function Index() {
   const [transactions, setTransactions] = useState<Array<{id: number; points: number; reason: string; created_at: string}>>([]);
   const [ordersLoading, setOrdersLoading] = useState(false);
   const [profileTab, setProfileTab] = useState<'orders' | 'points'>('orders');
+  const [editingOrder, setEditingOrder] = useState<{id: number; address: string; comment: string; items: Array<{name: string; quantity: number; price: number}>} | null>(null);
+  const [editSaving, setEditSaving] = useState(false);
   const [orderName, setOrderName] = useState(() => localStorage.getItem('order_name') || '');
   const [orderPhone, setOrderPhone] = useState(() => localStorage.getItem('order_phone') || '');
   const [orderAddress, setOrderAddress] = useState(() => localStorage.getItem('order_address') || '');
@@ -317,7 +319,18 @@ export default function Index() {
                       <div key={order.id} className="bg-white/5 border border-white/10 rounded-xl p-3">
                         <div className="flex items-center justify-between mb-1">
                           <span className="text-white/50 text-xs">#{order.id} · {new Date(order.created_at).toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' })}</span>
-                          <span className="text-veggie-lime text-sm font-bold">{order.total_price} ₽</span>
+                          <div className="flex items-center gap-2">
+                            <span className="text-veggie-lime text-sm font-bold">{order.total_price} ₽</span>
+                            {order.status === 'new' && (
+                              <button
+                                onClick={() => setEditingOrder({ id: order.id, address: order.address || '', comment: '', items: order.items })}
+                                className="text-white/30 hover:text-veggie-lime transition-colors"
+                                title="Изменить заказ"
+                              >
+                                <Icon name="Pencil" size={12} />
+                              </button>
+                            )}
+                          </div>
                         </div>
                         {order.address && <p className="text-white/40 text-xs mb-1">📍 {order.address}</p>}
                         <div className="text-white/60 text-xs">
@@ -351,6 +364,63 @@ export default function Index() {
 
             <button onClick={logout} className="w-full border border-white/20 text-white/60 hover:text-white hover:border-white/40 py-2.5 rounded-xl text-sm transition-colors">
               Выйти
+            </button>
+          </div>
+        </div>
+      )}
+
+      {editingOrder && user && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm" onClick={() => setEditingOrder(null)}>
+          <div className="bg-veggie-dark border border-veggie-green/40 rounded-2xl p-6 w-full max-w-sm shadow-2xl" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-5">
+              <h2 className="font-heading text-lg font-bold text-white">Изменить заказ #{editingOrder.id}</h2>
+              <button onClick={() => setEditingOrder(null)} className="text-white/40 hover:text-white transition-colors"><Icon name="X" size={20} /></button>
+            </div>
+            <label className="text-white/60 text-xs mb-1 block">Адрес доставки</label>
+            <input
+              value={editingOrder.address}
+              onChange={e => setEditingOrder({ ...editingOrder, address: e.target.value })}
+              className="w-full bg-white/10 border border-white/20 text-white placeholder:text-white/30 px-3 py-2 rounded-xl text-sm focus:outline-none focus:border-veggie-lime/60 transition-colors mb-3"
+            />
+            <label className="text-white/60 text-xs mb-1 block">Комментарий</label>
+            <textarea
+              value={editingOrder.comment}
+              onChange={e => setEditingOrder({ ...editingOrder, comment: e.target.value })}
+              rows={2}
+              className="w-full bg-white/10 border border-white/20 text-white placeholder:text-white/30 px-3 py-2 rounded-xl text-sm focus:outline-none focus:border-veggie-lime/60 transition-colors mb-3 resize-none"
+            />
+            <div className="mb-4">
+              <p className="text-white/60 text-xs mb-2">Товары:</p>
+              <div className="space-y-2 max-h-36 overflow-y-auto pr-1">
+                {editingOrder.items.map((item, i) => (
+                  <div key={i} className="flex items-center gap-2 bg-white/5 rounded-xl px-3 py-2">
+                    <span className="text-white/70 text-xs flex-1">{item.name}</span>
+                    <button onClick={() => setEditingOrder({ ...editingOrder, items: editingOrder.items.map((it, j) => j === i ? { ...it, quantity: Math.max(1, it.quantity - 1) } : it) })} className="text-white/40 hover:text-white w-5 h-5 flex items-center justify-center"><Icon name="Minus" size={10} /></button>
+                    <span className="text-white text-xs w-4 text-center">{item.quantity}</span>
+                    <button onClick={() => setEditingOrder({ ...editingOrder, items: editingOrder.items.map((it, j) => j === i ? { ...it, quantity: it.quantity + 1 } : it) })} className="text-white/40 hover:text-white w-5 h-5 flex items-center justify-center"><Icon name="Plus" size={10} /></button>
+                    <button onClick={() => setEditingOrder({ ...editingOrder, items: editingOrder.items.filter((_, j) => j !== i) })} className="text-red-400/60 hover:text-red-400 ml-1"><Icon name="Trash2" size={10} /></button>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <button
+              onClick={async () => {
+                setEditSaving(true);
+                const res = await fetch('https://functions.poehali.dev/d8e8eac1-b7f3-41b8-b041-69e6d80a1c03', {
+                  method: 'PUT',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ order_id: editingOrder.id, user_id: user.id, address: editingOrder.address, comment: editingOrder.comment, items: editingOrder.items }),
+                });
+                if (res.ok) {
+                  setOrders(prev => prev.map(o => o.id === editingOrder.id ? { ...o, address: editingOrder.address, items: editingOrder.items } : o));
+                  setEditingOrder(null);
+                }
+                setEditSaving(false);
+              }}
+              disabled={editSaving}
+              className="w-full bg-veggie-lime text-veggie-dark py-3 rounded-xl font-bold text-sm hover:bg-white transition-colors disabled:opacity-50"
+            >
+              {editSaving ? 'Сохраняем...' : 'Сохранить изменения'}
             </button>
           </div>
         </div>
