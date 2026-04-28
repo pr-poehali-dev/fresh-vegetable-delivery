@@ -54,7 +54,7 @@ const JUICES = [
 ];
 
 const MUSHROOMS = [
-  { id: 401, name: "Шампиньоны", price: 400, unit: "кг", season: "всесезонно", type: "грибы", emoji: "🍄", badge: null, weight: "500г", weightKg: 0.5, minWeightG: 500, pricePerKg: 400, image: "" },
+  { id: 401, name: "Шампиньоны", price: 200, unit: "500г", season: "всесезонно", type: "грибы", emoji: "🍄", badge: null, weight: "500г", weightKg: 0.5, image: "" },
 ];
 
 const GREENS = [
