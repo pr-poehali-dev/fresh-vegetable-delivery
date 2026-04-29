@@ -23,6 +23,7 @@ const VEGETABLES = [
   { id: 14, name: "Огурец пупырчатый высший сорт", price: 180, unit: "кг", season: "лето", type: "огурцы", emoji: "🥒", badge: "Хит", weight: "1кг", weightKg: 1, image: "" },
   { id: 15, name: "Огурец пупырчатый Кубань", price: 110, unit: "кг", season: "лето", type: "огурцы", emoji: "🥒", badge: null, weight: "1кг", weightKg: 1, image: "" },
   { id: 13, name: "Огурец гладкий", price: 170, unit: "кг", season: "лето", type: "огурцы", emoji: "🥒", badge: null, weight: "1кг", weightKg: 1, image: "" },
+  { id: 126, name: "Чеснок", price: 280, unit: "кг", season: "осень", type: "чеснок", emoji: "🧄", badge: null, weight: "1кг", weightKg: 1, image: "" },
 ];
 
 const FRUITS = [
@@ -43,7 +44,6 @@ const FRUITS = [
   { id: 123, name: "Бананы", price: 200, unit: "кг", season: "всесезонно", type: "экзотика", emoji: "🍌", badge: null, weight: "1кг", weightKg: 1, image: "" },
   { id: 124, name: "Ананас", price: 700, unit: "шт", season: "всесезонно", type: "экзотика", emoji: "🍍", badge: null, weight: "1шт", weightKg: 1, image: "" },
   { id: 125, name: "Лимон", price: 350, unit: "кг", season: "всесезонно", type: "цитрусы", emoji: "🍋", badge: null, weight: "100г", weightKg: 0.1, minWeightG: 100, pricePerKg: 350, image: "" },
-  { id: 126, name: "Чеснок", price: 280, unit: "кг", season: "осень", type: "чеснок", emoji: "🧄", badge: null, weight: "100г", weightKg: 0.1, minWeightG: 100, pricePerKg: 280, image: "" },
   { id: 127, name: "Имбирь", price: 500, unit: "кг", season: "всесезонно", type: "специи", emoji: "🫚", badge: null, weight: "100г", weightKg: 0.1, minWeightG: 100, pricePerKg: 500, image: "" },
 ];
 
