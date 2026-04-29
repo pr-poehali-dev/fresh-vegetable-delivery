@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import { User } from "@/components/AuthModal";
 
@@ -35,6 +36,7 @@ export default function Navbar({
   mobileMenuOpen, setMobileMenuOpen, showBanner,
   onCartOpen, onAuthOpen, onProfileOpen, onInstall, onDismissBanner, scrollTo,
 }: NavbarProps) {
+  const navigate = useNavigate();
   const [iosModalOpen, setIosModalOpen] = useState(false);
   const [iosDismissed, setIosDismissed] = useState(() => localStorage.getItem('ios-banner-dismissed') === '1');
 
@@ -173,7 +175,7 @@ export default function Navbar({
 
             {/* Кнопка установки в мобильном меню */}
             {user ? (
-              <button onClick={onProfileOpen} className="hidden md:flex items-center gap-2 border border-veggie-lime/40 text-veggie-lime px-3 py-2 rounded-full text-sm font-medium hover:bg-veggie-lime/10 transition-colors">
+              <button onClick={() => navigate('/profile')} className="hidden md:flex items-center gap-2 border border-veggie-lime/40 text-veggie-lime px-3 py-2 rounded-full text-sm font-medium hover:bg-veggie-lime/10 transition-colors">
                 <span>⭐</span>
                 <span>{user.points} баллов</span>
               </button>
@@ -220,8 +222,8 @@ export default function Navbar({
               </button>
             )}
             {user ? (
-              <button onClick={() => { onProfileOpen(); setMobileMenuOpen(false); }} className="flex items-center gap-2 text-veggie-lime font-semibold py-2">
-                <span>⭐</span> {user.points} баллов
+              <button onClick={() => { navigate('/profile'); setMobileMenuOpen(false); }} className="flex items-center gap-2 text-veggie-lime font-semibold py-2">
+                <span>⭐</span> {user.points} баллов · Профиль
               </button>
             ) : (
               <button onClick={() => { onAuthOpen(); setMobileMenuOpen(false); }} className="flex items-center gap-2 text-white/70 py-2">

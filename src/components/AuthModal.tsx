@@ -8,7 +8,7 @@ export type User = { id: number; phone: string; name: string; points: number; is
 
 export default function AuthModal({ onClose, onAuth }: { onClose: () => void; onAuth: (user: User) => void }) {
   const [step, setStep] = useState<'phone' | 'code' | 'profile'>('phone');
-  const [phone, setPhone] = useState('');
+  const [phone, setPhone] = useState('+7');
   const [code, setCode] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -82,7 +82,9 @@ export default function AuthModal({ onClose, onAuth }: { onClose: () => void; on
           <>
             <label className="text-white/60 text-sm mb-2 block">Номер телефона</label>
             <input
-              type="tel" value={phone} onChange={e => setPhone(e.target.value)} placeholder="+7 900 000-00-00"
+              type="tel" value={phone}
+              onChange={e => { const v = e.target.value; if (!v.startsWith('+7')) return; setPhone(v); }}
+              placeholder="+7 900 000-00-00"
               onKeyDown={e => e.key === 'Enter' && sendCode()}
               className="w-full bg-white/10 border border-white/20 text-white placeholder:text-white/30 px-4 py-3 rounded-xl text-base focus:outline-none focus:border-veggie-lime/60 transition-colors mb-4"
               autoFocus

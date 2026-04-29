@@ -50,7 +50,7 @@ export default function CartDrawer({
     }
   }, [cart.length, orderStep]);
 
-  const delivery = freeDelivery ? 0 : 199;
+  const delivery = freeDelivery ? 0 : 300;
   const canSpendPoints = user?.is_first_order_done ?? false;
   const discount = canSpendPoints ? Math.min(pointsToUse, user?.points ?? 0, totalPrice + delivery) : 0;
   const finalTotal = Math.max(0, totalPrice + delivery - discount);
@@ -134,10 +134,10 @@ export default function CartDrawer({
                 </div>
                 <div className="flex justify-between text-sm text-muted-foreground mb-1">
                   <span>Доставка</span>
-                  <span>{freeDelivery ? "Бесплатно 🎉" : "199 ₽"}</span>
+                  <span>{freeDelivery ? "Бесплатно 🎉" : "300 ₽"}</span>
                 </div>
                 {!freeDelivery && (
-                  <p className="text-xs text-muted-foreground/70 mb-1">До бесплатной — ещё {(5 - totalWeight).toFixed(1)} кг</p>
+                  <p className="text-xs text-muted-foreground/70 mb-1">До бесплатной — ещё {Math.max(0, 1500 - totalPrice)} ₽</p>
                 )}
                 {discount > 0 && (
                   <div className="flex justify-between text-sm text-veggie-lime mb-1">
@@ -221,8 +221,10 @@ export default function CartDrawer({
                 <div>
                   <label className="text-xs text-muted-foreground font-medium mb-1 block">Телефон</label>
                   <input
-                    type="tel" value={orderPhone} onChange={e => setOrderPhone(e.target.value)}
-                    placeholder="Телефон для связи"
+                    type="tel" value={orderPhone}
+                    onChange={e => { const v = e.target.value; if (v !== '' && !v.startsWith('+7')) return; setOrderPhone(v); }}
+                    onFocus={e => { if (!e.target.value) setOrderPhone('+7'); }}
+                    placeholder="+7 900 000-00-00"
                     className="w-full border border-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-veggie-green transition-colors"
                   />
                 </div>

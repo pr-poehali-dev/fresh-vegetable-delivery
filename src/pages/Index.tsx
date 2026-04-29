@@ -186,6 +186,13 @@ export default function Index() {
   const [orderStatus, setOrderStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [orderStep, setOrderStep] = useState<1 | 2>(1);
   const [pointsToUse, setPointsToUse] = useState(0);
+  const [dbReviews, setDbReviews] = useState<Array<{id: number; name: string; city: string; text: string; rating: number; avatar: string}>>([]);
+  const [reviewForm, setReviewForm] = useState(false);
+  const [reviewName, setReviewName] = useState('');
+  const [reviewCity, setReviewCity] = useState('');
+  const [reviewText, setReviewText] = useState('');
+  const [reviewRating, setReviewRating] = useState(5);
+  const [reviewStatus, setReviewStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
   useEffect(() => {
     const handler = (e: Event) => { e.preventDefault(); setInstallPrompt(e); };
@@ -193,6 +200,29 @@ export default function Index() {
     window.addEventListener('appinstalled', () => setInstalled(true));
     return () => window.removeEventListener('beforeinstallprompt', handler);
   }, []);
+
+  useEffect(() => {
+    fetch('https://functions.poehali.dev/d8e8eac1-b7f3-41b8-b041-69e6d80a1c03?resource=reviews')
+      .then(r => r.ok ? r.json() : null)
+      .then(data => { if (data?.reviews) setDbReviews(data.reviews); })
+      .catch(() => {});
+  }, []);
+
+  const submitReview = async () => {
+    if (!reviewName.trim() || !reviewText.trim()) return;
+    setReviewStatus('loading');
+    try {
+      const res = await fetch('https://functions.poehali.dev/d8e8eac1-b7f3-41b8-b041-69e6d80a1c03?resource=reviews', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: reviewName, city: reviewCity || 'Уфа', text: reviewText, rating: reviewRating }),
+      });
+      if (res.ok) {
+        setReviewStatus('success');
+        setReviewName(''); setReviewCity(''); setReviewText(''); setReviewRating(5);
+        setTimeout(() => { setReviewStatus('idle'); setReviewForm(false); }, 2500);
+      } else setReviewStatus('error');
+    } catch { setReviewStatus('error'); }
+  };
 
   useEffect(() => {
     if (!user) return;
@@ -277,7 +307,7 @@ export default function Index() {
   const totalItems = cart.reduce((s, i) => s + i.qty, 0);
   const totalPrice = cart.reduce((s, i) => s + i.price * i.qty, 0);
   const totalWeight = cart.reduce((s, i) => s + i.weightKg * i.qty, 0);
-  const freeDelivery = totalWeight >= 5;
+  const freeDelivery = totalPrice >= 1500;
 
   const addToCart = (product: typeof PRODUCTS[0]) => {
     setCart(prev => {
@@ -344,7 +374,7 @@ export default function Index() {
   const handleOrder = async () => {
     if (!orderName.trim() || !orderPhone.trim() || !orderAddress.trim()) return;
     setOrderStatus('loading');
-    const delivery = freeDelivery ? 0 : 199;
+    const delivery = freeDelivery ? 0 : 300;
     const totalBeforeDiscount = totalPrice + delivery;
     const discount = Math.min(pointsToUse, user?.points ?? 0, totalBeforeDiscount);
     const total = totalBeforeDiscount - discount;
@@ -853,8 +883,8 @@ export default function Index() {
             <p className="text-muted-foreground text-lg">Что говорят наши клиенты</p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
-            {REVIEWS.map((review, i) => (
+          <div className="grid md:grid-cols-3 gap-6 mb-8">
+            {[...REVIEWS.map(r => ({ ...r, location: r.location })), ...dbReviews.map(r => ({ id: r.id + 1000, name: r.name, text: r.text, rating: r.rating, avatar: r.avatar, location: r.city }))].map((review, i) => (
               <div key={review.id} className="bg-background rounded-2xl p-6 border border-border card-hover animate-fade-in" style={{ animationDelay: `${i * 0.1}s` }}>
                 <div className="flex gap-1 mb-4">
                   {Array.from({ length: review.rating }).map((_, j) => (
@@ -873,6 +903,60 @@ export default function Index() {
                 </div>
               </div>
             ))}
+
+            {/* Карточка-форма "Оставить отзыв" */}
+            {!reviewForm ? (
+              <div
+                onClick={() => setReviewForm(true)}
+                className="bg-veggie-green/5 border-2 border-dashed border-veggie-green/30 rounded-2xl p-6 cursor-pointer hover:border-veggie-green hover:bg-veggie-green/10 transition-all flex flex-col items-center justify-center text-center gap-3 min-h-[180px]"
+              >
+                <div className="w-10 h-10 rounded-full bg-veggie-green/20 flex items-center justify-center text-xl">✏️</div>
+                <div>
+                  <div className="font-semibold text-veggie-green">Оставить отзыв!</div>
+                  <div className="text-xs text-muted-foreground mt-1">Поделитесь своим опытом</div>
+                </div>
+              </div>
+            ) : (
+              <div className="bg-background rounded-2xl p-6 border border-border">
+                {reviewStatus === 'success' ? (
+                  <div className="text-center py-6">
+                    <div className="text-4xl mb-2">🙏</div>
+                    <p className="font-semibold text-veggie-green">Спасибо за отзыв!</p>
+                    <p className="text-sm text-muted-foreground mt-1">Он появится после проверки</p>
+                  </div>
+                ) : (
+                  <>
+                    <div className="flex gap-1 mb-3">
+                      {[1,2,3,4,5].map(s => (
+                        <button key={s} onClick={() => setReviewRating(s)} className={`text-2xl transition-transform hover:scale-110 ${s <= reviewRating ? 'text-veggie-yellow' : 'text-gray-300'}`}>★</button>
+                      ))}
+                    </div>
+                    <p className="text-muted-foreground leading-relaxed mb-4 italic text-sm">
+                      <textarea
+                        value={reviewText} onChange={e => setReviewText(e.target.value)}
+                        placeholder="Ваш отзыв о нашем сервисе..."
+                        rows={3}
+                        className="w-full border border-border rounded-xl px-3 py-2 text-sm resize-none focus:outline-none focus:border-veggie-green not-italic text-foreground"
+                      />
+                    </p>
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-veggie-green/10 flex items-center justify-center text-xl">👤</div>
+                      <div className="flex-1 flex flex-col gap-2">
+                        <input value={reviewName} onChange={e => setReviewName(e.target.value)} placeholder="Ваше имя" className="border border-border rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-veggie-green w-full" />
+                        <input value={reviewCity} onChange={e => setReviewCity(e.target.value)} placeholder="Город" className="border border-border rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-veggie-green w-full" />
+                      </div>
+                    </div>
+                    {reviewStatus === 'error' && <p className="text-red-500 text-xs mt-2">Ошибка. Попробуйте снова.</p>}
+                    <div className="flex gap-2 mt-3">
+                      <button onClick={submitReview} disabled={reviewStatus === 'loading' || !reviewName.trim() || !reviewText.trim()} className="flex-1 bg-veggie-green text-white py-2 rounded-xl text-sm font-semibold hover:bg-veggie-green/90 transition-colors disabled:opacity-50">
+                        {reviewStatus === 'loading' ? 'Отправка...' : 'Отправить'}
+                      </button>
+                      <button onClick={() => setReviewForm(false)} className="text-muted-foreground hover:text-foreground px-3 py-2 rounded-xl text-sm transition-colors">Отмена</button>
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -944,7 +1028,9 @@ export default function Index() {
                 <div className="space-y-4">
                   <input type="text" placeholder="Ваше имя" value={formName} onChange={e => setFormName(e.target.value)}
                     className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:border-veggie-lime transition-colors" />
-                  <input type="tel" placeholder="Номер телефона" value={formPhone} onChange={e => setFormPhone(e.target.value)}
+                  <input type="tel" placeholder="+7 900 000-00-00" value={formPhone}
+                    onChange={e => { const v = e.target.value; if (v !== '' && !v.startsWith('+7')) return; setFormPhone(v); }}
+                    onFocus={e => { if (!e.target.value) setFormPhone('+7'); }}
                     className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:border-veggie-lime transition-colors" />
                   <textarea placeholder="Комментарий (необязательно)" rows={3} value={formComment} onChange={e => setFormComment(e.target.value)}
                     className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:border-veggie-lime transition-colors resize-none" />

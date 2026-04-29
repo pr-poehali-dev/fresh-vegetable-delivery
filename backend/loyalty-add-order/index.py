@@ -7,12 +7,13 @@ from email.mime.multipart import MIMEMultipart
 
 CORS = {
     'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET, POST, PUT, PATCH, OPTIONS',
+    'Access-Control-Allow-Methods': 'GET, POST, PUT, PATCH, DELETE, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, X-Admin-Key',
 }
 VALID_STATUSES = ['new', 'processing', 'delivering', 'done', 'cancelled']
 SCHEMA = os.environ['MAIN_DB_SCHEMA']
 BONUS_FIRST_ORDER = 200
+AVATARS = ['👨', '👩', '👨‍💼', '👩‍💼', '👨‍🦰', '👩‍🦰', '👴', '👵', '🧑', '👤']
 
 
 def send_email(name, phone, address, comment, items, total_price, order_id):
@@ -73,6 +74,126 @@ def handler(event: dict, context) -> dict:
         return {'statusCode': 200, 'headers': CORS, 'body': ''}
 
     params = event.get('queryStringParameters') or {}
+    headers = event.get('headers') or {}
+    admin_key = headers.get('X-Admin-Key', '')
+    is_admin = admin_key == os.environ.get('ADMIN_KEY', 'unset')
+    resource = params.get('resource', '')
+
+    # === ОТЗЫВЫ ===
+    if resource == 'reviews':
+        conn = psycopg2.connect(os.environ['DATABASE_URL'])
+        cur = conn.cursor()
+        method = event.get('httpMethod')
+        if method == 'GET':
+            if is_admin:
+                cur.execute(f"SELECT id, name, city, text, rating, avatar, approved, created_at FROM {SCHEMA}.reviews ORDER BY created_at DESC LIMIT 200")
+            else:
+                cur.execute(f"SELECT id, name, city, text, rating, avatar, approved, created_at FROM {SCHEMA}.reviews WHERE approved=TRUE ORDER BY created_at DESC LIMIT 50")
+            rows = cur.fetchall()
+            cur.close(); conn.close()
+            reviews = [{'id': r[0], 'name': r[1], 'city': r[2], 'text': r[3], 'rating': r[4], 'avatar': r[5], 'approved': r[6], 'created_at': r[7].isoformat()} for r in rows]
+            return {'statusCode': 200, 'headers': CORS, 'body': json.dumps({'reviews': reviews}, ensure_ascii=False)}
+        if method == 'POST':
+            body = json.loads(event.get('body') or '{}')
+            name = (body.get('name') or '').strip()
+            city = (body.get('city') or 'Уфа').strip()
+            text = (body.get('text') or '').strip()
+            rating = max(1, min(5, int(body.get('rating') or 5)))
+            if not name or not text:
+                cur.close(); conn.close()
+                return {'statusCode': 400, 'headers': CORS, 'body': json.dumps({'error': 'name и text обязательны'})}
+            import random
+            avatar = random.choice(AVATARS)
+            approved = is_admin
+            cur.execute(f"INSERT INTO {SCHEMA}.reviews (name, city, text, rating, avatar, approved) VALUES (%s, %s, %s, %s, %s, %s) RETURNING id", (name, city, text, rating, avatar, approved))
+            new_id = cur.fetchone()[0]
+            conn.commit(); cur.close(); conn.close()
+            return {'statusCode': 200, 'headers': CORS, 'body': json.dumps({'ok': True, 'id': new_id, 'approved': approved}, ensure_ascii=False)}
+        if method == 'PUT':
+            if not is_admin:
+                cur.close(); conn.close()
+                return {'statusCode': 403, 'headers': CORS, 'body': json.dumps({'error': 'Forbidden'})}
+            body = json.loads(event.get('body') or '{}')
+            review_id = body.get('id')
+            if not review_id:
+                cur.close(); conn.close()
+                return {'statusCode': 400, 'headers': CORS, 'body': json.dumps({'error': 'id обязателен'})}
+            fields, vals = [], []
+            for f in ['name', 'city', 'text', 'rating', 'avatar', 'approved']:
+                if f in body:
+                    fields.append(f"{f}=%s"); vals.append(body[f])
+            vals.append(review_id)
+            cur.execute(f"UPDATE {SCHEMA}.reviews SET {', '.join(fields)} WHERE id=%s", vals)
+            conn.commit(); cur.close(); conn.close()
+            return {'statusCode': 200, 'headers': CORS, 'body': json.dumps({'ok': True})}
+        if method == 'DELETE':
+            if not is_admin:
+                cur.close(); conn.close()
+                return {'statusCode': 403, 'headers': CORS, 'body': json.dumps({'error': 'Forbidden'})}
+            body = json.loads(event.get('body') or '{}')
+            review_id = body.get('id')
+            cur.execute(f"DELETE FROM {SCHEMA}.reviews WHERE id=%s", (review_id,))
+            conn.commit(); cur.close(); conn.close()
+            return {'statusCode': 200, 'headers': CORS, 'body': json.dumps({'ok': True})}
+        cur.close(); conn.close()
+        return {'statusCode': 405, 'headers': CORS, 'body': json.dumps({'error': 'Method not allowed'})}
+
+    # === ПОЛЬЗОВАТЕЛИ (только admin) ===
+    if resource == 'users':
+        if not is_admin:
+            return {'statusCode': 403, 'headers': CORS, 'body': json.dumps({'error': 'Forbidden'})}
+        conn = psycopg2.connect(os.environ['DATABASE_URL'])
+        cur = conn.cursor()
+        method = event.get('httpMethod')
+        if method == 'GET':
+            cur.execute(f"""SELECT u.id, u.phone, u.name, u.points, u.is_first_order_done, u.created_at, u.last_seen_at, COUNT(o.id) as order_count
+                FROM {SCHEMA}.users u LEFT JOIN {SCHEMA}.orders o ON o.user_id = u.id
+                GROUP BY u.id ORDER BY u.last_seen_at DESC NULLS LAST, u.created_at DESC LIMIT 500""")
+            rows = cur.fetchall()
+            cur.close(); conn.close()
+            users = [{'id': r[0], 'phone': r[1], 'name': r[2], 'points': r[3], 'is_first_order_done': r[4],
+                      'created_at': r[5].isoformat() if r[5] else None, 'last_seen_at': r[6].isoformat() if r[6] else None, 'order_count': r[7]} for r in rows]
+            return {'statusCode': 200, 'headers': CORS, 'body': json.dumps({'users': users}, ensure_ascii=False)}
+        if method == 'PUT':
+            body = json.loads(event.get('body') or '{}')
+            user_id = body.get('id')
+            if not user_id:
+                cur.close(); conn.close()
+                return {'statusCode': 400, 'headers': CORS, 'body': json.dumps({'error': 'id обязателен'})}
+            fields, vals = [], []
+            if 'name' in body: fields.append("name=%s"); vals.append(body['name'])
+            if 'phone' in body: fields.append("phone=%s"); vals.append(body['phone'])
+            if 'is_first_order_done' in body: fields.append("is_first_order_done=%s"); vals.append(bool(body['is_first_order_done']))
+            if 'points' in body:
+                new_pts = int(body['points'])
+                cur.execute(f"SELECT points FROM {SCHEMA}.users WHERE id=%s", (user_id,))
+                old = cur.fetchone()
+                if old:
+                    diff = new_pts - old[0]
+                    if diff != 0:
+                        cur.execute(f"INSERT INTO {SCHEMA}.loyalty_transactions (user_id, points, reason) VALUES (%s, %s, %s)", (user_id, diff, body.get('points_reason') or 'Корректировка баллов администратором'))
+                fields.append("points=%s"); vals.append(new_pts)
+            if not fields:
+                cur.close(); conn.close()
+                return {'statusCode': 400, 'headers': CORS, 'body': json.dumps({'error': 'Нет полей'})}
+            vals.append(user_id)
+            cur.execute(f"UPDATE {SCHEMA}.users SET {', '.join(fields)} WHERE id=%s", vals)
+            conn.commit(); cur.close(); conn.close()
+            return {'statusCode': 200, 'headers': CORS, 'body': json.dumps({'ok': True})}
+        if method == 'DELETE':
+            body = json.loads(event.get('body') or '{}')
+            user_id = body.get('id')
+            if not user_id:
+                cur.close(); conn.close()
+                return {'statusCode': 400, 'headers': CORS, 'body': json.dumps({'error': 'id обязателен'})}
+            cur.execute(f"DELETE FROM {SCHEMA}.loyalty_transactions WHERE user_id=%s", (user_id,))
+            cur.execute(f"UPDATE {SCHEMA}.orders SET user_id=NULL WHERE user_id=%s", (user_id,))
+            cur.execute(f"DELETE FROM {SCHEMA}.sms_codes WHERE phone=(SELECT phone FROM {SCHEMA}.users WHERE id=%s)", (user_id,))
+            cur.execute(f"DELETE FROM {SCHEMA}.users WHERE id=%s", (user_id,))
+            conn.commit(); cur.close(); conn.close()
+            return {'statusCode': 200, 'headers': CORS, 'body': json.dumps({'ok': True})}
+        cur.close(); conn.close()
+        return {'statusCode': 405, 'headers': CORS, 'body': json.dumps({'error': 'Method not allowed'})}
 
     # --- Ежемесячное начисление баллов ---
     if event.get('httpMethod') == 'POST' and params.get('action') == 'monthly_bonus':
@@ -137,6 +258,20 @@ def handler(event: dict, context) -> dict:
             'body': json.dumps({'ok': True, 'period': period_label, 'users_credited': processed})
         }
 
+    if event.get('httpMethod') == 'DELETE':
+        admin_key = (event.get('headers') or {}).get('X-Admin-Key', '')
+        if admin_key != os.environ.get('ADMIN_KEY', 'unset'):
+            return {'statusCode': 403, 'headers': CORS, 'body': json.dumps({'error': 'Forbidden'})}
+        body = json.loads(event.get('body') or '{}')
+        order_id = body.get('order_id')
+        if not order_id:
+            return {'statusCode': 400, 'headers': CORS, 'body': json.dumps({'error': 'order_id обязателен'})}
+        conn = psycopg2.connect(os.environ['DATABASE_URL'])
+        cur = conn.cursor()
+        cur.execute(f"DELETE FROM {SCHEMA}.orders WHERE id=%s", (order_id,))
+        conn.commit(); cur.close(); conn.close()
+        return {'statusCode': 200, 'headers': CORS, 'body': json.dumps({'ok': True})}
+
     if event.get('httpMethod') == 'PATCH':
         admin_key = (event.get('headers') or {}).get('X-Admin-Key', '')
         expected = os.environ.get('ADMIN_KEY', 'unset')
@@ -145,8 +280,14 @@ def handler(event: dict, context) -> dict:
         body = json.loads(event.get('body') or '{}')
         order_id = body.get('order_id')
         new_status = body.get('status', '')
-        if not order_id or new_status not in VALID_STATUSES:
-            return {'statusCode': 400, 'headers': CORS, 'body': json.dumps({'error': 'order_id и корректный status обязательны'})}
+        new_items = body.get('items')
+        new_total = body.get('total_price')
+
+        if not order_id:
+            return {'statusCode': 400, 'headers': CORS, 'body': json.dumps({'error': 'order_id обязателен'})}
+        if new_status and new_status not in VALID_STATUSES:
+            return {'statusCode': 400, 'headers': CORS, 'body': json.dumps({'error': 'Некорректный status'})}
+
         conn = psycopg2.connect(os.environ['DATABASE_URL'])
         cur = conn.cursor()
         cur.execute(f"SELECT id, user_id, status FROM {SCHEMA}.orders WHERE id=%s", (order_id,))
@@ -155,6 +296,15 @@ def handler(event: dict, context) -> dict:
             cur.close(); conn.close()
             return {'statusCode': 404, 'headers': CORS, 'body': json.dumps({'error': 'Заказ не найден'})}
         _, order_user_id, old_status = order_row
+
+        if new_items is not None:
+            import json as json_mod
+            cur.execute(f"UPDATE {SCHEMA}.orders SET items=%s WHERE id=%s", (json_mod.dumps(new_items, ensure_ascii=False), order_id))
+        if new_total is not None:
+            cur.execute(f"UPDATE {SCHEMA}.orders SET total_price=%s WHERE id=%s", (float(new_total), order_id))
+        if not new_status:
+            conn.commit(); cur.close(); conn.close()
+            return {'statusCode': 200, 'headers': CORS, 'body': json.dumps({'ok': True})}
 
         cur.execute(f"UPDATE {SCHEMA}.orders SET status=%s WHERE id=%s", (new_status, order_id))
 
