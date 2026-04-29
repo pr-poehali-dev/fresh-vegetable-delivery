@@ -71,6 +71,18 @@ const EGGS = [
   { id: 601, name: "Яйцо домашнее", price: 150, unit: "упак", season: "всесезонно", type: "яйца", emoji: "🥚", badge: null, weight: "10шт", weightKg: 0.6, image: "" },
 ];
 
+const MEAT = [
+  { id: 701, name: "Курица целая", price: 200, unit: "кг", season: "всесезонно", type: "птица", emoji: "🍗", badge: null, weight: "1кг", weightKg: 1, image: "" },
+  { id: 702, name: "Куриное филе", price: 280, unit: "кг", season: "всесезонно", type: "птица", emoji: "🍗", badge: "Хит", weight: "1кг", weightKg: 1, image: "" },
+  { id: 703, name: "Куриные бёдра", price: 220, unit: "кг", season: "всесезонно", type: "птица", emoji: "🍗", badge: null, weight: "1кг", weightKg: 1, image: "" },
+  { id: 704, name: "Говядина вырезка", price: 650, unit: "кг", season: "всесезонно", type: "говядина", emoji: "🥩", badge: null, weight: "1кг", weightKg: 1, image: "" },
+  { id: 705, name: "Говядина тушёная", price: 480, unit: "кг", season: "всесезонно", type: "говядина", emoji: "🥩", badge: null, weight: "1кг", weightKg: 1, image: "" },
+  { id: 706, name: "Свинина шея", price: 380, unit: "кг", season: "всесезонно", type: "свинина", emoji: "🥩", badge: null, weight: "1кг", weightKg: 1, image: "" },
+  { id: 707, name: "Свинина рёбра", price: 320, unit: "кг", season: "всесезонно", type: "свинина", emoji: "🥩", badge: null, weight: "1кг", weightKg: 1, image: "" },
+  { id: 708, name: "Фарш говяжий", price: 400, unit: "кг", season: "всесезонно", type: "фарш", emoji: "🥩", badge: null, weight: "1кг", weightKg: 1, image: "" },
+  { id: 709, name: "Фарш смешанный", price: 350, unit: "кг", season: "всесезонно", type: "фарш", emoji: "🥩", badge: null, weight: "1кг", weightKg: 1, image: "" },
+];
+
 const VEG_TYPES = ["все", "картофель", "капуста", "корнеплоды", "лук", "томаты", "огурцы", "чеснок", "специи"];
 const FRUIT_TYPES = ["все", "яблоки", "груши", "цитрусы", "сливы", "виноград", "экзотика"];
 const BERRY_TYPES = ["все", "ягоды"];
@@ -78,8 +90,9 @@ const JUICE_TYPES = ["все", "соки"];
 const MUSHROOM_TYPES = ["все", "грибы"];
 const GREEN_TYPES = ["все", "зелень"];
 const EGG_TYPES = ["все", "яйца"];
+const MEAT_TYPES = ["все", "птица", "говядина", "свинина", "фарш"];
 
-const PRODUCTS = [...VEGETABLES, ...FRUITS, ...BERRIES, ...JUICES, ...MUSHROOMS, ...GREENS, ...EGGS];
+const PRODUCTS = [...VEGETABLES, ...FRUITS, ...BERRIES, ...JUICES, ...MUSHROOMS, ...GREENS, ...EGGS, ...MEAT];
 
 const REVIEWS = [
   { id: 1, name: "Анна К.", text: "Уже третий месяц заказываю каждую неделю! Овощи всегда свежайшие, как с грядки. Брокколи и шпинат — просто объедение!", rating: 5, avatar: "👩‍🦰", location: "Уфа" },
@@ -150,7 +163,7 @@ const NAV_LINKS = ["Каталог", "Доставка", "О сервисе", "�
 type CartItem = { id: number; name: string; price: number; emoji: string; qty: number; weightKg: number; minWeightG?: number; pricePerKg?: number; grams?: number };
 
 export default function Index() {
-  const [activeSection, setActiveSection] = useState<"vegetables" | "fruits" | "berries" | "juices" | "mushrooms" | "greens" | "eggs">("vegetables");
+  const [activeSection, setActiveSection] = useState<"vegetables" | "fruits" | "berries" | "juices" | "mushrooms" | "greens" | "eggs" | "meat">("vegetables");
   const [openArticle, setOpenArticle] = useState<number | null>(null);
   const [activeType, setActiveType] = useState("все");
   const [search, setSearch] = useState("");
@@ -286,6 +299,7 @@ export default function Index() {
     mushrooms: MUSHROOMS,
     greens: GREENS,
     eggs: EGGS,
+    meat: MEAT,
   };
   const TYPES_MAP = {
     vegetables: VEG_TYPES,
@@ -295,6 +309,7 @@ export default function Index() {
     mushrooms: MUSHROOM_TYPES,
     greens: GREEN_TYPES,
     eggs: EGG_TYPES,
+    meat: MEAT_TYPES,
   };
   const currentProducts = isSearching ? PRODUCTS : SECTION_MAP[activeSection];
   const currentTypes = TYPES_MAP[activeSection];
