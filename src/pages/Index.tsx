@@ -84,7 +84,17 @@ const GREEN_TYPES = ["все", "зелень"];
 const EGG_TYPES = ["все", "яйца"];
 const MEAT_TYPES = ["все", "птица", "говядина", "свинина", "фарш"];
 
-const PRODUCTS = [...VEGETABLES, ...FRUITS, ...BERRIES, ...JUICES, ...MUSHROOMS, ...GREENS, ...EGGS, ...MEAT];
+const DAIRY = [
+  { id: 801, name: "Молоко домашнее", price: 0, unit: "л", season: "всесезонно", type: "молоко", emoji: "🥛", badge: null, weight: "1л", weightKg: 1, image: "" },
+  { id: 802, name: "Сметана домашняя", price: 0, unit: "500г", season: "всесезонно", type: "кисломолочное", emoji: "🥛", badge: null, weight: "500г", weightKg: 0.5, image: "" },
+  { id: 803, name: "Творог домашний", price: 0, unit: "500г", season: "всесезонно", type: "творог", emoji: "🧀", badge: null, weight: "500г", weightKg: 0.5, image: "" },
+  { id: 804, name: "Кефир домашний", price: 0, unit: "л", season: "всесезонно", type: "кисломолочное", emoji: "🥛", badge: null, weight: "1л", weightKg: 1, image: "" },
+  { id: 805, name: "Масло сливочное", price: 0, unit: "200г", season: "всесезонно", type: "масло", emoji: "🧈", badge: null, weight: "200г", weightKg: 0.2, image: "" },
+  { id: 806, name: "Сыр домашний", price: 0, unit: "кг", season: "всесезонно", type: "сыр", emoji: "🧀", badge: null, weight: "1кг", weightKg: 1, image: "" },
+];
+const DAIRY_TYPES = ["все", "молоко", "кисломолочное", "творог", "масло", "сыр"];
+
+const PRODUCTS = [...VEGETABLES, ...FRUITS, ...BERRIES, ...JUICES, ...MUSHROOMS, ...GREENS, ...EGGS, ...MEAT, ...DAIRY];
 
 const REVIEWS = [
   { id: 1, name: "Анна К.", text: "Уже третий месяц заказываю каждую неделю! Овощи всегда свежайшие, как с грядки. Брокколи и шпинат — просто объедение!", rating: 5, avatar: "👩‍🦰", location: "Уфа" },
@@ -155,7 +165,7 @@ const NAV_LINKS = ["Каталог", "Доставка", "О сервисе", "�
 type CartItem = { id: number; name: string; price: number; emoji: string; qty: number; weightKg: number; minWeightG?: number; pricePerKg?: number; grams?: number };
 
 export default function Index() {
-  const [activeSection, setActiveSection] = useState<"vegetables" | "fruits" | "berries" | "juices" | "mushrooms" | "greens" | "eggs" | "meat">("vegetables");
+  const [activeSection, setActiveSection] = useState<"vegetables" | "fruits" | "berries" | "juices" | "mushrooms" | "greens" | "eggs" | "meat" | "dairy">("vegetables");
   const [openArticle, setOpenArticle] = useState<number | null>(null);
   const [activeType, setActiveType] = useState("все");
   const [search, setSearch] = useState("");
@@ -292,6 +302,7 @@ export default function Index() {
     greens: GREENS,
     eggs: EGGS,
     meat: MEAT,
+    dairy: DAIRY,
   };
   const TYPES_MAP = {
     vegetables: VEG_TYPES,
@@ -302,6 +313,7 @@ export default function Index() {
     greens: GREEN_TYPES,
     eggs: EGG_TYPES,
     meat: MEAT_TYPES,
+    dairy: DAIRY_TYPES,
   };
   const currentProducts = isSearching ? PRODUCTS : SECTION_MAP[activeSection];
   const currentTypes = TYPES_MAP[activeSection];
