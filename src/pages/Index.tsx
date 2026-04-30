@@ -94,7 +94,16 @@ const DAIRY = [
 ];
 const DAIRY_TYPES = ["все", "молоко", "кисломолочное", "творог", "масло", "сыр"];
 
-const PRODUCTS = [...VEGETABLES, ...FRUITS, ...BERRIES, ...JUICES, ...MUSHROOMS, ...GREENS, ...EGGS, ...MEAT, ...DAIRY];
+const SAUSAGE = [
+  { id: 901, name: "Колбаса варёная", price: 0, unit: "кг", season: "всесезонно", type: "варёная", emoji: "🌭", badge: null, weight: "1кг", weightKg: 1, image: "" },
+  { id: 902, name: "Колбаса копчёная", price: 0, unit: "кг", season: "всесезонно", type: "копчёная", emoji: "🌭", badge: null, weight: "1кг", weightKg: 1, image: "" },
+  { id: 903, name: "Сосиски домашние", price: 0, unit: "кг", season: "всесезонно", type: "сосиски", emoji: "🌭", badge: null, weight: "1кг", weightKg: 1, image: "" },
+  { id: 904, name: "Сардельки", price: 0, unit: "кг", season: "всесезонно", type: "сосиски", emoji: "🌭", badge: null, weight: "1кг", weightKg: 1, image: "" },
+  { id: 905, name: "Ветчина домашняя", price: 0, unit: "кг", season: "всесезонно", type: "ветчина", emoji: "🥩", badge: null, weight: "1кг", weightKg: 1, image: "" },
+];
+const SAUSAGE_TYPES = ["все", "варёная", "копчёная", "сосиски", "ветчина"];
+
+const PRODUCTS = [...VEGETABLES, ...FRUITS, ...BERRIES, ...JUICES, ...MUSHROOMS, ...GREENS, ...EGGS, ...MEAT, ...DAIRY, ...SAUSAGE];
 
 const REVIEWS = [
   { id: 1, name: "Анна К.", text: "Уже третий месяц заказываю каждую неделю! Овощи всегда свежайшие, как с грядки. Брокколи и шпинат — просто объедение!", rating: 5, avatar: "👩‍🦰", location: "Уфа" },
@@ -165,7 +174,7 @@ const NAV_LINKS = ["Каталог", "Доставка", "О сервисе", "�
 type CartItem = { id: number; name: string; price: number; emoji: string; qty: number; weightKg: number; minWeightG?: number; pricePerKg?: number; grams?: number };
 
 export default function Index() {
-  const [activeSection, setActiveSection] = useState<"vegetables" | "fruits" | "berries" | "juices" | "mushrooms" | "greens" | "eggs" | "meat" | "dairy">("vegetables");
+  const [activeSection, setActiveSection] = useState<"vegetables" | "fruits" | "berries" | "juices" | "mushrooms" | "greens" | "eggs" | "meat" | "dairy" | "sausage">("vegetables");
   const [openArticle, setOpenArticle] = useState<number | null>(null);
   const [activeType, setActiveType] = useState("все");
   const [search, setSearch] = useState("");
@@ -303,6 +312,7 @@ export default function Index() {
     eggs: EGGS,
     meat: MEAT,
     dairy: DAIRY,
+    sausage: SAUSAGE,
   };
   const TYPES_MAP = {
     vegetables: VEG_TYPES,
@@ -314,6 +324,7 @@ export default function Index() {
     eggs: EGG_TYPES,
     meat: MEAT_TYPES,
     dairy: DAIRY_TYPES,
+    sausage: SAUSAGE_TYPES,
   };
   const currentProducts = isSearching ? PRODUCTS : SECTION_MAP[activeSection];
   const currentTypes = TYPES_MAP[activeSection];
