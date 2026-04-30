@@ -326,8 +326,8 @@ export default function Index() {
     dairy: DAIRY_TYPES,
     sausage: SAUSAGE_TYPES,
   };
-  const currentProducts = isSearching ? PRODUCTS : SECTION_MAP[activeSection];
-  const currentTypes = TYPES_MAP[activeSection];
+  const currentProducts = isSearching ? PRODUCTS : (SECTION_MAP[activeSection] ?? VEGETABLES);
+  const currentTypes = TYPES_MAP[activeSection] ?? VEG_TYPES;
   const filteredProducts = currentProducts.filter(p => {
     const matchesType = isSearching || activeType === "все" || p.type === activeType;
     const matchesSearch = !isSearching || p.name.toLowerCase().includes(search.toLowerCase());
