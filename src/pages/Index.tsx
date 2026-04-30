@@ -79,6 +79,7 @@ const MEAT = [
   { id: 705, name: "Говядина тушёная", price: 480, unit: "кг", season: "всесезонно", type: "говядина", emoji: "🥩", badge: null, weight: "1кг", weightKg: 1, image: "" },
   { id: 706, name: "Свинина шея", price: 380, unit: "кг", season: "всесезонно", type: "свинина", emoji: "🥩", badge: null, weight: "1кг", weightKg: 1, image: "" },
   { id: 707, name: "Свинина рёбра", price: 320, unit: "кг", season: "всесезонно", type: "свинина", emoji: "🥩", badge: null, weight: "1кг", weightKg: 1, image: "" },
+  { id: 710, name: "Свинина на кости свежая", price: 300, unit: "кг", season: "всесезонно", type: "свинина", emoji: "🥩", badge: null, weight: "1кг", weightKg: 1, image: "" },
   { id: 708, name: "Фарш говяжий", price: 400, unit: "кг", season: "всесезонно", type: "фарш", emoji: "🥩", badge: null, weight: "1кг", weightKg: 1, image: "" },
   { id: 709, name: "Фарш смешанный", price: 350, unit: "кг", season: "всесезонно", type: "фарш", emoji: "🥩", badge: null, weight: "1кг", weightKg: 1, image: "" },
 ];
