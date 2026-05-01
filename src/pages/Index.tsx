@@ -110,7 +110,12 @@ const HOUSEHOLD = [
 ];
 const HOUSEHOLD_TYPES = ["все", "стирка", "салфетки", "бумага"];
 
-const PRODUCTS = [...VEGETABLES, ...FRUITS, ...BERRIES, ...JUICES, ...MUSHROOMS, ...GREENS, ...EGGS, ...MEAT, ...DAIRY, ...SAUSAGE, ...HOUSEHOLD];
+const GROCERY = [
+  { id: 1101, name: "Мука пшеничная высший сорт 5 кг", price: 254, unit: "уп", season: "всесезонно", type: "мука", emoji: "🌾", badge: null, weight: "5 кг", weightKg: 5, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/8a64f203-60de-40e5-b5ce-41e2be74d9ee.jpg" },
+];
+const GROCERY_TYPES = ["все", "мука"];
+
+const PRODUCTS = [...VEGETABLES, ...FRUITS, ...BERRIES, ...JUICES, ...MUSHROOMS, ...GREENS, ...EGGS, ...MEAT, ...DAIRY, ...SAUSAGE, ...HOUSEHOLD, ...GROCERY];
 
 const REVIEWS = [
   { id: 1, name: "Анна К.", text: "Уже третий месяц заказываю каждую неделю! Овощи всегда свежайшие, как с грядки. Брокколи и шпинат — просто объедение!", rating: 5, avatar: "👩‍🦰", location: "Уфа" },
@@ -181,7 +186,7 @@ const NAV_LINKS = ["Каталог", "Доставка", "О сервисе", "�
 type CartItem = { id: number; name: string; price: number; emoji: string; qty: number; weightKg: number; minWeightG?: number; pricePerKg?: number; grams?: number };
 
 export default function Index() {
-  const [activeSection, setActiveSection] = useState<"vegetables" | "fruits" | "berries" | "juices" | "mushrooms" | "greens" | "eggs" | "meat" | "dairy" | "sausage" | "household">("vegetables");
+  const [activeSection, setActiveSection] = useState<"vegetables" | "fruits" | "berries" | "juices" | "mushrooms" | "greens" | "eggs" | "meat" | "dairy" | "sausage" | "household" | "grocery">("vegetables");
   const [openArticle, setOpenArticle] = useState<number | null>(null);
   const [activeType, setActiveType] = useState("все");
   const [search, setSearch] = useState("");
@@ -321,6 +326,7 @@ export default function Index() {
     dairy: DAIRY,
     sausage: SAUSAGE,
     household: HOUSEHOLD,
+    grocery: GROCERY,
   };
   const TYPES_MAP = {
     vegetables: VEG_TYPES,
@@ -334,6 +340,7 @@ export default function Index() {
     dairy: DAIRY_TYPES,
     sausage: SAUSAGE_TYPES,
     household: HOUSEHOLD_TYPES,
+    grocery: GROCERY_TYPES,
   };
   const currentProducts = isSearching ? PRODUCTS : (SECTION_MAP[activeSection] ?? VEGETABLES);
   const currentTypes = TYPES_MAP[activeSection] ?? VEG_TYPES;

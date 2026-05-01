@@ -11,8 +11,8 @@ type CartItem = { id: number; name: string; price: number; emoji: string; qty: n
 interface CatalogSectionProps {
   search: string;
   setSearch: (v: string) => void;
-  activeSection: "vegetables" | "fruits" | "berries" | "juices" | "mushrooms" | "greens" | "eggs" | "meat" | "dairy" | "sausage" | "household";
-  setActiveSection: (v: "vegetables" | "fruits" | "berries" | "juices" | "mushrooms" | "greens" | "eggs" | "meat" | "dairy" | "sausage" | "household") => void;
+  activeSection: "vegetables" | "fruits" | "berries" | "juices" | "mushrooms" | "greens" | "eggs" | "meat" | "dairy" | "sausage" | "household" | "grocery";
+  setActiveSection: (v: "vegetables" | "fruits" | "berries" | "juices" | "mushrooms" | "greens" | "eggs" | "meat" | "dairy" | "sausage" | "household" | "grocery") => void;
   activeType: string;
   setActiveType: (v: string) => void;
   currentTypes: string[];
@@ -67,6 +67,7 @@ export default function CatalogSection({
               { key: "dairy", label: "🥛 Молоко" },
               { key: "sausage", label: "🌭 Колбаса" },
               { key: "household", label: "🧺 Бытовая химия" },
+              { key: "grocery", label: "🌾 Бакалея" },
             ] as const).map(({ key, label }) => (
               <button
                 key={key}
