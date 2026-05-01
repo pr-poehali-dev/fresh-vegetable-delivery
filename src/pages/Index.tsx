@@ -103,7 +103,12 @@ const SAUSAGE = [
 ];
 const SAUSAGE_TYPES = ["все", "варёная", "копчёная", "сосиски", "ветчина"];
 
-const PRODUCTS = [...VEGETABLES, ...FRUITS, ...BERRIES, ...JUICES, ...MUSHROOMS, ...GREENS, ...EGGS, ...MEAT, ...DAIRY, ...SAUSAGE];
+const HOUSEHOLD = [
+  { id: 1001, name: "Billie COLOR капсулы для стирки 35 шт", price: 428, unit: "уп", season: "всесезонно", type: "стирка", emoji: "🧺", badge: null, weight: "35 капсул", weightKg: 0.5, image: "" },
+];
+const HOUSEHOLD_TYPES = ["все", "стирка"];
+
+const PRODUCTS = [...VEGETABLES, ...FRUITS, ...BERRIES, ...JUICES, ...MUSHROOMS, ...GREENS, ...EGGS, ...MEAT, ...DAIRY, ...SAUSAGE, ...HOUSEHOLD];
 
 const REVIEWS = [
   { id: 1, name: "Анна К.", text: "Уже третий месяц заказываю каждую неделю! Овощи всегда свежайшие, как с грядки. Брокколи и шпинат — просто объедение!", rating: 5, avatar: "👩‍🦰", location: "Уфа" },
@@ -174,7 +179,7 @@ const NAV_LINKS = ["Каталог", "Доставка", "О сервисе", "�
 type CartItem = { id: number; name: string; price: number; emoji: string; qty: number; weightKg: number; minWeightG?: number; pricePerKg?: number; grams?: number };
 
 export default function Index() {
-  const [activeSection, setActiveSection] = useState<"vegetables" | "fruits" | "berries" | "juices" | "mushrooms" | "greens" | "eggs" | "meat" | "dairy" | "sausage">("vegetables");
+  const [activeSection, setActiveSection] = useState<"vegetables" | "fruits" | "berries" | "juices" | "mushrooms" | "greens" | "eggs" | "meat" | "dairy" | "sausage" | "household">("vegetables");
   const [openArticle, setOpenArticle] = useState<number | null>(null);
   const [activeType, setActiveType] = useState("все");
   const [search, setSearch] = useState("");
@@ -313,6 +318,7 @@ export default function Index() {
     meat: MEAT,
     dairy: DAIRY,
     sausage: SAUSAGE,
+    household: HOUSEHOLD,
   };
   const TYPES_MAP = {
     vegetables: VEG_TYPES,
@@ -325,6 +331,7 @@ export default function Index() {
     meat: MEAT_TYPES,
     dairy: DAIRY_TYPES,
     sausage: SAUSAGE_TYPES,
+    household: HOUSEHOLD_TYPES,
   };
   const currentProducts = isSearching ? PRODUCTS : (SECTION_MAP[activeSection] ?? VEGETABLES);
   const currentTypes = TYPES_MAP[activeSection] ?? VEG_TYPES;
