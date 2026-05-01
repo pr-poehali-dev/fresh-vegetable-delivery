@@ -1,11 +1,14 @@
 import json
 import smtplib
 import os
+import uuid
+import base64
+import boto3
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 def handler(event: dict, context) -> dict:
-    """Отправка заявки с сайта ОвощиМаркет на почту filini_ufa@mail.ru"""
+    """Отправка заявки с сайта ОвощиМаркет на почту filini_ufa@mail.ru. Также обрабатывает загрузку фото товаров через action=upload."""
 
     cors_headers = {
         'Access-Control-Allow-Origin': '*',
@@ -17,6 +20,33 @@ def handler(event: dict, context) -> dict:
         return {'statusCode': 200, 'headers': cors_headers, 'body': ''}
 
     body = json.loads(event.get('body') or '{}')
+
+    if body.get('action') == 'upload':
+        image_b64 = body.get('image')
+        content_type = body.get('contentType', 'image/jpeg')
+
+        if not image_b64:
+            return {'statusCode': 400, 'headers': cors_headers, 'body': json.dumps({'error': 'No image provided'})}
+
+        ext_map = {'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp', 'image/gif': 'gif'}
+        ext = ext_map.get(content_type, 'jpg')
+        key = f"products/{uuid.uuid4()}.{ext}"
+
+        image_data = base64.b64decode(image_b64)
+
+        s3 = boto3.client(
+            's3',
+            endpoint_url='https://bucket.poehali.dev',
+            aws_access_key_id=os.environ['AWS_ACCESS_KEY_ID'],
+            aws_secret_access_key=os.environ['AWS_SECRET_ACCESS_KEY']
+        )
+        s3.put_object(Bucket='files', Key=key, Body=image_data, ContentType=content_type)
+
+        project_id = os.environ['AWS_ACCESS_KEY_ID']
+        url = f"https://cdn.poehali.dev/projects/{project_id}/files/{key}"
+
+        return {'statusCode': 200, 'headers': cors_headers, 'body': json.dumps({'url': url})}
+
     name = body.get('name', '').strip()
     phone = body.get('phone', '').strip()
     comment = body.get('comment', '').strip()

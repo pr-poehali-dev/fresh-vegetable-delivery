@@ -13,6 +13,14 @@
       "body": {"comment": "test"},
       "expectedStatus": 400,
       "bodyMatcher": "none"
+    },
+    {
+      "name": "Upload action without image returns 400",
+      "method": "POST",
+      "path": "/",
+      "body": {"action": "upload"},
+      "expectedStatus": 400,
+      "bodyMatcher": "none"
     }
   ]
 }

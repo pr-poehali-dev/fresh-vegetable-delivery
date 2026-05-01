@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Icon from "@/components/ui/icon";
 
 const API = "https://functions.poehali.dev/d8e8eac1-b7f3-41b8-b041-69e6d80a1c03";
+const UPLOAD_API = "https://functions.poehali.dev/a913c03c-9fc0-4a9f-baef-df33289b1a86";
 
 const STATUSES = [
   { value: "all", label: "Все", color: "text-white/60", bg: "bg-white/10" },
@@ -104,6 +105,27 @@ export default function Admin() {
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [productSearch, setProductSearch] = useState("");
   const [productSaved, setProductSaved] = useState<number | null>(null);
+  const [imageUploading, setImageUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const uploadImage = async (file: File) => {
+    setImageUploading(true);
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+      const base64 = (e.target?.result as string).split(',')[1];
+      const res = await fetch(UPLOAD_API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'upload', image: base64, contentType: file.type })
+      });
+      const data = await res.json();
+      if (data.url) {
+        setEditingProduct(prev => prev ? { ...prev, image: data.url } : prev);
+      }
+      setImageUploading(false);
+    };
+    reader.readAsDataURL(file);
+  };
 
   const hdrs = (extra?: object) => ({ "X-Admin-Key": adminKey, "Content-Type": "application/json", ...extra });
 
@@ -696,12 +718,28 @@ export default function Admin() {
                 </select>
               </div>
               <div>
-                <label className="text-white/50 text-xs mb-1 block">URL фото</label>
-                <input value={editingProduct.image} onChange={e => setEditingProduct({ ...editingProduct, image: e.target.value })}
-                  className={inp} placeholder="https://..." />
+                <label className="text-white/50 text-xs mb-1 block">Фото товара</label>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={e => { const f = e.target.files?.[0]; if (f) uploadImage(f); e.target.value = ''; }}
+                />
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={imageUploading}
+                  className="w-full flex items-center justify-center gap-2 border border-dashed border-white/30 rounded-xl py-3 text-white/60 text-sm hover:border-veggie-lime/60 hover:text-veggie-lime transition-colors disabled:opacity-50"
+                >
+                  <Icon name={imageUploading ? "Loader2" : "Upload"} size={16} className={imageUploading ? "animate-spin" : ""} />
+                  {imageUploading ? "Загружаю..." : "Загрузить с устройства"}
+                </button>
                 {editingProduct.image && (
                   <img src={editingProduct.image} alt="" className="mt-2 w-full h-28 object-cover rounded-xl" onError={e => (e.currentTarget.style.display = 'none')} />
                 )}
+                <input value={editingProduct.image} onChange={e => setEditingProduct({ ...editingProduct, image: e.target.value })}
+                  className={inp + " mt-2"} placeholder="или вставьте URL https://..." />
               </div>
             </div>
             <button onClick={() => {
