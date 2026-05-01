@@ -105,8 +105,9 @@ const SAUSAGE_TYPES = ["все", "варёная", "копчёная", "соси
 
 const HOUSEHOLD = [
   { id: 1001, name: "Биолан Color капсулы для стирки 35 шт", price: 428, unit: "уп", season: "всесезонно", type: "стирка", emoji: "🧺", badge: null, weight: "35 капсул", weightKg: 0.5, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/b836302f-1ab3-46e5-9d24-b45ad5acfc37.jpg" },
+  { id: 1002, name: "Влажные салфетки для детей 200 шт", price: 99, unit: "уп", season: "всесезонно", type: "салфетки", emoji: "🧻", badge: null, weight: "200 шт", weightKg: 0.3, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/1b71cad8-efca-4674-b743-b9900f396d28.jpg" },
 ];
-const HOUSEHOLD_TYPES = ["все", "стирка"];
+const HOUSEHOLD_TYPES = ["все", "стирка", "салфетки"];
 
 const PRODUCTS = [...VEGETABLES, ...FRUITS, ...BERRIES, ...JUICES, ...MUSHROOMS, ...GREENS, ...EGGS, ...MEAT, ...DAIRY, ...SAUSAGE, ...HOUSEHOLD];
 
