@@ -104,7 +104,7 @@ const SAUSAGE = [
 const SAUSAGE_TYPES = ["все", "варёная", "копчёная", "сосиски", "ветчина"];
 
 const HOUSEHOLD = [
-  { id: 1001, name: "Billie COLOR капсулы для стирки 35 шт", price: 428, unit: "уп", season: "всесезонно", type: "стирка", emoji: "🧺", badge: null, weight: "35 капсул", weightKg: 0.5, image: "" },
+  { id: 1001, name: "Биолан Color капсулы для стирки 35 шт", price: 428, unit: "уп", season: "всесезонно", type: "стирка", emoji: "🧺", badge: null, weight: "35 капсул", weightKg: 0.5, image: "" },
 ];
 const HOUSEHOLD_TYPES = ["все", "стирка"];
 
