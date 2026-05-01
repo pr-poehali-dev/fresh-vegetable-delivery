@@ -112,8 +112,9 @@ const HOUSEHOLD_TYPES = ["все", "стирка", "салфетки", "бума
 
 const GROCERY = [
   { id: 1101, name: "Мука пшеничная высший сорт 5 кг", price: 254, unit: "уп", season: "всесезонно", type: "мука", emoji: "🌾", badge: null, weight: "5 кг", weightKg: 5, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/8a64f203-60de-40e5-b5ce-41e2be74d9ee.jpg" },
+  { id: 1102, name: "Булгур крупа пшеничная 800 г", price: 135, unit: "уп", season: "всесезонно", type: "крупы", emoji: "🌾", badge: null, weight: "800 г", weightKg: 0.8, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/951f1306-a64f-4d12-b328-d430a717bcbc.jpg" },
 ];
-const GROCERY_TYPES = ["все", "мука"];
+const GROCERY_TYPES = ["все", "мука", "крупы"];
 
 const READYFOOD = [
   { id: 1201, name: "Морковь по-корейски 500 г", price: 85, unit: "уп", season: "всесезонно", type: "салаты", emoji: "🥕", badge: null, weight: "500 г", weightKg: 0.5, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/3197f53a-4d44-422c-9779-cd171c8082b4.jpg" },
