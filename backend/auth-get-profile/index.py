@@ -27,7 +27,7 @@ def handler(event: dict, context) -> dict:
     cur = conn.cursor()
 
     cur.execute(
-        f"SELECT id, phone, name, points, is_first_order_done, created_at FROM {SCHEMA}.users WHERE id=%s",
+        f"SELECT id, phone, name, points, is_first_order_done, created_at, referral_code FROM {SCHEMA}.users WHERE id=%s",
         (int(user_id),)
     )
     user = cur.fetchone()
@@ -55,6 +55,7 @@ def handler(event: dict, context) -> dict:
             'name': user[2],
             'points': user[3],
             'is_first_order_done': user[4],
+            'referral_code': user[6],
             'transactions': transactions,
         })
     }

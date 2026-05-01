@@ -4,7 +4,7 @@ import Icon from "@/components/ui/icon";
 const API_SEND_CODE = "https://functions.poehali.dev/55e40474-9a2a-4db3-9880-7fdbfc00edf0";
 const API_VERIFY_CODE = "https://functions.poehali.dev/49670255-1338-4a0e-a466-50ed6b41136d";
 
-export type User = { id: number; phone: string; name: string; points: number; is_first_order_done: boolean; is_new?: boolean };
+export type User = { id: number; phone: string; name: string; points: number; is_first_order_done: boolean; is_new?: boolean; referral_code?: string };
 
 export default function AuthModal({ onClose, onAuth }: { onClose: () => void; onAuth: (user: User) => void }) {
   const [step, setStep] = useState<'phone' | 'code' | 'profile'>('phone');
@@ -20,6 +20,7 @@ export default function AuthModal({ onClose, onAuth }: { onClose: () => void; on
   const [profileName, setProfileName] = useState('');
   const [profileAddress, setProfileAddress] = useState('');
   const [profileFlat, setProfileFlat] = useState('');
+  const [inviteCode, setInviteCode] = useState('');
 
   const sendCode = async () => {
     if (!phone.trim()) return;
@@ -37,7 +38,7 @@ export default function AuthModal({ onClose, onAuth }: { onClose: () => void; on
     if (!code.trim()) return;
     setLoading(true); setError('');
     try {
-      const res = await fetch(API_VERIFY_CODE, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone, code }) });
+      const res = await fetch(API_VERIFY_CODE, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone, code, invite_code: inviteCode.trim().toUpperCase() || undefined }) });
       const data = await res.json();
       if (res.ok) {
         localStorage.setItem('user', JSON.stringify(data.user));
@@ -115,6 +116,15 @@ export default function AuthModal({ onClose, onAuth }: { onClose: () => void; on
               maxLength={6}
               className="w-full bg-white/10 border border-white/20 text-white placeholder:text-white/30 px-4 py-3 rounded-xl text-base text-center tracking-widest font-mono focus:outline-none focus:border-veggie-lime/60 transition-colors mb-4"
             />
+            <div className="mb-4">
+              <label className="text-white/40 text-xs mb-1 block">Код приглашения (необязательно)</label>
+              <input
+                type="text" value={inviteCode} onChange={e => setInviteCode(e.target.value.toUpperCase())}
+                placeholder="Например: AB12CD"
+                maxLength={8}
+                className="w-full bg-white/10 border border-white/10 text-white placeholder:text-white/20 px-4 py-2.5 rounded-xl text-sm text-center tracking-widest font-mono focus:outline-none focus:border-veggie-lime/40 transition-colors"
+              />
+            </div>
             {error && <p className="text-red-400 text-sm mb-3">{error}</p>}
             <button onClick={verifyCode} disabled={loading || code.length < 4} className="w-full bg-veggie-lime text-veggie-dark py-3 rounded-xl font-bold text-base hover:bg-white transition-colors disabled:opacity-50">
               {loading ? 'Проверяем...' : 'Войти'}

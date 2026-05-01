@@ -471,10 +471,10 @@ def handler(event: dict, context) -> dict:
     is_first_order_done = False
 
     if user_id:
-        cur.execute(f"SELECT points, is_first_order_done FROM {SCHEMA}.users WHERE id=%s", (user_id,))
+        cur.execute(f"SELECT points, is_first_order_done, referred_by FROM {SCHEMA}.users WHERE id=%s", (user_id,))
         user_row = cur.fetchone()
         if user_row:
-            points, is_first_order_done = user_row
+            points, is_first_order_done, referred_by = user_row
 
             if points_used > 0:
                 actual_used = min(points_used, points)
@@ -488,6 +488,25 @@ def handler(event: dict, context) -> dict:
                 f"UPDATE {SCHEMA}.users SET points=%s WHERE id=%s",
                 (points, user_id)
             )
+
+            # Первый заказ приглашённого — начисляем 200 баллов пригласившему
+            if not is_first_order_done and referred_by:
+                cur.execute(
+                    f"UPDATE {SCHEMA}.users SET points = points + %s WHERE id=%s",
+                    (BONUS_FIRST_ORDER, referred_by)
+                )
+                cur.execute(
+                    f"INSERT INTO {SCHEMA}.loyalty_transactions (user_id, points, reason) VALUES (%s, %s, %s)",
+                    (referred_by, BONUS_FIRST_ORDER, f'Бонус за приглашённого друга (заказ #{order_id})')
+                )
+
+            # Помечаем первый заказ как выполненный
+            if not is_first_order_done:
+                cur.execute(
+                    f"UPDATE {SCHEMA}.users SET is_first_order_done=TRUE WHERE id=%s",
+                    (user_id,)
+                )
+                is_first_order_done = True
 
     conn.commit()
     cur.close()

@@ -22,6 +22,14 @@ export default function Profile() {
   const [orderFlat, setOrderFlat] = useState(() => localStorage.getItem('order_flat') || '');
   const [editingOrder, setEditingOrder] = useState<{ id: number; address: string; comment: string; items: Array<{ name: string; quantity: number; price: number }> } | null>(null);
   const [editSaving, setEditSaving] = useState(false);
+  const [codeCopied, setCodeCopied] = useState(false);
+
+  const copyReferral = () => {
+    const code = user?.referral_code;
+    if (!code) return;
+    const text = `Привет! Заказываю свежие овощи и фрукты с доставкой. Зарегистрируйся по моему коду ${code} — и получишь 200 баллов в подарок!`;
+    navigator.clipboard.writeText(text).then(() => { setCodeCopied(true); setTimeout(() => setCodeCopied(false), 2000); });
+  };
 
   useEffect(() => {
     if (!user) { navigate('/'); return; }
@@ -32,7 +40,7 @@ export default function Profile() {
         if (!data) return;
         setOrders(data.orders || []);
         setTransactions(data.transactions || []);
-        const updated = { ...user, points: data.points ?? user.points, is_first_order_done: data.is_first_order_done ?? user.is_first_order_done };
+        const updated = { ...user, points: data.points ?? user.points, is_first_order_done: data.is_first_order_done ?? user.is_first_order_done, referral_code: data.referral_code ?? user.referral_code };
         setUser(updated);
         localStorage.setItem('user', JSON.stringify(updated));
       })
@@ -106,6 +114,26 @@ export default function Profile() {
             )}
           </div>
         </div>
+
+        {/* Реферальный код */}
+        {user.referral_code && (
+          <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
+            <p className="text-white/60 text-sm font-semibold mb-1">Пригласить друга</p>
+            <p className="text-white/40 text-xs mb-3">Друг вводит твой код при регистрации. После его первого заказа ты получишь <span className="text-veggie-lime font-semibold">200 баллов</span>.</p>
+            <div className="flex items-center gap-2">
+              <div className="flex-1 bg-white/10 rounded-xl px-4 py-3 text-veggie-lime font-bold text-xl font-heading tracking-widest text-center">
+                {user.referral_code}
+              </div>
+              <button
+                onClick={copyReferral}
+                className="bg-veggie-green hover:bg-veggie-green/80 text-white px-4 py-3 rounded-xl text-sm font-semibold transition-colors flex items-center gap-2 shrink-0"
+              >
+                <Icon name={codeCopied ? "Check" : "Copy"} size={16} />
+                {codeCopied ? "Скопировано!" : "Скопировать"}
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Данные доставки */}
         <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
