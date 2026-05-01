@@ -117,8 +117,9 @@ const GROCERY_TYPES = ["все", "мука"];
 
 const READYFOOD = [
   { id: 1201, name: "Морковь по-корейски 500 г", price: 85, unit: "уп", season: "всесезонно", type: "салаты", emoji: "🥕", badge: null, weight: "500 г", weightKg: 0.5, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/3197f53a-4d44-422c-9779-cd171c8082b4.jpg" },
+  { id: 1202, name: "Капуста квашеная с морковью 1 кг", price: 125, unit: "ведро", season: "всесезонно", type: "соленья", emoji: "🥬", badge: null, weight: "1 кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/5a9179e7-bc9e-4d08-a700-1652f62aacf1.jpg" },
 ];
-const READYFOOD_TYPES = ["все", "салаты"];
+const READYFOOD_TYPES = ["все", "салаты", "соленья"];
 
 const PRODUCTS = [...VEGETABLES, ...FRUITS, ...BERRIES, ...JUICES, ...MUSHROOMS, ...GREENS, ...EGGS, ...MEAT, ...DAIRY, ...SAUSAGE, ...HOUSEHOLD, ...GROCERY, ...READYFOOD];
 
