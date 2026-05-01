@@ -104,7 +104,7 @@ const SAUSAGE = [
 const SAUSAGE_TYPES = ["все", "варёная", "копчёная", "сосиски", "ветчина"];
 
 const HOUSEHOLD = [
-  { id: 1001, name: "Биолан Color капсулы для стирки 35 шт", price: 428, unit: "уп", season: "всесезонно", type: "стирка", emoji: "🧺", badge: null, weight: "35 капсул", weightKg: 0.5, image: "" },
+  { id: 1001, name: "Биолан Color капсулы для стирки 35 шт", price: 428, unit: "уп", season: "всесезонно", type: "стирка", emoji: "🧺", badge: null, weight: "35 капсул", weightKg: 0.5, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/b836302f-1ab3-46e5-9d24-b45ad5acfc37.jpg" },
 ];
 const HOUSEHOLD_TYPES = ["все", "стирка"];
 
