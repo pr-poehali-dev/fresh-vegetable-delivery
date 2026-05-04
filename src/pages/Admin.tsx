@@ -67,6 +67,7 @@ const ALL_PRODUCTS: Product[] = [
   { id: 804, name: "Кефир 2.5%", price: 80, unit: "л", season: "всесезонно", type: "молоко", emoji: "🥛", badge: null, weight: "1л", weightKg: 1, image: "" },
   { id: 805, name: "Масло сливочное Крестьянское 72.5%", price: 190, unit: "уп", season: "всесезонно", type: "молоко", emoji: "🧈", badge: null, weight: "180г", weightKg: 0.18, image: "" },
   { id: 806, name: "Ряженка 3.2%", price: 95, unit: "уп", season: "всесезонно", type: "молоко", emoji: "🥛", badge: null, weight: "500мл", weightKg: 0.5, image: "" },
+  { id: 807, name: "Сыр сливочный творожный", price: 0, unit: "уп", season: "всесезонно", type: "сыр", emoji: "🧀", badge: null, weight: "", weightKg: 0.2, image: "" },
   { id: 901, name: "Колбаса Докторская", price: 650, unit: "кг", season: "всесезонно", type: "колбасы", emoji: "🌭", badge: null, weight: "1кг", weightKg: 1, image: "" },
   { id: 902, name: "Колбаса Молочная", price: 500, unit: "кг", season: "всесезонно", type: "колбасы", emoji: "🌭", badge: null, weight: "1кг", weightKg: 1, image: "" },
   { id: 903, name: "Сосиски Молочные", price: 550, unit: "кг", season: "всесезонно", type: "сосиски", emoji: "🌭", badge: null, weight: "1кг", weightKg: 1, image: "" },

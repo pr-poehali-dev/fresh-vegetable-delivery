@@ -91,6 +91,7 @@ const DAIRY = [
   { id: 804, name: "Кефир домашний", price: 0, unit: "л", season: "всесезонно", type: "кисломолочное", emoji: "🥛", badge: null, weight: "1л", weightKg: 1, image: "" },
   { id: 805, name: "Масло сливочное", price: 0, unit: "200г", season: "всесезонно", type: "масло", emoji: "🧈", badge: null, weight: "200г", weightKg: 0.2, image: "" },
   { id: 806, name: "Сыр домашний", price: 0, unit: "кг", season: "всесезонно", type: "сыр", emoji: "🧀", badge: null, weight: "1кг", weightKg: 1, image: "" },
+  { id: 807, name: "Сыр сливочный творожный", price: 0, unit: "уп", season: "всесезонно", type: "сыр", emoji: "🧀", badge: null, weight: "", weightKg: 0.2, image: "" },
 ];
 const DAIRY_TYPES = ["все", "молоко", "кисломолочное", "творог", "масло", "сыр"];
 
