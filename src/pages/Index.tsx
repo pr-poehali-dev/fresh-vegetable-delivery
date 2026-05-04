@@ -8,7 +8,7 @@ import CartDrawer from "@/components/CartDrawer";
 const HERO_IMAGE = "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/58f8e18c-3a1d-4321-a0d0-d558c40958c4.jpg";
 
 const VEGETABLES = [
-  { id: 1, name: "Картофель мытый", price: 55, unit: "кг", season: "осень", type: "картофель", emoji: "🥔", badge: null, weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/3dbd5d4c-347d-4306-be77-864030e67c89.jpg" },
+  { id: 1, name: "Картофель мытый", price: 55, unit: "кг", season: "осень", type: "картофель", emoji: "🥔", badge: "Премиум", weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/3dbd5d4c-347d-4306-be77-864030e67c89.jpg" },
   { id: 2, name: "Картофель Галла", price: 50, unit: "кг", season: "осень", type: "картофель", emoji: "🥔", badge: null, weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/0b53ae19-45d1-401c-a50f-69f9baefa75d.jpg" },
   { id: 3, name: "Картофель Колумба", price: 42, unit: "кг", season: "осень", type: "картофель", emoji: "🥔", badge: null, weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/2dc69047-7f79-4790-aaff-6796da1b4d8b.jpg" },
   { id: 4, name: "Капуста белокочанная свежая", price: 40, unit: "кг", season: "осень", type: "капуста", emoji: "🥬", badge: null, weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/fb2afc14-76f3-4957-a98a-46fccffd7d06.jpg" },
