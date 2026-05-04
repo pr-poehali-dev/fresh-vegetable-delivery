@@ -21,7 +21,7 @@ const VEGETABLES = [
   { id: 12, name: "Помидор Парадайс", price: 220, unit: "кг", season: "лето", type: "томаты", emoji: "🍅", badge: null, weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/05cd7a84-8e00-40ff-9e35-a9a9ae50e85f.jpg" },
   { id: 11, name: "Огурец пупырчатый Чечня", price: 150, unit: "кг", season: "лето", type: "огурцы", emoji: "🥒", badge: null, weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/3a013d01-ce48-4918-893a-f2b121197ad6.jpg" },
   { id: 14, name: "Огурец пупырчатый высший сорт", price: 180, unit: "кг", season: "лето", type: "огурцы", emoji: "🥒", badge: "Хит", weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/ff8b7607-7013-4833-82d8-20b1b4606a94.jpg" },
-  { id: 15, name: "Огурец пупырчатый Кубань", price: 110, unit: "кг", season: "лето", type: "огурцы", emoji: "🥒", badge: null, weight: "1кг", weightKg: 1, image: "" },
+  { id: 15, name: "Огурец пупырчатый Кубань", price: 110, unit: "кг", season: "лето", type: "огурцы", emoji: "🥒", badge: null, weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/1e585955-87f9-452f-888e-b9dff0b9ef99.jpg" },
   { id: 13, name: "Огурец гладкий", price: 170, unit: "кг", season: "лето", type: "огурцы", emoji: "🥒", badge: null, weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/35de6ab4-856a-4bb1-984a-179054b55956.jpg" },
   { id: 126, name: "Чеснок", price: 280, unit: "кг", season: "осень", type: "чеснок", emoji: "🧄", badge: null, weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/42e6134c-6301-4e0b-9f01-0f3ca4992c96.jpg" },
 ];
@@ -49,19 +49,19 @@ const FRUITS = [
 
 const BERRIES = [
   { id: 201, name: "Клубника", price: 380, unit: "кг", season: "лето", type: "ягоды", emoji: "🍓", badge: null, weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/44e96e8d-07f3-41ce-8e27-317b96d7e983.jpg" },
-  { id: 202, name: "Арбуз", price: 100, unit: "кг", season: "лето", type: "ягоды", emoji: "🍉", badge: null, weight: "1кг", weightKg: 1, image: "" },
+  { id: 202, name: "Арбуз", price: 100, unit: "кг", season: "лето", type: "ягоды", emoji: "🍉", badge: null, weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/24ba02fb-6f23-425a-9712-df87d2d19810.jpg" },
 ];
 
 const JUICES = [
-  { id: 301, name: "Гранатовый сок", price: 150, unit: "л", season: "всесезонно", type: "соки", emoji: "🧃", badge: null, weight: "1л", weightKg: 1, image: "" },
+  { id: 301, name: "Гранатовый сок", price: 150, unit: "л", season: "всесезонно", type: "соки", emoji: "🧃", badge: null, weight: "1л", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/27b44605-bf85-4a79-8bed-96fa0b0e9bee.jpg" },
 ];
 
 const MUSHROOMS = [
-  { id: 401, name: "Шампиньоны", price: 200, unit: "500г", season: "всесезонно", type: "грибы", emoji: "🍄", badge: null, weight: "500г", weightKg: 0.5, image: "" },
+  { id: 401, name: "Шампиньоны", price: 200, unit: "500г", season: "всесезонно", type: "грибы", emoji: "🍄", badge: null, weight: "500г", weightKg: 0.5, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/bb01cea8-8f08-43b5-8a0d-d878357b5f4e.jpg" },
 ];
 
 const GREENS = [
-  { id: 501, name: "Лук зелёный", price: 100, unit: "150г", season: "всесезонно", type: "зелень", emoji: "🌿", badge: null, weight: "150г", weightKg: 0.15, image: "" },
+  { id: 501, name: "Лук зелёный", price: 100, unit: "150г", season: "всесезонно", type: "зелень", emoji: "🌿", badge: null, weight: "150г", weightKg: 0.15, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/b149c52e-2be0-435c-ad60-5ab6eeff4949.jpg" },
   { id: 502, name: "Укроп", price: 100, unit: "150г", season: "всесезонно", type: "зелень", emoji: "🌿", badge: null, weight: "150г", weightKg: 0.15, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/af4217eb-8531-4c84-9d69-174509a26f14.jpg" },
   { id: 503, name: "Петрушка", price: 100, unit: "150г", season: "всесезонно", type: "зелень", emoji: "🌿", badge: null, weight: "150г", weightKg: 0.15, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/57746e8d-1294-47fa-8e3f-5ceb34923f0d.jpg" },
   { id: 504, name: "Редиска", price: 200, unit: "кг", season: "лето", type: "зелень", emoji: "🌰", badge: null, weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/af50cd41-2e37-4b5b-afa3-770d535a9e4a.jpg" },
@@ -69,11 +69,11 @@ const GREENS = [
 
 const EGGS = [
   { id: 601, name: "Яйцо домашнее", price: 150, unit: "упак", season: "всесезонно", type: "яйца", emoji: "🥚", badge: null, weight: "10шт", weightKg: 0.6, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/93ea36d9-51c0-4187-a153-edd5dcabcb3a.jpg" },
-  { id: 602, name: "Яйцо инкубаторское 2 категория", price: 227, unit: "упак", season: "всесезонно", type: "яйца", emoji: "🥚", badge: null, weight: "30шт", weightKg: 1.8, image: "" },
+  { id: 602, name: "Яйцо инкубаторское 2 категория", price: 227, unit: "упак", season: "всесезонно", type: "яйца", emoji: "🥚", badge: null, weight: "30шт", weightKg: 1.8, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/91611c16-2d31-4aed-8224-a54e513a7e7f.jpg" },
 ];
 
 const MEAT = [
-  { id: 710, name: "Свинина на кости свежая", price: 300, unit: "кг", season: "всесезонно", type: "свинина", emoji: "🥩", badge: null, weight: "1кг", weightKg: 1, image: "" },
+  { id: 710, name: "Свинина на кости свежая", price: 300, unit: "кг", season: "всесезонно", type: "свинина", emoji: "🥩", badge: null, weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/533fc478-d5a4-4852-baa3-f8f30d550eb0.jpg" },
 ];
 
 const VEG_TYPES = ["все", "картофель", "капуста", "корнеплоды", "лук", "томаты", "огурцы", "чеснок", "специи"];
@@ -88,20 +88,20 @@ const MEAT_TYPES = ["все", "птица", "говядина", "свинина"
 const DAIRY = [
   { id: 801, name: "Молоко Вкус Облако 3.2%", price: 82, unit: "л", season: "всесезонно", type: "молоко", emoji: "🥛", badge: null, weight: "1 л", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/fc30e904-a250-4e7a-803f-d096683b1402.jpg" },
   { id: 802, name: "Сметана Сочные Луга", price: 88, unit: "уп", season: "всесезонно", type: "кисломолочное", emoji: "🥛", badge: null, weight: "300 г", weightKg: 0.3, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/0b55606c-fb21-4d72-9ce9-c4819b1bea5a.jpg" },
-  { id: 803, name: "Творог домашний", price: 0, unit: "500г", season: "всесезонно", type: "творог", emoji: "🧀", badge: null, weight: "500г", weightKg: 0.5, image: "" },
-  { id: 804, name: "Кефир домашний", price: 0, unit: "л", season: "всесезонно", type: "кисломолочное", emoji: "🥛", badge: null, weight: "1л", weightKg: 1, image: "" },
-  { id: 805, name: "Масло сливочное", price: 0, unit: "200г", season: "всесезонно", type: "масло", emoji: "🧈", badge: null, weight: "200г", weightKg: 0.2, image: "" },
-  { id: 806, name: "Сыр домашний", price: 0, unit: "кг", season: "всесезонно", type: "сыр", emoji: "🧀", badge: null, weight: "1кг", weightKg: 1, image: "" },
-  { id: 807, name: "Сыр сливочный творожный", price: 0, unit: "уп", season: "всесезонно", type: "сыр", emoji: "🧀", badge: null, weight: "", weightKg: 0.2, image: "" },
+  { id: 803, name: "Творог домашний", price: 0, unit: "500г", season: "всесезонно", type: "творог", emoji: "🧀", badge: null, weight: "500г", weightKg: 0.5, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/bcdf791f-7baf-4e6b-b7c6-e105d69380c3.jpg" },
+  { id: 804, name: "Кефир домашний", price: 0, unit: "л", season: "всесезонно", type: "кисломолочное", emoji: "🥛", badge: null, weight: "1л", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/426df9ae-fb25-424c-ade1-d7233f4c7239.jpg" },
+  { id: 805, name: "Масло сливочное", price: 0, unit: "200г", season: "всесезонно", type: "масло", emoji: "🧈", badge: null, weight: "200г", weightKg: 0.2, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/1cc03daf-8d1e-4780-a8c7-3a904a1f2dd4.jpg" },
+  { id: 806, name: "Сыр домашний", price: 0, unit: "кг", season: "всесезонно", type: "сыр", emoji: "🧀", badge: null, weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/36c8c88a-3be3-4f13-8953-eac5fb45941b.jpg" },
+  { id: 807, name: "Сыр сливочный творожный", price: 0, unit: "уп", season: "всесезонно", type: "сыр", emoji: "🧀", badge: null, weight: "", weightKg: 0.2, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/a7cb72a6-0230-4a89-b2b3-dcda45809202.jpg" },
 ];
 const DAIRY_TYPES = ["все", "молоко", "кисломолочное", "творог", "масло", "сыр"];
 
 const SAUSAGE = [
-  { id: 901, name: "Колбаса варёная", price: 0, unit: "кг", season: "всесезонно", type: "варёная", emoji: "🌭", badge: null, weight: "1кг", weightKg: 1, image: "" },
-  { id: 902, name: "Колбаса копчёная", price: 0, unit: "кг", season: "всесезонно", type: "копчёная", emoji: "🌭", badge: null, weight: "1кг", weightKg: 1, image: "" },
-  { id: 903, name: "Сосиски домашние", price: 0, unit: "кг", season: "всесезонно", type: "сосиски", emoji: "🌭", badge: null, weight: "1кг", weightKg: 1, image: "" },
-  { id: 904, name: "Сардельки", price: 0, unit: "кг", season: "всесезонно", type: "сосиски", emoji: "🌭", badge: null, weight: "1кг", weightKg: 1, image: "" },
-  { id: 905, name: "Ветчина домашняя", price: 0, unit: "кг", season: "всесезонно", type: "ветчина", emoji: "🥩", badge: null, weight: "1кг", weightKg: 1, image: "" },
+  { id: 901, name: "Колбаса варёная", price: 0, unit: "кг", season: "всесезонно", type: "варёная", emoji: "🌭", badge: null, weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/d4a6255a-8074-4196-8275-69f6b3813900.jpg" },
+  { id: 902, name: "Колбаса копчёная", price: 0, unit: "кг", season: "всесезонно", type: "копчёная", emoji: "🌭", badge: null, weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/ebcef16a-51f5-4021-ab67-e59a20cb593f.jpg" },
+  { id: 903, name: "Сосиски домашние", price: 0, unit: "кг", season: "всесезонно", type: "сосиски", emoji: "🌭", badge: null, weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/f9077a1a-5342-4589-9696-708429305cba.jpg" },
+  { id: 904, name: "Сардельки", price: 0, unit: "кг", season: "всесезонно", type: "сосиски", emoji: "🌭", badge: null, weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/0b36af7b-d91a-49f2-8017-e81c70eab10b.jpg" },
+  { id: 905, name: "Ветчина домашняя", price: 0, unit: "кг", season: "всесезонно", type: "ветчина", emoji: "🥩", badge: null, weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/98da435d-71ee-4b4a-ad60-0ddc87c7dde9.jpg" },
 ];
 const SAUSAGE_TYPES = ["все", "варёная", "копчёная", "сосиски", "ветчина"];
 
@@ -117,7 +117,7 @@ const GROCERY = [
   { id: 1102, name: "Булгур крупа пшеничная 800 г", price: 135, unit: "уп", season: "всесезонно", type: "крупы", emoji: "🌾", badge: null, weight: "800 г", weightKg: 0.8, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/951f1306-a64f-4d12-b328-d430a717bcbc.jpg" },
   { id: 1103, name: "Смесь бобовых 800 г", price: 88, unit: "уп", season: "всесезонно", type: "крупы", emoji: "🫘", badge: null, weight: "800 г", weightKg: 0.8, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/a7855c6d-c5e7-44c4-8c2a-eb30be522e06.jpg" },
   { id: 1104, name: "Рис шлифованный 2 сорт 900 г", price: 99, unit: "уп", season: "всесезонно", type: "крупы", emoji: "🍚", badge: null, weight: "900 г", weightKg: 0.9, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/b501d4e5-0ebc-4ff5-9914-8ab73c2e07e2.jpg" },
-  { id: 1105, name: "Майонез Calve Лёгкий 800 г", price: 180, unit: "уп", season: "всесезонно", type: "соусы", emoji: "🥫", badge: null, weight: "800 г", weightKg: 0.8, image: "" },
+  { id: 1105, name: "Майонез Calve Лёгкий 800 г", price: 180, unit: "уп", season: "всесезонно", type: "соусы", emoji: "🥫", badge: null, weight: "800 г", weightKg: 0.8, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/465bd9cc-280c-4b63-a4b8-cdeeef27b4b9.jpg" },
   { id: 1106, name: "Чай TANAY 100 пакетов", price: 0, unit: "уп", season: "всесезонно", type: "чай", emoji: "🍵", badge: null, weight: "100 пак", weightKg: 0.2, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/cf05b900-ee74-4322-bb77-8bef4ef410de.jpg" },
 ];
 const GROCERY_TYPES = ["все", "мука", "крупы", "соусы", "чай"];
