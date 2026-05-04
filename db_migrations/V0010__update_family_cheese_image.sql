@@ -1,0 +1,1 @@
+UPDATE t_p20462627_fresh_vegetable_deli.catalog_overrides SET image = 'https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/ee5707de-d786-45ef-965c-765df8995919.jpg' WHERE product_id = 807 AND name = 'Сыробогатов Family Сливочный';
