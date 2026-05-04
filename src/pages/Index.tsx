@@ -123,6 +123,7 @@ const GROCERY = [
   { id: 1108, name: "Соус Calve Лёгкий 230 г", price: 89, unit: "уп", season: "всесезонно", type: "соусы", emoji: "🥫", badge: null, weight: "230 г", weightKg: 0.23, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/acef4785-f7ee-467e-b43a-8b8a410d5870.jpg" },
   { id: 1106, name: "Чай TANAY 100 пакетов", price: 0, unit: "уп", season: "всесезонно", type: "чай", emoji: "🍵", badge: null, weight: "100 пак", weightKg: 0.2, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/cf05b900-ee74-4322-bb77-8bef4ef410de.jpg" },
   { id: 1109, name: "Вода Казбек-Аква газированная 1,5 л", price: 65, unit: "бут", season: "всесезонно", type: "вода", emoji: "💧", badge: null, weight: "1,5 л", weightKg: 1.5, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/fb9a8c41-d977-43a3-8457-fb637e93333d.jpg" },
+  { id: 1110, name: "Квас Желтая Бочка живого брожения 3,5 л", price: 189, unit: "бут", season: "всесезонно", type: "вода", emoji: "🍺", badge: null, weight: "3,5 л", weightKg: 3.5, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/518b9030-56ec-4d38-adad-58c919ff91ae.jpg" },
 ];
 const GROCERY_TYPES = ["все", "мука", "крупы", "соусы", "чай", "вода"];
 
@@ -131,6 +132,7 @@ const READYFOOD = [
   { id: 1202, name: "Капуста квашеная с морковью 1 кг", price: 125, unit: "пластиковая тара", season: "всесезонно", type: "соленья", emoji: "🥬", badge: null, weight: "1 кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/5a9179e7-bc9e-4d08-a700-1652f62aacf1.jpg" },
   { id: 1203, name: "Огурцы маринованные Фрау Марта 680 г", price: 189, unit: "уп", season: "всесезонно", type: "соленья", emoji: "🥒", badge: null, weight: "680 г", weightKg: 0.68, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/332ec4c5-9683-4be4-be84-ad231b5d2567.jpg" },
   { id: 1204, name: "Семечки Белочка жареные 150 г", price: 65, unit: "уп", season: "всесезонно", type: "снэки", emoji: "🌻", badge: null, weight: "150 г", weightKg: 0.15, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/9a0c8177-1ee5-43dd-9a47-01622581ff6f.jpg" },
+  { id: 1205, name: "Чипсы Lay's Сметана и зелень 150 г", price: 129, unit: "уп", season: "всесезонно", type: "снэки", emoji: "🍟", badge: null, weight: "150 г", weightKg: 0.15, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/db48f7ea-5442-4937-83da-3eaed06aff3c.jpg" },
 ];
 const READYFOOD_TYPES = ["все", "салаты", "соленья", "снэки"];
 
