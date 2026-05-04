@@ -42,7 +42,7 @@ const FRUITS = [
   { id: 121, name: "Виноград Кишмиш", price: 500, unit: "кг", season: "лето", type: "виноград", emoji: "🍇", badge: "Хит", weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/04d46d49-1d9d-4f90-858f-6529a20e9b1d.jpg" },
   { id: 122, name: "Киви", price: 240, unit: "кг", season: "зима", type: "экзотика", emoji: "🥝", badge: null, weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/21e5e478-abd2-474d-a69b-57a1afeb8efa.jpg" },
   { id: 123, name: "Бананы", price: 200, unit: "кг", season: "всесезонно", type: "экзотика", emoji: "🍌", badge: null, weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/f1ea2d7e-9421-41af-870f-f5fda8fa74d2.jpg" },
-  { id: 124, name: "Ананас", price: 700, unit: "шт", season: "всесезонно", type: "экзотика", emoji: "🍍", badge: null, weight: "1шт", weightKg: 1, image: "" },
+  { id: 124, name: "Ананас", price: 700, unit: "шт", season: "всесезонно", type: "экзотика", emoji: "🍍", badge: null, weight: "1шт", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/cf486d6c-b07f-4475-8e0b-5ad338f9d4eb.jpg" },
   { id: 125, name: "Лимон", price: 350, unit: "кг", season: "всесезонно", type: "цитрусы", emoji: "🍋", badge: null, weight: "100г", weightKg: 0.1, minWeightG: 100, pricePerKg: 350, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/1b019d83-7dff-436c-9485-ac15228b2727.jpg" },
   { id: 127, name: "Имбирь", price: 500, unit: "кг", season: "всесезонно", type: "специи", emoji: "🫚", badge: null, weight: "100г", weightKg: 0.1, minWeightG: 100, pricePerKg: 500, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/eacc26e4-2549-49c7-8736-035a493ebfc5.jpg" },
 ];
@@ -87,7 +87,7 @@ const MEAT_TYPES = ["все", "птица", "говядина", "свинина"
 
 const DAIRY = [
   { id: 801, name: "Молоко Вкус Облако 3.2%", price: 82, unit: "л", season: "всесезонно", type: "молоко", emoji: "🥛", badge: null, weight: "1 л", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/fc30e904-a250-4e7a-803f-d096683b1402.jpg" },
-  { id: 802, name: "Сметана домашняя", price: 0, unit: "500г", season: "всесезонно", type: "кисломолочное", emoji: "🥛", badge: null, weight: "500г", weightKg: 0.5, image: "" },
+  { id: 802, name: "Сметана Сочные Луга", price: 88, unit: "уп", season: "всесезонно", type: "кисломолочное", emoji: "🥛", badge: null, weight: "300 г", weightKg: 0.3, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/0b55606c-fb21-4d72-9ce9-c4819b1bea5a.jpg" },
   { id: 803, name: "Творог домашний", price: 0, unit: "500г", season: "всесезонно", type: "творог", emoji: "🧀", badge: null, weight: "500г", weightKg: 0.5, image: "" },
   { id: 804, name: "Кефир домашний", price: 0, unit: "л", season: "всесезонно", type: "кисломолочное", emoji: "🥛", badge: null, weight: "1л", weightKg: 1, image: "" },
   { id: 805, name: "Масло сливочное", price: 0, unit: "200г", season: "всесезонно", type: "масло", emoji: "🧈", badge: null, weight: "200г", weightKg: 0.2, image: "" },
@@ -106,7 +106,7 @@ const SAUSAGE = [
 const SAUSAGE_TYPES = ["все", "варёная", "копчёная", "сосиски", "ветчина"];
 
 const HOUSEHOLD = [
-  { id: 1001, name: "Биолан Color капсулы для стирки 35 шт", price: 428, unit: "уп", season: "всесезонно", type: "стирка", emoji: "🧺", badge: null, weight: "35 капсул", weightKg: 0.5, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/b836302f-1ab3-46e5-9d24-b45ad5acfc37.jpg" },
+  { id: 1001, name: "Биолан Color капсулы для стирки 35 шт", price: 428, unit: "уп", season: "всесезонно", type: "стирка", emoji: "🧺", badge: null, weight: "35 капсул", weightKg: 0.5, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/8b0ea665-e056-4189-a570-aa8dafce4bba.jpg" },
   { id: 1002, name: "Влажные салфетки для детей 200 шт", price: 99, unit: "уп", season: "всесезонно", type: "салфетки", emoji: "🧻", badge: null, weight: "200 шт", weightKg: 0.3, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/1b71cad8-efca-4674-b743-b9900f396d28.jpg" },
   { id: 1003, name: "Туалетная бумага 3 слоя 8 шт", price: 149, unit: "уп", season: "всесезонно", type: "бумага", emoji: "🧻", badge: null, weight: "8 рулонов", weightKg: 0.8, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/b0d9f5d9-b5c4-4acf-84f5-6aa509d5bd87.jpg" },
 ];
@@ -118,8 +118,9 @@ const GROCERY = [
   { id: 1103, name: "Смесь бобовых 800 г", price: 88, unit: "уп", season: "всесезонно", type: "крупы", emoji: "🫘", badge: null, weight: "800 г", weightKg: 0.8, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/a7855c6d-c5e7-44c4-8c2a-eb30be522e06.jpg" },
   { id: 1104, name: "Рис шлифованный 2 сорт 900 г", price: 99, unit: "уп", season: "всесезонно", type: "крупы", emoji: "🍚", badge: null, weight: "900 г", weightKg: 0.9, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/b501d4e5-0ebc-4ff5-9914-8ab73c2e07e2.jpg" },
   { id: 1105, name: "Майонез Calve Лёгкий 800 г", price: 180, unit: "уп", season: "всесезонно", type: "соусы", emoji: "🥫", badge: null, weight: "800 г", weightKg: 0.8, image: "" },
+  { id: 1106, name: "Чай TANAY 100 пакетов", price: 0, unit: "уп", season: "всесезонно", type: "чай", emoji: "🍵", badge: null, weight: "100 пак", weightKg: 0.2, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/cf05b900-ee74-4322-bb77-8bef4ef410de.jpg" },
 ];
-const GROCERY_TYPES = ["все", "мука", "крупы", "соусы"];
+const GROCERY_TYPES = ["все", "мука", "крупы", "соусы", "чай"];
 
 const READYFOOD = [
   { id: 1201, name: "Морковь по-корейски 500 г", price: 85, unit: "уп", season: "всесезонно", type: "салаты", emoji: "🥕", badge: null, weight: "500 г", weightKg: 0.5, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/3197f53a-4d44-422c-9779-cd171c8082b4.jpg" },
