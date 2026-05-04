@@ -135,21 +135,32 @@ export default function Admin() {
 
   const uploadImage = async (file: File) => {
     setImageUploading(true);
-    const reader = new FileReader();
-    reader.onload = async (e) => {
-      const base64 = (e.target?.result as string).split(',')[1];
-      const res = await fetch(UPLOAD_API, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'upload', image: base64, contentType: file.type })
-      });
-      const data = await res.json();
-      if (data.url) {
-        setEditingProduct(prev => prev ? { ...prev, image: data.url } : prev);
+    const img = new Image();
+    const objectUrl = URL.createObjectURL(file);
+    img.onload = async () => {
+      URL.revokeObjectURL(objectUrl);
+      const MAX = 1200;
+      let w = img.width, h = img.height;
+      if (w > MAX || h > MAX) {
+        if (w > h) { h = Math.round(h * MAX / w); w = MAX; }
+        else { w = Math.round(w * MAX / h); h = MAX; }
       }
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d')!.drawImage(img, 0, 0, w, h);
+      const base64 = canvas.toDataURL('image/jpeg', 0.85).split(',')[1];
+      try {
+        const res = await fetch(UPLOAD_API, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'upload', image: base64, contentType: 'image/jpeg' })
+        });
+        const data = await res.json();
+        if (data.url) setEditingProduct(prev => prev ? { ...prev, image: data.url } : prev);
+      } catch { /* ignore */ }
       setImageUploading(false);
     };
-    reader.readAsDataURL(file);
+    img.src = objectUrl;
   };
 
   const hdrs = (extra?: object) => ({ "X-Admin-Key": adminKey, "Content-Type": "application/json", ...extra });
