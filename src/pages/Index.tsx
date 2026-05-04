@@ -140,8 +140,10 @@ const READYFOOD = [
   { id: 1203, name: "Огурцы маринованные Фрау Марта 680 г", price: 189, unit: "уп", season: "всесезонно", type: "соленья", emoji: "🥒", badge: null, weight: "680 г", weightKg: 0.68, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/332ec4c5-9683-4be4-be84-ad231b5d2567.jpg" },
   { id: 1204, name: "Семечки Белочка жареные 150 г", price: 65, unit: "уп", season: "всесезонно", type: "снэки", emoji: "🌻", badge: null, weight: "150 г", weightKg: 0.15, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/9a0c8177-1ee5-43dd-9a47-01622581ff6f.jpg" },
   { id: 1205, name: "Чипсы Lay's Сметана и зелень 150 г", price: 129, unit: "уп", season: "всесезонно", type: "снэки", emoji: "🍟", badge: null, weight: "150 г", weightKg: 0.15, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/db48f7ea-5442-4937-83da-3eaed06aff3c.jpg" },
+  { id: 1206, name: "Печенье Choco Pie Lotte глазированное 448 г (16 шт)", price: 199, unit: "уп", season: "всесезонно", type: "сладости", emoji: "🍫", badge: null, weight: "448 г", weightKg: 0.448, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/91eee7c1-bba5-45bb-9d84-dd742fb87b60.jpg" },
+  { id: 1207, name: "Жевательный зефир Витек Клубничный пломбир 500 г", price: 180, unit: "уп", season: "всесезонно", type: "сладости", emoji: "🍬", badge: null, weight: "500 г", weightKg: 0.5, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/b6f1e938-672c-461e-8756-809a17bc0aa6.jpg" },
 ];
-const READYFOOD_TYPES = ["все", "салаты", "соленья", "снэки"];
+const READYFOOD_TYPES = ["все", "салаты", "соленья", "снэки", "сладости"];
 
 const PRODUCTS = [...VEGETABLES, ...FRUITS, ...BERRIES, ...JUICES, ...MUSHROOMS, ...GREENS, ...EGGS, ...MEAT, ...DAIRY, ...SAUSAGE, ...HOUSEHOLD, ...GROCERY, ...READYFOOD];
 
