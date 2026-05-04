@@ -53,7 +53,10 @@ const BERRIES = [
 ];
 
 const JUICES = [
-  { id: 301, name: "Гранатовый сок", price: 150, unit: "л", season: "всесезонно", type: "соки", emoji: "🧃", badge: null, weight: "1л", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/27b44605-bf85-4a79-8bed-96fa0b0e9bee.jpg" },
+  { id: 301, name: "Гранатовый сок", price: 150, unit: "л", season: "всесезонно", type: "напитки", emoji: "🧃", badge: null, weight: "1л", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/27b44605-bf85-4a79-8bed-96fa0b0e9bee.jpg" },
+  { id: 1109, name: "Вода Казбек-Аква газированная 1,5 л", price: 65, unit: "бут", season: "всесезонно", type: "вода", emoji: "💧", badge: null, weight: "1,5 л", weightKg: 1.5, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/fb9a8c41-d977-43a3-8457-fb637e93333d.jpg" },
+  { id: 1111, name: "Вода Казбек-Аква без газа 1,5 л", price: 39, unit: "бут", season: "всесезонно", type: "вода", emoji: "💧", badge: null, weight: "1,5 л", weightKg: 1.5, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/dcef16e7-a62b-4152-b2bf-619a709c3a9b.jpg" },
+  { id: 1110, name: "Квас Желтая Бочка живого брожения 3,5 л", price: 189, unit: "бут", season: "всесезонно", type: "напитки", emoji: "🍺", badge: null, weight: "3,5 л", weightKg: 3.5, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/518b9030-56ec-4d38-adad-58c919ff91ae.jpg" },
 ];
 
 const MUSHROOMS = [
@@ -79,7 +82,7 @@ const MEAT = [
 const VEG_TYPES = ["все", "картофель", "капуста", "корнеплоды", "лук", "томаты", "огурцы", "чеснок", "специи"];
 const FRUIT_TYPES = ["все", "яблоки", "груши", "цитрусы", "сливы", "виноград", "экзотика"];
 const BERRY_TYPES = ["все", "ягоды"];
-const JUICE_TYPES = ["все", "соки"];
+const JUICE_TYPES = ["все", "напитки", "вода"];
 const MUSHROOM_TYPES = ["все", "грибы"];
 const GREEN_TYPES = ["все", "зелень"];
 const EGG_TYPES = ["все", "яйца"];
@@ -123,10 +126,8 @@ const GROCERY = [
   { id: 1105, name: "Майонез Calve Лёгкий 800 г", price: 180, unit: "уп", season: "всесезонно", type: "соусы", emoji: "🥫", badge: null, weight: "800 г", weightKg: 0.8, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/465bd9cc-280c-4b63-a4b8-cdeeef27b4b9.jpg" },
   { id: 1108, name: "Соус Calve Лёгкий 230 г", price: 89, unit: "уп", season: "всесезонно", type: "соусы", emoji: "🥫", badge: null, weight: "230 г", weightKg: 0.23, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/acef4785-f7ee-467e-b43a-8b8a410d5870.jpg" },
   { id: 1106, name: "Чай TANAY 100 пакетов", price: 0, unit: "уп", season: "всесезонно", type: "чай", emoji: "🍵", badge: null, weight: "100 пак", weightKg: 0.2, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/cf05b900-ee74-4322-bb77-8bef4ef410de.jpg" },
-  { id: 1109, name: "Вода Казбек-Аква газированная 1,5 л", price: 65, unit: "бут", season: "всесезонно", type: "вода", emoji: "💧", badge: null, weight: "1,5 л", weightKg: 1.5, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/fb9a8c41-d977-43a3-8457-fb637e93333d.jpg" },
-  { id: 1110, name: "Квас Желтая Бочка живого брожения 3,5 л", price: 189, unit: "бут", season: "всесезонно", type: "вода", emoji: "🍺", badge: null, weight: "3,5 л", weightKg: 3.5, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/518b9030-56ec-4d38-adad-58c919ff91ae.jpg" },
 ];
-const GROCERY_TYPES = ["все", "мука", "крупы", "соусы", "чай", "вода"];
+const GROCERY_TYPES = ["все", "мука", "крупы", "соусы", "чай"];
 
 const READYFOOD = [
   { id: 1201, name: "Морковь по-корейски 500 г", price: 85, unit: "уп", season: "всесезонно", type: "салаты", emoji: "🥕", badge: null, weight: "500 г", weightKg: 0.5, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/3197f53a-4d44-422c-9779-cd171c8082b4.jpg" },

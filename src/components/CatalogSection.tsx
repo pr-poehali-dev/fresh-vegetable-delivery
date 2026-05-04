@@ -59,7 +59,7 @@ export default function CatalogSection({
               { key: "vegetables", label: "🥬 Овощи" },
               { key: "fruits", label: "🍎 Фрукты" },
               { key: "berries", label: "🍓 Ягоды" },
-              { key: "juices", label: "🧃 Соки" },
+              { key: "juices", label: "🧃 Напитки" },
               { key: "mushrooms", label: "🍄 Грибы" },
               { key: "greens", label: "🌿 Зелень" },
               { key: "eggs", label: "🥚 Яйца" },
