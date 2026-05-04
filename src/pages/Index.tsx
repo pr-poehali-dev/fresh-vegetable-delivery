@@ -248,6 +248,7 @@ export default function Index() {
   const [orderAddress, setOrderAddress] = useState(() => localStorage.getItem('order_address') || '');
   const [orderFlat, setOrderFlat] = useState(() => localStorage.getItem('order_flat') || '');
   const [orderTime, setOrderTime] = useState<'morning' | 'evening'>('morning');
+  const [orderPayment, setOrderPayment] = useState<'cash' | 'card' | 'online'>('cash');
   const [orderComment, setOrderComment] = useState('');
   const [orderStatus, setOrderStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [orderStep, setOrderStep] = useState<1 | 2>(1);
@@ -487,9 +488,10 @@ export default function Index() {
     const discount = Math.min(pointsToUse, user?.points ?? 0, totalBeforeDiscount);
     const total = totalBeforeDiscount - discount;
     const timeLabel = orderTime === 'morning' ? 'Утро (до 12:00)' : 'Вечер (с 18:00)';
+    const paymentLabel = orderPayment === 'cash' ? '💵 Наличными' : orderPayment === 'card' ? '💳 Картой при получении' : '🏦 Онлайн (ВТБ)';
     const address = orderFlat ? `${orderAddress}, кв. ${orderFlat}` : orderAddress;
     const items = cart.map(i => ({ name: i.name, quantity: i.qty, price: i.price }));
-    const comment = `⏰ ${timeLabel}${orderComment ? ` | 💬 ${orderComment}` : ''}${discount > 0 ? ` | ⭐ Списано ${discount} баллов` : ''}`;
+    const comment = `⏰ ${timeLabel} | ${paymentLabel}${orderComment ? ` | 💬 ${orderComment}` : ''}${discount > 0 ? ` | ⭐ Списано ${discount} баллов` : ''}`;
     try {
       const res = await fetch('https://functions.poehali.dev/d8e8eac1-b7f3-41b8-b041-69e6d80a1c03', {
         method: 'POST',
@@ -1185,6 +1187,7 @@ export default function Index() {
           orderAddress={orderAddress} setOrderAddress={setOrderAddress}
           orderFlat={orderFlat} setOrderFlat={setOrderFlat}
           orderTime={orderTime} setOrderTime={setOrderTime}
+          orderPayment={orderPayment} setOrderPayment={setOrderPayment}
           orderComment={orderComment} setOrderComment={setOrderComment}
           orderStatus={orderStatus} setOrderStatus={setOrderStatus}
           orderStep={orderStep} setOrderStep={setOrderStep}

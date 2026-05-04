@@ -16,6 +16,7 @@ interface CartDrawerProps {
   orderAddress: string; setOrderAddress: (v: string) => void;
   orderFlat: string; setOrderFlat: (v: string) => void;
   orderTime: 'morning' | 'evening'; setOrderTime: (v: 'morning' | 'evening') => void;
+  orderPayment: 'cash' | 'card' | 'online'; setOrderPayment: (v: 'cash' | 'card' | 'online') => void;
   orderComment: string; setOrderComment: (v: string) => void;
   orderStatus: 'idle' | 'loading' | 'success' | 'error';
   setOrderStatus: (v: 'idle' | 'loading' | 'success' | 'error') => void;
@@ -32,7 +33,7 @@ export default function CartDrawer({
   cart, totalItems, totalPrice, totalWeight, freeDelivery, user,
   orderName, setOrderName, orderPhone, setOrderPhone,
   orderAddress, setOrderAddress, orderFlat, setOrderFlat,
-  orderTime, setOrderTime, orderComment, setOrderComment,
+  orderTime, setOrderTime, orderPayment, setOrderPayment, orderComment, setOrderComment,
   orderStatus, setOrderStatus, orderStep, setOrderStep,
   pointsToUse, setPointsToUse,
   onClose, onOrder, removeFromCart, updateQty, scrollTo,
@@ -218,6 +219,37 @@ export default function CartDrawer({
                     className="w-full border border-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-veggie-green transition-colors"
                   />
                 </div>
+                {/* Способ оплаты */}
+                <div>
+                  <label className="text-xs text-muted-foreground font-medium mb-2 block">Способ оплаты</label>
+                  <div className="grid grid-cols-3 gap-2">
+                    {([
+                      { value: 'cash', icon: '💵', label: 'Наличными' },
+                      { value: 'card', icon: '💳', label: 'Картой' },
+                      { value: 'online', icon: '🏦', label: 'Онлайн ВТБ' },
+                    ] as const).map(({ value, icon, label }) => (
+                      <button
+                        key={value}
+                        type="button"
+                        onClick={() => setOrderPayment(value)}
+                        className={`flex flex-col items-center gap-1 py-2.5 px-1 rounded-xl border text-xs font-medium transition-all ${
+                          orderPayment === value
+                            ? 'border-veggie-green bg-veggie-green/10 text-veggie-green'
+                            : 'border-border bg-background text-muted-foreground hover:border-veggie-green/50'
+                        }`}
+                      >
+                        <span className="text-lg">{icon}</span>
+                        <span>{label}</span>
+                      </button>
+                    ))}
+                  </div>
+                  {orderPayment === 'online' && (
+                    <p className="text-xs text-muted-foreground mt-2 bg-blue-50 border border-blue-100 rounded-lg px-3 py-2">
+                      После подтверждения заказа вам придёт ссылка на оплату через ВТБ
+                    </p>
+                  )}
+                </div>
+
                 <div>
                   <label className="text-xs text-muted-foreground font-medium mb-1 block">Комментарий к заказу</label>
                   <input
