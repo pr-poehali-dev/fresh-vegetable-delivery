@@ -132,6 +132,8 @@ export default function Admin() {
   const [productSaved, setProductSaved] = useState<number | null>(null);
   const [productSaving, setProductSaving] = useState(false);
   const [imageUploading, setImageUploading] = useState(false);
+  const [addingProduct, setAddingProduct] = useState(false);
+  const [newProduct, setNewProduct] = useState<Omit<Product, 'id' | 'season' | 'emoji'> & { emoji: string; season: string }>({ name: '', price: 0, unit: 'кг', weight: '1кг', type: '', badge: null, image: '', emoji: '🛒', season: 'всесезонно', weightKg: 1 });
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const uploadImage = async (file: File) => {
@@ -598,11 +600,17 @@ export default function Admin() {
 
         {/* ======= КАТАЛОГ ======= */}
         {adminTab === "🥬 Каталог" && <>
-          <div className="relative mb-4">
-            <Icon name="Search" size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30" />
-            <input value={productSearch} onChange={e => setProductSearch(e.target.value)}
-              placeholder="Поиск по названию или типу..."
-              className="w-full bg-white/5 border border-white/10 text-white placeholder:text-white/30 pl-9 pr-4 py-2.5 rounded-xl text-sm focus:outline-none focus:border-veggie-lime/40 transition-colors" />
+          <div className="flex gap-2 mb-4">
+            <div className="relative flex-1">
+              <Icon name="Search" size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30" />
+              <input value={productSearch} onChange={e => setProductSearch(e.target.value)}
+                placeholder="Поиск по названию или типу..."
+                className="w-full bg-white/5 border border-white/10 text-white placeholder:text-white/30 pl-9 pr-4 py-2.5 rounded-xl text-sm focus:outline-none focus:border-veggie-lime/40 transition-colors" />
+            </div>
+            <button onClick={() => setAddingProduct(true)}
+              className="flex items-center gap-2 bg-veggie-lime text-veggie-dark px-4 py-2.5 rounded-xl text-sm font-bold hover:bg-white transition-colors shrink-0">
+              <Icon name="Plus" size={16} />Добавить
+            </button>
           </div>
           <div className="space-y-2">
             {filteredProducts.map(p => {
@@ -797,9 +805,15 @@ export default function Admin() {
                   <input value={editingProduct.unit} onChange={e => setEditingProduct({ ...editingProduct, unit: e.target.value })} className={inp} />
                 </div>
               </div>
-              <div>
-                <label className="text-white/50 text-xs mb-1 block">Вес / фасовка</label>
-                <input value={editingProduct.weight} onChange={e => setEditingProduct({ ...editingProduct, weight: e.target.value })} className={inp} placeholder="800 г" />
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="text-white/50 text-xs mb-1 block">Вес / фасовка</label>
+                  <input value={editingProduct.weight} onChange={e => setEditingProduct({ ...editingProduct, weight: e.target.value })} className={inp} placeholder="800 г" />
+                </div>
+                <div>
+                  <label className="text-white/50 text-xs mb-1 block">Тип (фильтр)</label>
+                  <input value={editingProduct.type} onChange={e => setEditingProduct({ ...editingProduct, type: e.target.value })} className={inp} placeholder="напр. томаты" />
+                </div>
               </div>
               <div>
                 <label className="text-white/50 text-xs mb-1 block">Наличие / значок</label>
@@ -844,6 +858,78 @@ export default function Admin() {
             <button onClick={() => saveProduct(editingProduct)} disabled={productSaving}
               className="w-full bg-veggie-lime text-veggie-dark py-3 rounded-xl font-bold text-sm disabled:opacity-50">
               {productSaving ? "Сохраняем..." : "Сохранить"}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* === МОДАЛ: Добавление нового товара === */}
+      {addingProduct && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm" onClick={() => setAddingProduct(false)}>
+          <div className="bg-veggie-dark border border-veggie-green/40 rounded-2xl p-6 w-full max-w-sm shadow-2xl max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="font-heading text-lg font-bold">+ Новый товар</h2>
+              <button onClick={() => setAddingProduct(false)} className="text-white/40 hover:text-white"><Icon name="X" size={20} /></button>
+            </div>
+            <div className="flex flex-col gap-3 mb-4">
+              <div>
+                <label className="text-white/50 text-xs mb-1 block">Название *</label>
+                <input value={newProduct.name} onChange={e => setNewProduct({ ...newProduct, name: e.target.value })} className={inp} placeholder="Например: Томат Черри" autoFocus />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="text-white/50 text-xs mb-1 block">Цена (₽)</label>
+                  <input type="number" value={newProduct.price} min={0} onChange={e => setNewProduct({ ...newProduct, price: Number(e.target.value) })} className={inp} />
+                </div>
+                <div>
+                  <label className="text-white/50 text-xs mb-1 block">Ед. изм.</label>
+                  <input value={newProduct.unit} onChange={e => setNewProduct({ ...newProduct, unit: e.target.value })} className={inp} placeholder="кг" />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="text-white/50 text-xs mb-1 block">Вес / фасовка</label>
+                  <input value={newProduct.weight} onChange={e => setNewProduct({ ...newProduct, weight: e.target.value })} className={inp} placeholder="1кг" />
+                </div>
+                <div>
+                  <label className="text-white/50 text-xs mb-1 block">Тип (фильтр)</label>
+                  <input value={newProduct.type} onChange={e => setNewProduct({ ...newProduct, type: e.target.value })} className={inp} placeholder="томаты" />
+                </div>
+              </div>
+              <div>
+                <label className="text-white/50 text-xs mb-1 block">Значок</label>
+                <select value={newProduct.badge || ''} onChange={e => setNewProduct({ ...newProduct, badge: e.target.value || null })} className={inp + " bg-white/10"}>
+                  <option value="">Нет значка</option>
+                  {BADGE_OPTIONS.map(b => <option key={b} value={b}>{b}</option>)}
+                </select>
+              </div>
+              <div>
+                <label className="text-white/50 text-xs mb-1 block">Эмодзи</label>
+                <input value={newProduct.emoji} onChange={e => setNewProduct({ ...newProduct, emoji: e.target.value })} className={inp} placeholder="🛒" />
+              </div>
+              <div>
+                <label className="text-white/50 text-xs mb-1 block">Фото (URL)</label>
+                <input value={newProduct.image} onChange={e => setNewProduct({ ...newProduct, image: e.target.value })} className={inp} placeholder="https://..." />
+              </div>
+            </div>
+            <button onClick={async () => {
+              if (!newProduct.name.trim()) return;
+              const maxId = Math.max(...products.map(p => p.id), 2000);
+              const p: Product = { id: maxId + 1, ...newProduct, weightKg: 1 };
+              setProductSaving(true);
+              await fetch(`${API}?resource=catalog`, {
+                method: 'PUT', headers: hdrs(),
+                body: JSON.stringify({ product_id: p.id, name: p.name, price: p.price, unit: p.unit, badge: p.badge, image: p.image, type: p.type, weight: p.weight, weight_kg: p.weightKg, hidden: false })
+              });
+              setProducts(prev => [...prev, p]);
+              setProductSaved(p.id);
+              setTimeout(() => setProductSaved(null), 2500);
+              setNewProduct({ name: '', price: 0, unit: 'кг', weight: '1кг', type: '', badge: null, image: '', emoji: '🛒', season: 'всесезонно', weightKg: 1 });
+              setAddingProduct(false);
+              setProductSaving(false);
+            }} disabled={productSaving || !newProduct.name.trim()}
+              className="w-full bg-veggie-lime text-veggie-dark py-3 rounded-xl font-bold text-sm disabled:opacity-50">
+              {productSaving ? "Сохраняем..." : "Добавить товар"}
             </button>
           </div>
         </div>

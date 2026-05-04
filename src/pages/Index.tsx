@@ -237,7 +237,8 @@ export default function Index() {
   const [pointsToUse, setPointsToUse] = useState(0);
   const [dbReviews, setDbReviews] = useState<Array<{id: number; name: string; city: string; text: string; rating: number; avatar: string}>>([]);
   const [reviewForm, setReviewForm] = useState(false);
-  const [catalogOverrides, setCatalogOverrides] = useState<Record<number, {price?: number; unit?: string; badge?: string | null; image?: string; type?: string; weight?: string; weight_kg?: number; hidden?: boolean}>>({});
+  const [catalogOverrides, setCatalogOverrides] = useState<Record<number, {price?: number; unit?: string; badge?: string | null; image?: string; type?: string; weight?: string; weight_kg?: number; hidden?: boolean; name?: string}>>({});
+  const [extraProducts, setExtraProducts] = useState<typeof PRODUCTS>([]);
   const [reviewName, setReviewName] = useState('');
   const [reviewCity, setReviewCity] = useState('');
   const [reviewText, setReviewText] = useState('');
@@ -263,9 +264,17 @@ export default function Index() {
       .then(r => r.ok ? r.json() : null)
       .then(data => {
         if (!data?.overrides?.length) return;
-        const map: Record<number, {price?: number; unit?: string; badge?: string | null; image?: string; type?: string; weight?: string; weight_kg?: number; hidden?: boolean}> = {};
-        for (const o of data.overrides) map[o.product_id] = o;
+        const map: Record<number, {price?: number; unit?: string; badge?: string | null; image?: string; type?: string; weight?: string; weight_kg?: number; hidden?: boolean; name?: string}> = {};
+        const knownIds = new Set(PRODUCTS.map((p: {id: number}) => p.id));
+        const extras: typeof PRODUCTS = [];
+        for (const o of data.overrides) {
+          map[o.product_id] = o;
+          if (!knownIds.has(o.product_id) && !o.hidden && o.name) {
+            extras.push({ id: o.product_id, name: o.name, price: o.price ?? 0, unit: o.unit ?? 'уп', season: 'всесезонно', type: o.type ?? 'разное', emoji: '🛒', badge: o.badge ?? null, weight: o.weight ?? '', weightKg: o.weight_kg ?? 1, image: o.image ?? '' });
+          }
+        }
         setCatalogOverrides(map);
+        setExtraProducts(extras);
       })
       .catch(() => {});
   }, []);
@@ -377,7 +386,8 @@ export default function Index() {
     grocery: GROCERY_TYPES,
     readyfood: READYFOOD_TYPES,
   };
-  const currentProducts = isSearching ? applyOverrides(PRODUCTS) : (SECTION_MAP[activeSection] ?? applyOverrides(VEGETABLES));
+  const allProducts = [...PRODUCTS, ...extraProducts];
+  const currentProducts = isSearching ? applyOverrides(allProducts) : (SECTION_MAP[activeSection] ?? applyOverrides(VEGETABLES));
   const currentTypes = TYPES_MAP[activeSection] ?? VEG_TYPES;
   const filteredProducts = currentProducts.filter(p => {
     const matchesType = isSearching || activeType === "все" || p.type === activeType;
