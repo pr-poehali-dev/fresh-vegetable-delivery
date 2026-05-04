@@ -20,7 +20,7 @@ const VEGETABLES = [
   { id: 10, name: "Помидор на ветке", price: 150, unit: "кг", season: "лето", type: "томаты", emoji: "🍅", badge: null, weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/1f46a197-22de-4fac-8b33-16bab135c783.jpg" },
   { id: 12, name: "Помидор Парадайс", price: 220, unit: "кг", season: "лето", type: "томаты", emoji: "🍅", badge: null, weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/05cd7a84-8e00-40ff-9e35-a9a9ae50e85f.jpg" },
   { id: 11, name: "Огурец пупырчатый Чечня", price: 150, unit: "кг", season: "лето", type: "огурцы", emoji: "🥒", badge: null, weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/3a013d01-ce48-4918-893a-f2b121197ad6.jpg" },
-  { id: 14, name: "Огурец пупырчатый высший сорт", price: 180, unit: "кг", season: "лето", type: "огурцы", emoji: "🥒", badge: "Хит", weight: "1кг", weightKg: 1, image: "" },
+  { id: 14, name: "Огурец пупырчатый высший сорт", price: 180, unit: "кг", season: "лето", type: "огурцы", emoji: "🥒", badge: "Хит", weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/ff8b7607-7013-4833-82d8-20b1b4606a94.jpg" },
   { id: 15, name: "Огурец пупырчатый Кубань", price: 110, unit: "кг", season: "лето", type: "огурцы", emoji: "🥒", badge: null, weight: "1кг", weightKg: 1, image: "" },
   { id: 13, name: "Огурец гладкий", price: 170, unit: "кг", season: "лето", type: "огурцы", emoji: "🥒", badge: null, weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/35de6ab4-856a-4bb1-984a-179054b55956.jpg" },
   { id: 126, name: "Чеснок", price: 280, unit: "кг", season: "осень", type: "чеснок", emoji: "🧄", badge: null, weight: "1кг", weightKg: 1, image: "" },
@@ -48,7 +48,7 @@ const FRUITS = [
 ];
 
 const BERRIES = [
-  { id: 201, name: "Клубника", price: 380, unit: "кг", season: "лето", type: "ягоды", emoji: "🍓", badge: null, weight: "1кг", weightKg: 1, image: "" },
+  { id: 201, name: "Клубника", price: 380, unit: "кг", season: "лето", type: "ягоды", emoji: "🍓", badge: null, weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/44e96e8d-07f3-41ce-8e27-317b96d7e983.jpg" },
   { id: 202, name: "Арбуз", price: 100, unit: "кг", season: "лето", type: "ягоды", emoji: "🍉", badge: null, weight: "1кг", weightKg: 1, image: "" },
 ];
 
