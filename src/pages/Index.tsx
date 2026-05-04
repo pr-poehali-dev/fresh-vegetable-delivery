@@ -57,6 +57,7 @@ const JUICES = [
   { id: 1109, name: "Вода Казбек-Аква газированная 1,5 л", price: 65, unit: "бут", season: "всесезонно", type: "вода", emoji: "💧", badge: null, weight: "1,5 л", weightKg: 1.5, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/fb9a8c41-d977-43a3-8457-fb637e93333d.jpg" },
   { id: 1111, name: "Вода Казбек-Аква без газа 1,5 л", price: 39, unit: "бут", season: "всесезонно", type: "вода", emoji: "💧", badge: null, weight: "1,5 л", weightKg: 1.5, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/dcef16e7-a62b-4152-b2bf-619a709c3a9b.jpg" },
   { id: 1110, name: "Квас Желтая Бочка живого брожения 3,5 л", price: 189, unit: "бут", season: "всесезонно", type: "напитки", emoji: "🍺", badge: null, weight: "3,5 л", weightKg: 3.5, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/518b9030-56ec-4d38-adad-58c919ff91ae.jpg" },
+  { id: 1112, name: "Сок Мой Апельсин 2 л", price: 139, unit: "бут", season: "всесезонно", type: "напитки", emoji: "🍊", badge: null, weight: "2 л", weightKg: 2, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/f54cb468-8aa9-4068-94e0-43e1fac2916c.jpg" },
 ];
 
 const MUSHROOMS = [
@@ -126,8 +127,12 @@ const GROCERY = [
   { id: 1105, name: "Майонез Calve Лёгкий 800 г", price: 180, unit: "уп", season: "всесезонно", type: "соусы", emoji: "🥫", badge: null, weight: "800 г", weightKg: 0.8, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/465bd9cc-280c-4b63-a4b8-cdeeef27b4b9.jpg" },
   { id: 1108, name: "Соус Calve Лёгкий 230 г", price: 89, unit: "уп", season: "всесезонно", type: "соусы", emoji: "🥫", badge: null, weight: "230 г", weightKg: 0.23, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/acef4785-f7ee-467e-b43a-8b8a410d5870.jpg" },
   { id: 1106, name: "Чай TANAY 100 пакетов", price: 0, unit: "уп", season: "всесезонно", type: "чай", emoji: "🍵", badge: null, weight: "100 пак", weightKg: 0.2, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/cf05b900-ee74-4322-bb77-8bef4ef410de.jpg" },
+  { id: 1113, name: "Майонез Mr.Ricco Оливковый 800 г", price: 210, unit: "уп", season: "всесезонно", type: "соусы", emoji: "🥫", badge: null, weight: "800 г", weightKg: 0.8, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/5db380ee-845e-46da-ad62-cb5b95cf38d4.jpg" },
+  { id: 1114, name: "Горошек зелёный Фрау Марта 420 г", price: 89, unit: "уп", season: "всесезонно", type: "консервы", emoji: "🫛", badge: null, weight: "420 г", weightKg: 0.42, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/5cec9ac0-a420-49c0-babe-de074462887f.jpg" },
+  { id: 1115, name: "Кукуруза Кубаночка 425 г", price: 79, unit: "уп", season: "всесезонно", type: "консервы", emoji: "🌽", badge: null, weight: "425 г", weightKg: 0.425, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/b568e6ce-6dd4-43de-9dcf-0dd69710f2eb.jpg" },
+  { id: 1116, name: "Кетчуп Балтимор Адмирал 700 г", price: 149, unit: "уп", season: "всесезонно", type: "соусы", emoji: "🍅", badge: null, weight: "700 г", weightKg: 0.7, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/2bab72b6-11b6-4a19-b66c-451992987adb.jpg" },
 ];
-const GROCERY_TYPES = ["все", "мука", "крупы", "соусы", "чай"];
+const GROCERY_TYPES = ["все", "мука", "крупы", "соусы", "чай", "консервы"];
 
 const READYFOOD = [
   { id: 1201, name: "Морковь по-корейски 500 г", price: 85, unit: "уп", season: "всесезонно", type: "салаты", emoji: "🥕", badge: null, weight: "500 г", weightKg: 0.5, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/3197f53a-4d44-422c-9779-cd171c8082b4.jpg" },
