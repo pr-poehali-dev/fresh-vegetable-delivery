@@ -144,10 +144,10 @@ def handler(event: dict, context) -> dict:
         cur = conn.cursor()
         method = event.get('httpMethod')
         if method == 'GET':
-            cur.execute(f"SELECT product_id, price, unit, badge, image, type, weight, weight_kg, hidden FROM {SCHEMA}.catalog_overrides")
+            cur.execute(f"SELECT product_id, price, unit, badge, image, type, weight, weight_kg, hidden, name FROM {SCHEMA}.catalog_overrides")
             rows = cur.fetchall()
             cur.close(); conn.close()
-            overrides = [{'product_id': r[0], 'price': r[1], 'unit': r[2], 'badge': r[3], 'image': r[4], 'type': r[5], 'weight': r[6], 'weight_kg': float(r[7]) if r[7] is not None else None, 'hidden': r[8]} for r in rows]
+            overrides = [{'product_id': r[0], 'price': r[1], 'unit': r[2], 'badge': r[3], 'image': r[4], 'type': r[5], 'weight': r[6], 'weight_kg': float(r[7]) if r[7] is not None else None, 'hidden': r[8], 'name': r[9]} for r in rows]
             return {'statusCode': 200, 'headers': CORS, 'body': json.dumps({'overrides': overrides}, ensure_ascii=False)}
         if method == 'PUT':
             if not is_admin:
@@ -166,14 +166,15 @@ def handler(event: dict, context) -> dict:
             weight = body.get('weight')
             weight_kg = body.get('weight_kg')
             hidden = body.get('hidden', False)
+            name = body.get('name') or None
             cur.execute(
-                f"""INSERT INTO {SCHEMA}.catalog_overrides (product_id, price, unit, badge, image, type, weight, weight_kg, hidden, updated_at)
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, NOW())
+                f"""INSERT INTO {SCHEMA}.catalog_overrides (product_id, price, unit, badge, image, type, weight, weight_kg, hidden, name, updated_at)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW())
                     ON CONFLICT (product_id) DO UPDATE SET
                         price=EXCLUDED.price, unit=EXCLUDED.unit, badge=EXCLUDED.badge,
                         image=EXCLUDED.image, type=EXCLUDED.type, weight=EXCLUDED.weight,
-                        weight_kg=EXCLUDED.weight_kg, hidden=EXCLUDED.hidden, updated_at=NOW()""",
-                (pid, price, unit, badge, image, ptype, weight, weight_kg, hidden)
+                        weight_kg=EXCLUDED.weight_kg, hidden=EXCLUDED.hidden, name=EXCLUDED.name, updated_at=NOW()""",
+                (pid, price, unit, badge, image, ptype, weight, weight_kg, hidden, name)
             )
             conn.commit(); cur.close(); conn.close()
             return {'statusCode': 200, 'headers': CORS, 'body': json.dumps({'ok': True})}

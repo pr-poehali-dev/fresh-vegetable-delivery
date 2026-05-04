@@ -211,7 +211,7 @@ export default function Admin() {
     setProducts(ALL_PRODUCTS.map(p => {
       const o = map[p.id];
       if (!o) return p;
-      return { ...p, price: o.price ?? p.price, unit: o.unit ?? p.unit, badge: o.badge !== undefined ? o.badge : p.badge, image: o.image || p.image, type: o.type ?? p.type, weight: o.weight ?? p.weight, weightKg: o.weight_kg ?? p.weightKg };
+      return { ...p, name: o.name || p.name, price: o.price ?? p.price, unit: o.unit ?? p.unit, badge: o.badge !== undefined ? o.badge : p.badge, image: o.image || p.image, type: o.type ?? p.type, weight: o.weight ?? p.weight, weightKg: o.weight_kg ?? p.weightKg };
     }));
   };
 
@@ -221,7 +221,7 @@ export default function Admin() {
     await fetch(`${API}?resource=catalog`, {
       method: 'PUT',
       headers: hdrs(),
-      body: JSON.stringify({ product_id: p.id, price: p.price, unit: p.unit, badge: p.badge, image: p.image, type: p.type, weight: p.weight, weight_kg: p.weightKg, hidden })
+      body: JSON.stringify({ product_id: p.id, name: p.name, price: p.price, unit: p.unit, badge: p.badge, image: p.image, type: p.type, weight: p.weight, weight_kg: p.weightKg, hidden })
     });
     setOverrides(prev => ({ ...prev, [p.id]: { ...p, product_id: p.id, weight_kg: p.weightKg, hidden } }));
     setProducts(prev => prev.map(x => x.id === p.id ? p : x));
@@ -782,6 +782,10 @@ export default function Admin() {
               <button onClick={() => setEditingProduct(null)} className="text-white/40 hover:text-white"><Icon name="X" size={20} /></button>
             </div>
             <div className="flex flex-col gap-3 mb-4">
+              <div>
+                <label className="text-white/50 text-xs mb-1 block">Название</label>
+                <input value={editingProduct.name} onChange={e => setEditingProduct({ ...editingProduct, name: e.target.value })} className={inp} />
+              </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="text-white/50 text-xs mb-1 block">Цена (₽)</label>
