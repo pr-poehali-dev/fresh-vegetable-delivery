@@ -61,7 +61,7 @@ const ALL_PRODUCTS: Product[] = [
   { id: 504, name: "Редиска", price: 200, unit: "кг", season: "лето", type: "зелень", emoji: "🌰", badge: null, weight: "1кг", weightKg: 1, image: "" },
   { id: 601, name: "Яйцо домашнее", price: 150, unit: "упак", season: "всесезонно", type: "яйца", emoji: "🥚", badge: null, weight: "10шт", weightKg: 0.6, image: "" },
   { id: 701, name: "Свинина", price: 350, unit: "кг", season: "всесезонно", type: "мясо", emoji: "🥩", badge: null, weight: "1кг", weightKg: 1, image: "" },
-  { id: 801, name: "Молоко пастеризованное 3.2%", price: 99, unit: "л", season: "всесезонно", type: "молоко", emoji: "🥛", badge: null, weight: "1л", weightKg: 1, image: "" },
+  { id: 801, name: "Молоко Вкус Облако 3.2%", price: 82, unit: "л", season: "всесезонно", type: "молоко", emoji: "🥛", badge: null, weight: "1 л", weightKg: 1, image: "" },
   { id: 802, name: "Сметана 15%", price: 120, unit: "уп", season: "всесезонно", type: "молоко", emoji: "🥛", badge: null, weight: "400г", weightKg: 0.4, image: "" },
   { id: 803, name: "Творог зернёный 5%", price: 160, unit: "уп", season: "всесезонно", type: "молоко", emoji: "🧀", badge: null, weight: "350г", weightKg: 0.35, image: "" },
   { id: 804, name: "Кефир 2.5%", price: 80, unit: "л", season: "всесезонно", type: "молоко", emoji: "🥛", badge: null, weight: "1л", weightKg: 1, image: "" },

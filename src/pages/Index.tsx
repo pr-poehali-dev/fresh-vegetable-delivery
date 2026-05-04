@@ -85,7 +85,7 @@ const EGG_TYPES = ["все", "яйца"];
 const MEAT_TYPES = ["все", "птица", "говядина", "свинина", "фарш"];
 
 const DAIRY = [
-  { id: 801, name: "Молоко домашнее", price: 0, unit: "л", season: "всесезонно", type: "молоко", emoji: "🥛", badge: null, weight: "1л", weightKg: 1, image: "" },
+  { id: 801, name: "Молоко Вкус Облако 3.2%", price: 82, unit: "л", season: "всесезонно", type: "молоко", emoji: "🥛", badge: null, weight: "1 л", weightKg: 1, image: "" },
   { id: 802, name: "Сметана домашняя", price: 0, unit: "500г", season: "всесезонно", type: "кисломолочное", emoji: "🥛", badge: null, weight: "500г", weightKg: 0.5, image: "" },
   { id: 803, name: "Творог домашний", price: 0, unit: "500г", season: "всесезонно", type: "творог", emoji: "🧀", badge: null, weight: "500г", weightKg: 0.5, image: "" },
   { id: 804, name: "Кефир домашний", price: 0, unit: "л", season: "всесезонно", type: "кисломолочное", emoji: "🥛", badge: null, weight: "1л", weightKg: 1, image: "" },
