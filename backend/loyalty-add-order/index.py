@@ -68,7 +68,7 @@ def calc_monthly_bonus(total: float) -> int:
 
 
 def handler(event: dict, context) -> dict:
-    """Оформление заказа (POST), история заказов (GET), ежемесячный кэшбэк (POST ?action=monthly_bonus)"""
+    """Оформление заказа (POST), история заказов (GET), ежемесячный кэшбэк, каталог оверрайды (resource=catalog)."""
 
     if event.get('httpMethod') == 'OPTIONS':
         return {'statusCode': 200, 'headers': CORS, 'body': ''}
@@ -133,6 +133,48 @@ def handler(event: dict, context) -> dict:
             body = json.loads(event.get('body') or '{}')
             review_id = body.get('id')
             cur.execute(f"DELETE FROM {SCHEMA}.reviews WHERE id=%s", (review_id,))
+            conn.commit(); cur.close(); conn.close()
+            return {'statusCode': 200, 'headers': CORS, 'body': json.dumps({'ok': True})}
+        cur.close(); conn.close()
+        return {'statusCode': 405, 'headers': CORS, 'body': json.dumps({'error': 'Method not allowed'})}
+
+    # === КАТАЛОГ (оверрайды) ===
+    if resource == 'catalog':
+        conn = psycopg2.connect(os.environ['DATABASE_URL'])
+        cur = conn.cursor()
+        method = event.get('httpMethod')
+        if method == 'GET':
+            cur.execute(f"SELECT product_id, price, unit, badge, image, type, weight, weight_kg, hidden FROM {SCHEMA}.catalog_overrides")
+            rows = cur.fetchall()
+            cur.close(); conn.close()
+            overrides = [{'product_id': r[0], 'price': r[1], 'unit': r[2], 'badge': r[3], 'image': r[4], 'type': r[5], 'weight': r[6], 'weight_kg': float(r[7]) if r[7] is not None else None, 'hidden': r[8]} for r in rows]
+            return {'statusCode': 200, 'headers': CORS, 'body': json.dumps({'overrides': overrides}, ensure_ascii=False)}
+        if method == 'PUT':
+            if not is_admin:
+                cur.close(); conn.close()
+                return {'statusCode': 403, 'headers': CORS, 'body': json.dumps({'error': 'Forbidden'})}
+            body = json.loads(event.get('body') or '{}')
+            pid = body.get('product_id')
+            if not pid:
+                cur.close(); conn.close()
+                return {'statusCode': 400, 'headers': CORS, 'body': json.dumps({'error': 'product_id обязателен'})}
+            price = body.get('price')
+            unit = body.get('unit')
+            badge = body.get('badge')
+            image = body.get('image')
+            ptype = body.get('type')
+            weight = body.get('weight')
+            weight_kg = body.get('weight_kg')
+            hidden = body.get('hidden', False)
+            cur.execute(
+                f"""INSERT INTO {SCHEMA}.catalog_overrides (product_id, price, unit, badge, image, type, weight, weight_kg, hidden, updated_at)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, NOW())
+                    ON CONFLICT (product_id) DO UPDATE SET
+                        price=EXCLUDED.price, unit=EXCLUDED.unit, badge=EXCLUDED.badge,
+                        image=EXCLUDED.image, type=EXCLUDED.type, weight=EXCLUDED.weight,
+                        weight_kg=EXCLUDED.weight_kg, hidden=EXCLUDED.hidden, updated_at=NOW()""",
+                (pid, price, unit, badge, image, ptype, weight, weight_kg, hidden)
+            )
             conn.commit(); cur.close(); conn.close()
             return {'statusCode': 200, 'headers': CORS, 'body': json.dumps({'ok': True})}
         cur.close(); conn.close()

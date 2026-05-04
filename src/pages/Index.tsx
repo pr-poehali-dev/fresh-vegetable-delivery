@@ -341,7 +341,7 @@ export default function Index() {
     arr.filter(p => !catalogOverrides[p.id]?.hidden).map(p => {
       const o = catalogOverrides[p.id];
       if (!o) return p;
-      return { ...p, price: o.price ?? p.price, unit: o.unit ?? p.unit, badge: o.badge !== undefined ? o.badge : p.badge, image: o.image ?? p.image, type: o.type ?? p.type, weight: o.weight ?? p.weight, weightKg: o.weight_kg ?? p.weightKg };
+      return { ...p, price: o.price ?? p.price, unit: o.unit ?? p.unit, badge: o.badge !== undefined ? o.badge : p.badge, image: o.image || p.image, type: o.type ?? p.type, weight: o.weight ?? p.weight, weightKg: o.weight_kg ?? p.weightKg };
     });
 
   const SECTION_MAP = {
