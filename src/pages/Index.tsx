@@ -234,6 +234,7 @@ export default function Index() {
   const [pointsToUse, setPointsToUse] = useState(0);
   const [dbReviews, setDbReviews] = useState<Array<{id: number; name: string; city: string; text: string; rating: number; avatar: string}>>([]);
   const [reviewForm, setReviewForm] = useState(false);
+  const [catalogOverrides, setCatalogOverrides] = useState<Record<number, {price?: number; unit?: string; badge?: string | null; image?: string; type?: string; weight?: string; weight_kg?: number; hidden?: boolean}>>({});
   const [reviewName, setReviewName] = useState('');
   const [reviewCity, setReviewCity] = useState('');
   const [reviewText, setReviewText] = useState('');
@@ -251,6 +252,18 @@ export default function Index() {
     fetch('https://functions.poehali.dev/d8e8eac1-b7f3-41b8-b041-69e6d80a1c03?resource=reviews')
       .then(r => r.ok ? r.json() : null)
       .then(data => { if (data?.reviews) setDbReviews(data.reviews); })
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    fetch('https://functions.poehali.dev/d8e8eac1-b7f3-41b8-b041-69e6d80a1c03?resource=catalog')
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        if (!data?.overrides?.length) return;
+        const map: Record<number, {price?: number; unit?: string; badge?: string | null; image?: string; type?: string; weight?: string; weight_kg?: number; hidden?: boolean}> = {};
+        for (const o of data.overrides) map[o.product_id] = o;
+        setCatalogOverrides(map);
+      })
       .catch(() => {});
   }, []);
 
@@ -324,20 +337,27 @@ export default function Index() {
   };
 
   const isSearching = search.trim().length > 0;
+  const applyOverrides = (arr: typeof PRODUCTS) =>
+    arr.filter(p => !catalogOverrides[p.id]?.hidden).map(p => {
+      const o = catalogOverrides[p.id];
+      if (!o) return p;
+      return { ...p, price: o.price ?? p.price, unit: o.unit ?? p.unit, badge: o.badge !== undefined ? o.badge : p.badge, image: o.image ?? p.image, type: o.type ?? p.type, weight: o.weight ?? p.weight, weightKg: o.weight_kg ?? p.weightKg };
+    });
+
   const SECTION_MAP = {
-    vegetables: VEGETABLES,
-    fruits: FRUITS,
-    berries: BERRIES,
-    juices: JUICES,
-    mushrooms: MUSHROOMS,
-    greens: GREENS,
-    eggs: EGGS,
-    meat: MEAT,
-    dairy: DAIRY,
-    sausage: SAUSAGE,
-    household: HOUSEHOLD,
-    grocery: GROCERY,
-    readyfood: READYFOOD,
+    vegetables: applyOverrides(VEGETABLES),
+    fruits: applyOverrides(FRUITS),
+    berries: applyOverrides(BERRIES),
+    juices: applyOverrides(JUICES),
+    mushrooms: applyOverrides(MUSHROOMS),
+    greens: applyOverrides(GREENS),
+    eggs: applyOverrides(EGGS),
+    meat: applyOverrides(MEAT),
+    dairy: applyOverrides(DAIRY),
+    sausage: applyOverrides(SAUSAGE),
+    household: applyOverrides(HOUSEHOLD),
+    grocery: applyOverrides(GROCERY),
+    readyfood: applyOverrides(READYFOOD),
   };
   const TYPES_MAP = {
     vegetables: VEG_TYPES,
@@ -354,7 +374,7 @@ export default function Index() {
     grocery: GROCERY_TYPES,
     readyfood: READYFOOD_TYPES,
   };
-  const currentProducts = isSearching ? PRODUCTS : (SECTION_MAP[activeSection] ?? VEGETABLES);
+  const currentProducts = isSearching ? applyOverrides(PRODUCTS) : (SECTION_MAP[activeSection] ?? applyOverrides(VEGETABLES));
   const currentTypes = TYPES_MAP[activeSection] ?? VEG_TYPES;
   const filteredProducts = currentProducts.filter(p => {
     const matchesType = isSearching || activeType === "все" || p.type === activeType;

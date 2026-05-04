@@ -60,9 +60,31 @@ const ALL_PRODUCTS: Product[] = [
   { id: 503, name: "Петрушка", price: 100, unit: "150г", season: "всесезонно", type: "зелень", emoji: "🌿", badge: null, weight: "150г", weightKg: 0.15, image: "" },
   { id: 504, name: "Редиска", price: 200, unit: "кг", season: "лето", type: "зелень", emoji: "🌰", badge: null, weight: "1кг", weightKg: 1, image: "" },
   { id: 601, name: "Яйцо домашнее", price: 150, unit: "упак", season: "всесезонно", type: "яйца", emoji: "🥚", badge: null, weight: "10шт", weightKg: 0.6, image: "" },
+  { id: 701, name: "Свинина", price: 350, unit: "кг", season: "всесезонно", type: "мясо", emoji: "🥩", badge: null, weight: "1кг", weightKg: 1, image: "" },
+  { id: 801, name: "Молоко пастеризованное 3.2%", price: 99, unit: "л", season: "всесезонно", type: "молоко", emoji: "🥛", badge: null, weight: "1л", weightKg: 1, image: "" },
+  { id: 802, name: "Сметана 15%", price: 120, unit: "уп", season: "всесезонно", type: "молоко", emoji: "🥛", badge: null, weight: "400г", weightKg: 0.4, image: "" },
+  { id: 803, name: "Творог зернёный 5%", price: 160, unit: "уп", season: "всесезонно", type: "молоко", emoji: "🧀", badge: null, weight: "350г", weightKg: 0.35, image: "" },
+  { id: 804, name: "Кефир 2.5%", price: 80, unit: "л", season: "всесезонно", type: "молоко", emoji: "🥛", badge: null, weight: "1л", weightKg: 1, image: "" },
+  { id: 805, name: "Масло сливочное Крестьянское 72.5%", price: 190, unit: "уп", season: "всесезонно", type: "молоко", emoji: "🧈", badge: null, weight: "180г", weightKg: 0.18, image: "" },
+  { id: 806, name: "Ряженка 3.2%", price: 95, unit: "уп", season: "всесезонно", type: "молоко", emoji: "🥛", badge: null, weight: "500мл", weightKg: 0.5, image: "" },
+  { id: 901, name: "Колбаса Докторская", price: 650, unit: "кг", season: "всесезонно", type: "колбасы", emoji: "🌭", badge: null, weight: "1кг", weightKg: 1, image: "" },
+  { id: 902, name: "Колбаса Молочная", price: 500, unit: "кг", season: "всесезонно", type: "колбасы", emoji: "🌭", badge: null, weight: "1кг", weightKg: 1, image: "" },
+  { id: 903, name: "Сосиски Молочные", price: 550, unit: "кг", season: "всесезонно", type: "сосиски", emoji: "🌭", badge: null, weight: "1кг", weightKg: 1, image: "" },
+  { id: 904, name: "Колбаса Чайная", price: 450, unit: "кг", season: "всесезонно", type: "колбасы", emoji: "🌭", badge: null, weight: "1кг", weightKg: 1, image: "" },
+  { id: 905, name: "Сардельки Говяжьи", price: 490, unit: "кг", season: "всесезонно", type: "сосиски", emoji: "🌭", badge: null, weight: "1кг", weightKg: 1, image: "" },
+  { id: 1001, name: "Порошок стиральный Tide 3кг", price: 850, unit: "уп", season: "всесезонно", type: "бытовые", emoji: "🧺", badge: null, weight: "3кг", weightKg: 3, image: "" },
+  { id: 1002, name: "Салфетки бумажные 100шт", price: 50, unit: "уп", season: "всесезонно", type: "бытовые", emoji: "🧻", badge: null, weight: "100шт", weightKg: 0.1, image: "" },
+  { id: 1003, name: "Бумага туалетная 12рул", price: 180, unit: "уп", season: "всесезонно", type: "бытовые", emoji: "🧻", badge: null, weight: "12рул", weightKg: 0.9, image: "" },
+  { id: 1101, name: "Мука пшеничная высший сорт 5 кг", price: 254, unit: "уп", season: "всесезонно", type: "мука", emoji: "🌾", badge: null, weight: "5кг", weightKg: 5, image: "" },
+  { id: 1102, name: "Булгур крупа пшеничная 800 г", price: 135, unit: "уп", season: "всесезонно", type: "крупы", emoji: "🌾", badge: null, weight: "800г", weightKg: 0.8, image: "" },
+  { id: 1103, name: "Смесь бобовых 800 г", price: 88, unit: "уп", season: "всесезонно", type: "крупы", emoji: "🫘", badge: null, weight: "800г", weightKg: 0.8, image: "" },
+  { id: 1104, name: "Рис шлифованный 2 сорт 900 г", price: 99, unit: "уп", season: "всесезонно", type: "крупы", emoji: "🍚", badge: null, weight: "900г", weightKg: 0.9, image: "" },
+  { id: 1105, name: "Майонез Calve Лёгкий 800 г", price: 180, unit: "уп", season: "всесезонно", type: "соусы", emoji: "🥫", badge: null, weight: "800г", weightKg: 0.8, image: "" },
+  { id: 1201, name: "Морковь по-корейски 500 г", price: 85, unit: "уп", season: "всесезонно", type: "салаты", emoji: "🥕", badge: null, weight: "500г", weightKg: 0.5, image: "" },
+  { id: 1202, name: "Капуста квашеная с морковью 1 кг", price: 125, unit: "уп", season: "всесезонно", type: "соленья", emoji: "🥬", badge: null, weight: "1кг", weightKg: 1, image: "" },
 ];
 
-const BADGE_OPTIONS = ["Нет в наличии", "Хит", "Органик", "Новинка"];
+const BADGE_OPTIONS = ["Нет в наличии", "Хит", "Органик", "Новинка", "Премиум"];
 
 type Order = { id: number; name: string; phone: string; address: string; comment: string; items: Array<{ name: string; quantity: number; price: number }>; total_price: number; status: string; created_at: string; user_id: number | null };
 type UserProfile = { id: number; phone: string; name: string; points: number; is_first_order_done: boolean; created_at: string | null; last_seen_at: string | null; order_count: number };
@@ -101,10 +123,13 @@ export default function Admin() {
   const [reviewSaving, setReviewSaving] = useState(false);
 
   // Каталог
+  type Override = { product_id: number; price: number | null; unit: string | null; badge: string | null; image: string | null; type: string | null; weight: string | null; weight_kg: number | null; hidden: boolean };
   const [products, setProducts] = useState<Product[]>(ALL_PRODUCTS);
+  const [overrides, setOverrides] = useState<Record<number, Override>>({});
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [productSearch, setProductSearch] = useState("");
   const [productSaved, setProductSaved] = useState<number | null>(null);
+  const [productSaving, setProductSaving] = useState(false);
   const [imageUploading, setImageUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -164,6 +189,46 @@ export default function Admin() {
     setLoading(false);
   };
 
+  const loadCatalog = async () => {
+    const res = await fetch(`${API}?resource=catalog`);
+    if (!res.ok) return;
+    const data = await res.json();
+    const map: Record<number, Override> = {};
+    for (const o of (data.overrides || [])) map[o.product_id] = o;
+    setOverrides(map);
+    setProducts(ALL_PRODUCTS.map(p => {
+      const o = map[p.id];
+      if (!o) return p;
+      return { ...p, price: o.price ?? p.price, unit: o.unit ?? p.unit, badge: o.badge !== undefined ? o.badge : p.badge, image: o.image ?? p.image, type: o.type ?? p.type, weight: o.weight ?? p.weight, weightKg: o.weight_kg ?? p.weightKg };
+    }));
+  };
+
+  const saveProduct = async (p: Product) => {
+    const hidden = overrides[p.id]?.hidden ?? false;
+    setProductSaving(true);
+    await fetch(`${API}?resource=catalog`, {
+      method: 'PUT',
+      headers: hdrs(),
+      body: JSON.stringify({ product_id: p.id, price: p.price, unit: p.unit, badge: p.badge, image: p.image, type: p.type, weight: p.weight, weight_kg: p.weightKg, hidden })
+    });
+    setOverrides(prev => ({ ...prev, [p.id]: { ...p, product_id: p.id, weight_kg: p.weightKg, hidden } }));
+    setProducts(prev => prev.map(x => x.id === p.id ? p : x));
+    setProductSaved(p.id);
+    setProductSaving(false);
+    setTimeout(() => setProductSaved(null), 2500);
+    setEditingProduct(null);
+  };
+
+  const toggleHidden = async (p: Product) => {
+    const newHidden = !(overrides[p.id]?.hidden ?? false);
+    await fetch(`${API}?resource=catalog`, {
+      method: 'PUT',
+      headers: hdrs(),
+      body: JSON.stringify({ product_id: p.id, price: p.price, unit: p.unit, badge: p.badge, image: p.image, type: p.type, weight: p.weight, weight_kg: p.weightKg, hidden: newHidden })
+    });
+    setOverrides(prev => ({ ...prev, [p.id]: { ...(prev[p.id] || { product_id: p.id, price: null, unit: null, badge: null, image: null, type: null, weight: null, weight_kg: null }), hidden: newHidden } }));
+  };
+
   useEffect(() => {
     if (adminKey) {
       setAuthed(false);
@@ -181,6 +246,7 @@ export default function Admin() {
     if (!authed) return;
     if (adminTab === "👤 Профили") loadUsers();
     if (adminTab === "⭐ Отзывы") loadReviews();
+    if (adminTab === "🥬 Каталог") loadCatalog();
   }, [adminTab, authed]);
 
   const changeStatus = async (orderId: number, newStatus: string) => {
@@ -527,26 +593,36 @@ export default function Admin() {
               className="w-full bg-white/5 border border-white/10 text-white placeholder:text-white/30 pl-9 pr-4 py-2.5 rounded-xl text-sm focus:outline-none focus:border-veggie-lime/40 transition-colors" />
           </div>
           <div className="space-y-2">
-            {filteredProducts.map(p => (
-              <div key={p.id} className={`bg-white/5 border rounded-2xl p-3 flex items-center gap-3 ${p.badge === "Нет в наличии" ? "border-red-500/20" : "border-white/10"}`}>
-                <div className="w-12 h-12 rounded-xl overflow-hidden bg-white/10 flex items-center justify-center shrink-0">
-                  {p.image ? <img src={p.image} alt={p.name} className="w-full h-full object-cover" /> : <span className="text-2xl">{p.emoji}</span>}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-white text-sm font-semibold truncate">{p.name}</p>
-                  <div className="flex gap-3 text-xs text-white/50 mt-0.5">
-                    <span>{p.price} ₽/{p.unit}</span>
-                    <span className="text-white/30">{p.type}</span>
-                    {p.badge && <span className={`${p.badge === "Нет в наличии" ? "text-red-400" : "text-veggie-lime"}`}>{p.badge}</span>}
-                    {productSaved === p.id && <span className="text-veggie-lime">✓ Сохранено</span>}
+            {filteredProducts.map(p => {
+              const isHidden = overrides[p.id]?.hidden ?? false;
+              return (
+                <div key={p.id} className={`border rounded-2xl p-3 flex items-center gap-3 transition-opacity ${isHidden ? "opacity-40 bg-red-500/5 border-red-500/20" : p.badge === "Нет в наличии" ? "bg-white/5 border-orange-500/20" : "bg-white/5 border-white/10"}`}>
+                  <div className="w-12 h-12 rounded-xl overflow-hidden bg-white/10 flex items-center justify-center shrink-0">
+                    {p.image ? <img src={p.image} alt={p.name} className="w-full h-full object-cover" /> : <span className="text-2xl">{p.emoji}</span>}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className={`text-sm font-semibold truncate ${isHidden ? "line-through text-white/40" : "text-white"}`}>{p.name}</p>
+                    <div className="flex gap-2 text-xs text-white/50 mt-0.5 flex-wrap">
+                      <span>{p.price} ₽/{p.unit}</span>
+                      <span className="text-white/30">{p.weight}</span>
+                      {p.badge && <span className={p.badge === "Нет в наличии" ? "text-orange-400" : "text-veggie-lime"}>{p.badge}</span>}
+                      {isHidden && <span className="text-red-400">скрыт</span>}
+                      {productSaved === p.id && <span className="text-veggie-lime font-semibold">✓ Сохранено</span>}
+                    </div>
+                  </div>
+                  <div className="flex gap-1 shrink-0">
+                    <button onClick={() => toggleHidden(p)} title={isHidden ? "Показать" : "Скрыть"}
+                      className={`px-2 py-1.5 rounded-lg text-xs transition-colors ${isHidden ? "bg-veggie-lime/20 text-veggie-lime hover:bg-veggie-lime/30" : "bg-red-500/20 text-red-400 hover:bg-red-500/30"}`}>
+                      <Icon name={isHidden ? "Eye" : "EyeOff"} size={12} />
+                    </button>
+                    <button onClick={() => setEditingProduct({ ...p })}
+                      className="px-2 py-1.5 rounded-lg text-xs bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 transition-colors">
+                      <Icon name="Pencil" size={12} />
+                    </button>
                   </div>
                 </div>
-                <button onClick={() => setEditingProduct({ ...p })}
-                  className="shrink-0 flex items-center gap-1 px-2 py-1.5 rounded-lg text-xs bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 transition-colors">
-                  <Icon name="Pencil" size={12} />
-                </button>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </>}
       </div>
@@ -706,8 +782,8 @@ export default function Admin() {
                 </div>
               </div>
               <div>
-                <label className="text-white/50 text-xs mb-1 block">Тип/категория</label>
-                <input value={editingProduct.type} onChange={e => setEditingProduct({ ...editingProduct, type: e.target.value })} className={inp} />
+                <label className="text-white/50 text-xs mb-1 block">Вес / фасовка</label>
+                <input value={editingProduct.weight} onChange={e => setEditingProduct({ ...editingProduct, weight: e.target.value })} className={inp} placeholder="800 г" />
               </div>
               <div>
                 <label className="text-white/50 text-xs mb-1 block">Наличие / значок</label>
@@ -717,6 +793,13 @@ export default function Admin() {
                   {BADGE_OPTIONS.map(b => <option key={b} value={b}>{b}</option>)}
                 </select>
               </div>
+              <label className="flex items-center gap-3 cursor-pointer">
+                <div onClick={() => setOverrides(prev => ({ ...prev, [editingProduct.id]: { ...(prev[editingProduct.id] || { product_id: editingProduct.id, price: null, unit: null, badge: null, image: null, type: null, weight: null, weight_kg: null }), hidden: !(prev[editingProduct.id]?.hidden ?? false) } }))}
+                  className={`w-5 h-5 rounded flex items-center justify-center border-2 transition-all shrink-0 ${(overrides[editingProduct.id]?.hidden) ? 'bg-red-500 border-red-500' : 'border-white/30 bg-white/5'}`}>
+                  {(overrides[editingProduct.id]?.hidden) && <Icon name="EyeOff" size={12} className="text-white" />}
+                </div>
+                <span className="text-white/60 text-sm">Скрыть товар из каталога</span>
+              </label>
               <div>
                 <label className="text-white/50 text-xs mb-1 block">Фото товара</label>
                 <input
@@ -742,15 +825,10 @@ export default function Admin() {
                   className={inp + " mt-2"} placeholder="или вставьте URL https://..." />
               </div>
             </div>
-            <button onClick={() => {
-              setProducts(prev => prev.map(p => p.id === editingProduct.id ? editingProduct : p));
-              setProductSaved(editingProduct.id);
-              setTimeout(() => setProductSaved(null), 2000);
-              setEditingProduct(null);
-            }} className="w-full bg-veggie-lime text-veggie-dark py-3 rounded-xl font-bold text-sm">
-              Сохранить
+            <button onClick={() => saveProduct(editingProduct)} disabled={productSaving}
+              className="w-full bg-veggie-lime text-veggie-dark py-3 rounded-xl font-bold text-sm disabled:opacity-50">
+              {productSaving ? "Сохраняем..." : "Сохранить"}
             </button>
-            <p className="text-white/30 text-xs text-center mt-2">Изменения применяются локально в этой сессии</p>
           </div>
         </div>
       )}
