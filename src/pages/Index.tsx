@@ -39,12 +39,12 @@ const FRUITS = [
   { id: 115, name: "Мандарин Турция", price: 220, unit: "кг", season: "зима", type: "цитрусы", emoji: "🍊", badge: null, weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/a9e42def-2ecd-476b-a668-8cfae87eb129.jpg" },
   { id: 106, name: "Сливы синие", price: 200, unit: "кг", season: "лето", type: "сливы", emoji: "🍑", badge: null, weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/0a031ca2-f15a-4f25-997c-114466e7e4bc.jpg" },
   { id: 120, name: "Виноград зелёный", price: 400, unit: "кг", season: "лето", type: "виноград", emoji: "🍇", badge: null, weight: "1кг", weightKg: 1, image: "" },
-  { id: 121, name: "Виноград Кишмиш", price: 500, unit: "кг", season: "лето", type: "виноград", emoji: "🍇", badge: "Хит", weight: "1кг", weightKg: 1, image: "" },
-  { id: 122, name: "Киви", price: 240, unit: "кг", season: "зима", type: "экзотика", emoji: "🥝", badge: null, weight: "1кг", weightKg: 1, image: "" },
+  { id: 121, name: "Виноград Кишмиш", price: 500, unit: "кг", season: "лето", type: "виноград", emoji: "🍇", badge: "Хит", weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/04d46d49-1d9d-4f90-858f-6529a20e9b1d.jpg" },
+  { id: 122, name: "Киви", price: 240, unit: "кг", season: "зима", type: "экзотика", emoji: "🥝", badge: null, weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/21e5e478-abd2-474d-a69b-57a1afeb8efa.jpg" },
   { id: 123, name: "Бананы", price: 200, unit: "кг", season: "всесезонно", type: "экзотика", emoji: "🍌", badge: null, weight: "1кг", weightKg: 1, image: "" },
   { id: 124, name: "Ананас", price: 700, unit: "шт", season: "всесезонно", type: "экзотика", emoji: "🍍", badge: null, weight: "1шт", weightKg: 1, image: "" },
-  { id: 125, name: "Лимон", price: 350, unit: "кг", season: "всесезонно", type: "цитрусы", emoji: "🍋", badge: null, weight: "100г", weightKg: 0.1, minWeightG: 100, pricePerKg: 350, image: "" },
-  { id: 127, name: "Имбирь", price: 500, unit: "кг", season: "всесезонно", type: "специи", emoji: "🫚", badge: null, weight: "100г", weightKg: 0.1, minWeightG: 100, pricePerKg: 500, image: "" },
+  { id: 125, name: "Лимон", price: 350, unit: "кг", season: "всесезонно", type: "цитрусы", emoji: "🍋", badge: null, weight: "100г", weightKg: 0.1, minWeightG: 100, pricePerKg: 350, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/1b019d83-7dff-436c-9485-ac15228b2727.jpg" },
+  { id: 127, name: "Имбирь", price: 500, unit: "кг", season: "всесезонно", type: "специи", emoji: "🫚", badge: null, weight: "100г", weightKg: 0.1, minWeightG: 100, pricePerKg: 500, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/eacc26e4-2549-49c7-8736-035a493ebfc5.jpg" },
 ];
 
 const BERRIES = [
@@ -86,7 +86,7 @@ const EGG_TYPES = ["все", "яйца"];
 const MEAT_TYPES = ["все", "птица", "говядина", "свинина", "фарш"];
 
 const DAIRY = [
-  { id: 801, name: "Молоко Вкус Облако 3.2%", price: 82, unit: "л", season: "всесезонно", type: "молоко", emoji: "🥛", badge: null, weight: "1 л", weightKg: 1, image: "" },
+  { id: 801, name: "Молоко Вкус Облако 3.2%", price: 82, unit: "л", season: "всесезонно", type: "молоко", emoji: "🥛", badge: null, weight: "1 л", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/fc30e904-a250-4e7a-803f-d096683b1402.jpg" },
   { id: 802, name: "Сметана домашняя", price: 0, unit: "500г", season: "всесезонно", type: "кисломолочное", emoji: "🥛", badge: null, weight: "500г", weightKg: 0.5, image: "" },
   { id: 803, name: "Творог домашний", price: 0, unit: "500г", season: "всесезонно", type: "творог", emoji: "🧀", badge: null, weight: "500г", weightKg: 0.5, image: "" },
   { id: 804, name: "Кефир домашний", price: 0, unit: "л", season: "всесезонно", type: "кисломолочное", emoji: "🥛", badge: null, weight: "1л", weightKg: 1, image: "" },
