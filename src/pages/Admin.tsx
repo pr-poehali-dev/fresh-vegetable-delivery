@@ -456,6 +456,9 @@ export default function Admin() {
                 {filteredOrders.map(order => {
                   const si = statusInfo(order.status);
                   const isExpanded = expandedId === order.id;
+                  const paymentMatch = order.comment?.match(/(💵 Наличными|💳 Картой при получении|🏦 Онлайн \(ВТБ\))/);
+                  const paymentLabel = paymentMatch ? paymentMatch[1] : null;
+                  const paymentColor = paymentLabel?.includes('Онлайн') ? 'bg-blue-500/20 text-blue-300' : paymentLabel?.includes('Картой') ? 'bg-purple-500/20 text-purple-300' : 'bg-green-500/20 text-green-300';
                   return (
                     <div key={order.id} className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
                       <div className="p-4 cursor-pointer hover:bg-white/5 transition-colors" onClick={() => setExpandedId(isExpanded ? null : order.id)}>
@@ -469,6 +472,7 @@ export default function Admin() {
                             <p className="text-white font-semibold text-sm">{order.name}</p>
                             <a href={`tel:${order.phone}`} className="text-veggie-lime text-sm hover:underline" onClick={e => e.stopPropagation()}>{order.phone}</a>
                             {order.address && <p className="text-white/40 text-xs mt-1 truncate">📍 {order.address}</p>}
+                            {paymentLabel && <span className={`inline-flex items-center text-[11px] px-2 py-0.5 rounded-full mt-1 ${paymentColor}`}>{paymentLabel}</span>}
                           </div>
                           <div className="text-right shrink-0">
                             <div className="text-veggie-lime font-bold font-heading text-lg">{order.total_price} ₽</div>
