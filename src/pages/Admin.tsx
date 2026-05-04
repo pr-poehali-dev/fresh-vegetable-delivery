@@ -629,7 +629,9 @@ export default function Admin() {
               return (
                 <div key={p.id} className={`border rounded-2xl p-3 flex items-center gap-3 transition-opacity ${isHidden ? "opacity-40 bg-red-500/5 border-red-500/20" : p.badge === "Нет в наличии" ? "bg-white/5 border-orange-500/20" : "bg-white/5 border-white/10"}`}>
                   <div className="w-12 h-12 rounded-xl overflow-hidden bg-white/10 flex items-center justify-center shrink-0">
-                    {p.image ? <img src={p.image} alt={p.name} className="w-full h-full object-cover" /> : <span className="text-2xl">{p.emoji}</span>}
+                    {p.image
+                      ? <img src={p.image} alt={p.name} className="w-full h-full object-cover" onError={e => { (e.currentTarget as HTMLImageElement).src = ''; (e.currentTarget as HTMLImageElement).style.display = 'none'; }} />
+                      : <span className="text-2xl">{p.emoji}</span>}
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className={`text-sm font-semibold truncate ${isHidden ? "line-through text-white/40" : "text-white"}`}>{p.name}</p>
