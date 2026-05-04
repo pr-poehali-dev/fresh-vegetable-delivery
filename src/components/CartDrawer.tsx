@@ -181,21 +181,11 @@ export default function CartDrawer({
                       className="w-full border border-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-veggie-green transition-colors"
                     />
                   </div>
-                  <div>
-                    <label className="text-xs text-muted-foreground font-medium mb-2 block">Время доставки</label>
-                    <div className="grid grid-cols-2 gap-2">
-                      <button onClick={() => setOrderTime('morning')}
-                        className={`border rounded-xl p-3 text-left transition-colors ${orderTime === 'morning' ? 'border-veggie-green bg-veggie-green/5' : 'border-border hover:border-veggie-green/50'}`}>
-                        <div className="text-lg mb-0.5">🌅</div>
-                        <div className="text-sm font-semibold">Утро</div>
-                        <div className="text-xs text-muted-foreground">до 12:00</div>
-                      </button>
-                      <button onClick={() => setOrderTime('evening')}
-                        className={`border rounded-xl p-3 text-left transition-colors ${orderTime === 'evening' ? 'border-veggie-green bg-veggie-green/5' : 'border-border hover:border-veggie-green/50'}`}>
-                        <div className="text-lg mb-0.5">🌆</div>
-                        <div className="text-sm font-semibold">Вечер</div>
-                        <div className="text-xs text-muted-foreground">с 18:00</div>
-                      </button>
+                  <div className="flex items-center gap-3 bg-veggie-green/5 border border-veggie-green/20 rounded-xl p-3">
+                    <div className="text-2xl">🚚</div>
+                    <div>
+                      <div className="text-sm font-semibold text-foreground">Доставка 2–3 часа</div>
+                      <div className="text-xs text-muted-foreground">После оформления заказа</div>
                     </div>
                   </div>
                 </div>
