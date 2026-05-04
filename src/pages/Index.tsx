@@ -111,8 +111,9 @@ const HOUSEHOLD = [
   { id: 1002, name: "Влажные салфетки для детей 200 шт", price: 99, unit: "уп", season: "всесезонно", type: "салфетки", emoji: "🧻", badge: null, weight: "200 шт", weightKg: 0.3, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/1b71cad8-efca-4674-b743-b9900f396d28.jpg" },
   { id: 1003, name: "Туалетная бумага 3 слоя 8 шт", price: 149, unit: "уп", season: "всесезонно", type: "бумага", emoji: "🧻", badge: null, weight: "8 рулонов", weightKg: 0.8, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/b0d9f5d9-b5c4-4acf-84f5-6aa509d5bd87.jpg" },
   { id: 1004, name: "Порошок BiMax Color Automat 6 кг", price: 599, unit: "уп", season: "всесезонно", type: "стирка", emoji: "🧺", badge: null, weight: "6 кг", weightKg: 6, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/0f1a55dc-f8b3-4802-aa70-e1828d0d04b4.jpg" },
+  { id: 1005, name: "Шланг садовый 20м диаметр 18мм", price: 1020, unit: "шт", season: "всесезонно", type: "сад", emoji: "🌿", badge: null, weight: "20 м", weightKg: 2, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/5ed33d2b-a957-482a-b541-3076f93ddeb3.jpg" },
 ];
-const HOUSEHOLD_TYPES = ["все", "стирка", "салфетки", "бумага"];
+const HOUSEHOLD_TYPES = ["все", "стирка", "салфетки", "бумага", "сад"];
 
 const GROCERY = [
   { id: 1101, name: "Мука пшеничная высший сорт 5 кг", price: 254, unit: "уп", season: "всесезонно", type: "мука", emoji: "🌾", badge: null, weight: "5 кг", weightKg: 5, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/8a64f203-60de-40e5-b5ce-41e2be74d9ee.jpg" },
@@ -129,7 +130,7 @@ const GROCERY_TYPES = ["все", "мука", "крупы", "соусы", "чай
 
 const READYFOOD = [
   { id: 1201, name: "Морковь по-корейски 500 г", price: 85, unit: "уп", season: "всесезонно", type: "салаты", emoji: "🥕", badge: null, weight: "500 г", weightKg: 0.5, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/3197f53a-4d44-422c-9779-cd171c8082b4.jpg" },
-  { id: 1202, name: "Капуста квашеная с морковью 1 кг", price: 125, unit: "пластиковая тара", season: "всесезонно", type: "соленья", emoji: "🥬", badge: null, weight: "1 кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/5a9179e7-bc9e-4d08-a700-1652f62aacf1.jpg" },
+  { id: 1202, name: "Капуста квашеная с морковью 1 кг", price: 125, unit: "пластиковая тара", season: "всесезонно", type: "соленья", emoji: "🥬", badge: null, weight: "1 кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/47ab454a-57fb-492d-8a3e-5b485c88566f.jpg" },
   { id: 1203, name: "Огурцы маринованные Фрау Марта 680 г", price: 189, unit: "уп", season: "всесезонно", type: "соленья", emoji: "🥒", badge: null, weight: "680 г", weightKg: 0.68, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/332ec4c5-9683-4be4-be84-ad231b5d2567.jpg" },
   { id: 1204, name: "Семечки Белочка жареные 150 г", price: 65, unit: "уп", season: "всесезонно", type: "снэки", emoji: "🌻", badge: null, weight: "150 г", weightKg: 0.15, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/9a0c8177-1ee5-43dd-9a47-01622581ff6f.jpg" },
   { id: 1205, name: "Чипсы Lay's Сметана и зелень 150 г", price: 129, unit: "уп", season: "всесезонно", type: "снэки", emoji: "🍟", badge: null, weight: "150 г", weightKg: 0.15, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/db48f7ea-5442-4937-83da-3eaed06aff3c.jpg" },
