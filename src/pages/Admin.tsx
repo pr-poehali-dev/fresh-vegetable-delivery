@@ -154,7 +154,7 @@ export default function Admin() {
         const res = await fetch(UPLOAD_API, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ action: 'upload', image: base64, contentType: 'image/jpeg' })
+          body: JSON.stringify({ action: 'upload', image: base64, contentType: 'image/jpeg', oldUrl: editingProduct?.image || '' })
         });
         const data = await res.json();
         if (data.url) setEditingProduct(prev => prev ? { ...prev, image: data.url } : prev);

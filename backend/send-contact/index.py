@@ -24,6 +24,7 @@ def handler(event: dict, context) -> dict:
     if body.get('action') == 'upload':
         image_b64 = body.get('image')
         content_type = body.get('contentType', 'image/jpeg')
+        old_url = body.get('oldUrl', '')
 
         if not image_b64:
             return {'statusCode': 400, 'headers': cors_headers, 'body': json.dumps({'error': 'No image provided'})}
@@ -34,15 +35,30 @@ def handler(event: dict, context) -> dict:
 
         image_data = base64.b64decode(image_b64)
 
+        project_id = os.environ['AWS_ACCESS_KEY_ID']
         s3 = boto3.client(
             's3',
             endpoint_url='https://bucket.poehali.dev',
-            aws_access_key_id=os.environ['AWS_ACCESS_KEY_ID'],
+            aws_access_key_id=project_id,
             aws_secret_access_key=os.environ['AWS_SECRET_ACCESS_KEY']
         )
         s3.put_object(Bucket='files', Key=key, Body=image_data, ContentType=content_type)
 
-        project_id = os.environ['AWS_ACCESS_KEY_ID']
+        # Удаляем старое фото если оно хранится в нашем S3 (bucket или files)
+        if old_url:
+            cdn_prefix_bucket = f"https://cdn.poehali.dev/projects/{project_id}/bucket/"
+            cdn_prefix_files = f"https://cdn.poehali.dev/projects/{project_id}/files/"
+            old_key = None
+            if old_url.startswith(cdn_prefix_bucket):
+                old_key = old_url[len(cdn_prefix_bucket):]
+            elif old_url.startswith(cdn_prefix_files):
+                old_key = old_url[len(cdn_prefix_files):]
+            if old_key:
+                try:
+                    s3.delete_object(Bucket='files', Key=old_key)
+                except Exception:
+                    pass
+
         url = f"https://cdn.poehali.dev/projects/{project_id}/files/{key}"
 
         return {'statusCode': 200, 'headers': cors_headers, 'body': json.dumps({'url': url})}
