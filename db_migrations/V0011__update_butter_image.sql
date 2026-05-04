@@ -1,0 +1,1 @@
+UPDATE t_p20462627_fresh_vegetable_deli.catalog_overrides SET image = 'https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/bf01c68d-3fcf-48b9-a646-7ff8f96915a1.jpg', name = 'Масло сливочное крестьянское 72,5% 200 г' WHERE product_id = 805;
