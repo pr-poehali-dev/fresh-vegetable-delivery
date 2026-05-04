@@ -120,16 +120,16 @@ const GROCERY = [
   { id: 1104, name: "Рис шлифованный 2 сорт 900 г", price: 99, unit: "уп", season: "всесезонно", type: "крупы", emoji: "🍚", badge: null, weight: "900 г", weightKg: 0.9, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/b501d4e5-0ebc-4ff5-9914-8ab73c2e07e2.jpg" },
   { id: 1105, name: "Майонез Calve Лёгкий 800 г", price: 180, unit: "уп", season: "всесезонно", type: "соусы", emoji: "🥫", badge: null, weight: "800 г", weightKg: 0.8, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/465bd9cc-280c-4b63-a4b8-cdeeef27b4b9.jpg" },
   { id: 1106, name: "Чай TANAY 100 пакетов", price: 0, unit: "уп", season: "всесезонно", type: "чай", emoji: "🍵", badge: null, weight: "100 пак", weightKg: 0.2, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/cf05b900-ee74-4322-bb77-8bef4ef410de.jpg" },
-  { id: 1107, name: "Семечки Белочка жареные 150 г", price: 65, unit: "уп", season: "всесезонно", type: "снэки", emoji: "🌻", badge: null, weight: "150 г", weightKg: 0.15, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/9a0c8177-1ee5-43dd-9a47-01622581ff6f.jpg" },
 ];
-const GROCERY_TYPES = ["все", "мука", "крупы", "соусы", "чай", "снэки"];
+const GROCERY_TYPES = ["все", "мука", "крупы", "соусы", "чай"];
 
 const READYFOOD = [
   { id: 1201, name: "Морковь по-корейски 500 г", price: 85, unit: "уп", season: "всесезонно", type: "салаты", emoji: "🥕", badge: null, weight: "500 г", weightKg: 0.5, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/3197f53a-4d44-422c-9779-cd171c8082b4.jpg" },
   { id: 1202, name: "Капуста квашеная с морковью 1 кг", price: 125, unit: "пластиковая тара", season: "всесезонно", type: "соленья", emoji: "🥬", badge: null, weight: "1 кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/5a9179e7-bc9e-4d08-a700-1652f62aacf1.jpg" },
   { id: 1203, name: "Огурцы маринованные Фрау Марта 680 г", price: 189, unit: "уп", season: "всесезонно", type: "соленья", emoji: "🥒", badge: null, weight: "680 г", weightKg: 0.68, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/332ec4c5-9683-4be4-be84-ad231b5d2567.jpg" },
+  { id: 1204, name: "Семечки Белочка жареные 150 г", price: 65, unit: "уп", season: "всесезонно", type: "снэки", emoji: "🌻", badge: null, weight: "150 г", weightKg: 0.15, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/9a0c8177-1ee5-43dd-9a47-01622581ff6f.jpg" },
 ];
-const READYFOOD_TYPES = ["все", "салаты", "соленья"];
+const READYFOOD_TYPES = ["все", "салаты", "соленья", "снэки"];
 
 const PRODUCTS = [...VEGETABLES, ...FRUITS, ...BERRIES, ...JUICES, ...MUSHROOMS, ...GREENS, ...EGGS, ...MEAT, ...DAIRY, ...SAUSAGE, ...HOUSEHOLD, ...GROCERY, ...READYFOOD];
 
