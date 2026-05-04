@@ -93,7 +93,7 @@ const DAIRY = [
   { id: 808, name: "Кефир Молочный Фермер 3,2%", price: 89, unit: "уп", season: "всесезонно", type: "кисломолочное", emoji: "🥛", badge: null, weight: "900 г", weightKg: 0.9, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/765e81a2-a7b3-4fcb-8d6f-c0d697b74e6a.jpg" },
   { id: 805, name: "Масло сливочное", price: 0, unit: "200г", season: "всесезонно", type: "масло", emoji: "🧈", badge: null, weight: "200г", weightKg: 0.2, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/1cc03daf-8d1e-4780-a8c7-3a904a1f2dd4.jpg" },
   { id: 806, name: "Сыр домашний", price: 0, unit: "кг", season: "всесезонно", type: "сыр", emoji: "🧀", badge: null, weight: "1кг", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/4e9070df-21c7-47f6-8451-f52dc5a6e631.jpg" },
-  { id: 807, name: "Сыр сливочный творожный", price: 0, unit: "уп", season: "всесезонно", type: "сыр", emoji: "🧀", badge: null, weight: "", weightKg: 0.2, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/a7cb72a6-0230-4a89-b2b3-dcda45809202.jpg" },
+  { id: 807, name: "Сыр сливочный творожный", price: 0, unit: "уп", season: "всесезонно", type: "сыр", emoji: "🧀", badge: null, weight: "", weightKg: 0.2, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/4a8edc17-b6aa-454e-b2a5-56cf9d6dcca3.jpg" },
 ];
 const DAIRY_TYPES = ["все", "молоко", "кисломолочное", "творог", "масло", "сыр"];
 
