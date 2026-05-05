@@ -4,6 +4,7 @@ import Icon from "@/components/ui/icon";
 const POPULAR_ITEMS = [
   {
     id: "milk-fresh",
+    productId: 809,
     emoji: "🐄",
     title: "Молоко свежее коровье",
     subtitle: "от 1,5 л · жирность 4,2%",
@@ -14,9 +15,11 @@ const POPULAR_ITEMS = [
     tag: "Часто покупают",
     image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/ec19e63b-3fa3-47b7-b893-c3ceac7b00fa.jpeg",
     section: "dairy" as const,
+    product: { id: 809, name: "Молоко свежее коровье 4,2%", price: 100, unit: "л", season: "всесезонно", type: "молоко", emoji: "🐄", badge: "Хит" as const, weight: "от 1,5 л", weightKg: 1.5, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/ec19e63b-3fa3-47b7-b893-c3ceac7b00fa.jpeg" },
   },
   {
     id: "eggs-home",
+    productId: 601,
     emoji: "🥚",
     title: "Яйцо домашнее",
     subtitle: "10 штук · от фермера",
@@ -27,6 +30,7 @@ const POPULAR_ITEMS = [
     tag: "Часто покупают",
     image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/93ea36d9-51c0-4187-a153-edd5dcabcb3a.jpg",
     section: "eggs" as const,
+    product: { id: 601, name: "Яйцо домашнее", price: 150, unit: "упак", season: "всесезонно", type: "яйца", emoji: "🥚", badge: null as null, weight: "10шт", weightKg: 0.6, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/93ea36d9-51c0-4187-a153-edd5dcabcb3a.jpg" },
   },
 ];
 
@@ -88,12 +92,27 @@ export default function CatalogSection({
                   </div>
                   <div className="flex items-center justify-between mt-3">
                     <span className={`font-heading font-bold text-xl ${item.accent}`}>{item.price}</span>
-                    <button
-                      onClick={() => { setActiveSection(item.section); setActiveType("все"); setTimeout(() => document.getElementById("catalog")?.scrollIntoView({ behavior: "smooth" }), 50); }}
-                      className="flex items-center gap-1 bg-veggie-green text-white text-xs font-semibold px-3 py-1.5 rounded-full hover:bg-veggie-lime hover:text-veggie-dark transition-colors"
-                    >
-                      <Icon name="ShoppingCart" size={12} />В каталог
-                    </button>
+                    {(() => {
+                      const inCart = cart.find(c => c.id === item.productId);
+                      return inCart ? (
+                        <div className="flex items-center gap-2">
+                          <button onClick={() => updateQty(item.productId, -1)} className="w-7 h-7 rounded-full bg-veggie-green/15 hover:bg-veggie-green/30 text-veggie-green font-bold flex items-center justify-center transition-colors">
+                            <Icon name="Minus" size={12} />
+                          </button>
+                          <span className="w-5 text-center font-bold text-sm text-foreground">{inCart.qty}</span>
+                          <button onClick={() => updateQty(item.productId, 1)} className="w-7 h-7 rounded-full bg-veggie-green text-white font-bold flex items-center justify-center transition-colors">
+                            <Icon name="Plus" size={12} />
+                          </button>
+                        </div>
+                      ) : (
+                        <button
+                          onClick={() => addToCart(item.product)}
+                          className="flex items-center gap-1 bg-veggie-green text-white text-xs font-semibold px-3 py-1.5 rounded-full hover:bg-veggie-lime hover:text-veggie-dark transition-colors"
+                        >
+                          <Icon name="ShoppingCart" size={12} />В корзину
+                        </button>
+                      );
+                    })()}
                   </div>
                 </div>
               </div>
