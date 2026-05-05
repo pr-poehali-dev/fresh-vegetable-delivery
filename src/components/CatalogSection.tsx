@@ -12,7 +12,7 @@ const POPULAR_ITEMS = [
     border: "border-amber-200",
     accent: "text-amber-700",
     tag: "Часто покупают",
-    image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/fc30e904-a250-4e7a-803f-d096683b1402.jpg",
+    image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/ec19e63b-3fa3-47b7-b893-c3ceac7b00fa.jpeg",
   },
 ];
 

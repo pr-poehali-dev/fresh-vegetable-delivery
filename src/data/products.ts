@@ -82,7 +82,7 @@ export const MEAT = [
 export const MEAT_TYPES = ["все", "свинина"];
 
 export const DAIRY = [
-  { id: 809, name: "Молоко свежее коровье 4,2%", price: 100, unit: "л", season: "всесезонно", type: "молоко", emoji: "🐄", badge: "Хит", weight: "от 1,5 л", weightKg: 1.5, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/fc30e904-a250-4e7a-803f-d096683b1402.jpg" },
+  { id: 809, name: "Молоко свежее коровье 4,2%", price: 100, unit: "л", season: "всесезонно", type: "молоко", emoji: "🐄", badge: "Хит", weight: "от 1,5 л", weightKg: 1.5, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/ec19e63b-3fa3-47b7-b893-c3ceac7b00fa.jpeg" },
   { id: 801, name: "Молоко Вкус Облако 3.2%", price: 82, unit: "л", season: "всесезонно", type: "молоко", emoji: "🥛", badge: null, weight: "1 л", weightKg: 1, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/fc30e904-a250-4e7a-803f-d096683b1402.jpg" },
   { id: 802, name: "Сметана Сочные Луга", price: 88, unit: "уп", season: "всесезонно", type: "кисломолочное", emoji: "🥛", badge: null, weight: "300 г", weightKg: 0.3, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/0b55606c-fb21-4d72-9ce9-c4819b1bea5a.jpg" },
   { id: 803, name: "Творог домашний", price: 0, unit: "500г", season: "всесезонно", type: "творог", emoji: "🧀", badge: null, weight: "500г", weightKg: 0.5, image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/files/bcdf791f-7baf-4e6b-b7c6-e105d69380c3.jpg" },
