@@ -13,6 +13,20 @@ const POPULAR_ITEMS = [
     accent: "text-amber-700",
     tag: "Часто покупают",
     image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/ec19e63b-3fa3-47b7-b893-c3ceac7b00fa.jpeg",
+    section: "dairy" as const,
+  },
+  {
+    id: "eggs-home",
+    emoji: "🥚",
+    title: "Яйцо домашнее",
+    subtitle: "10 штук · от фермера",
+    price: "150 ₽/упак",
+    bg: "from-orange-50 to-amber-50",
+    border: "border-orange-200",
+    accent: "text-orange-700",
+    tag: "Часто покупают",
+    image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/93ea36d9-51c0-4187-a153-edd5dcabcb3a.jpg",
+    section: "eggs" as const,
   },
 ];
 
@@ -75,7 +89,7 @@ export default function CatalogSection({
                   <div className="flex items-center justify-between mt-3">
                     <span className={`font-heading font-bold text-xl ${item.accent}`}>{item.price}</span>
                     <button
-                      onClick={() => { setActiveSection("dairy"); setActiveType("все"); setTimeout(() => document.getElementById("catalog")?.scrollIntoView({ behavior: "smooth" }), 50); }}
+                      onClick={() => { setActiveSection(item.section); setActiveType("все"); setTimeout(() => document.getElementById("catalog")?.scrollIntoView({ behavior: "smooth" }), 50); }}
                       className="flex items-center gap-1 bg-veggie-green text-white text-xs font-semibold px-3 py-1.5 rounded-full hover:bg-veggie-lime hover:text-veggie-dark transition-colors"
                     >
                       <Icon name="ShoppingCart" size={12} />В каталог
