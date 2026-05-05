@@ -1,4 +1,20 @@
+import { useRef } from "react";
 import Icon from "@/components/ui/icon";
+
+const POPULAR_ITEMS = [
+  {
+    id: "milk-fresh",
+    emoji: "🐄",
+    title: "Молоко свежее коровье",
+    subtitle: "от 1,5 литра",
+    price: "150 ₽/л",
+    bg: "from-amber-50 to-yellow-50",
+    border: "border-amber-200",
+    accent: "text-amber-700",
+    tag: "Часто покупают",
+    image: "https://cdn.poehali.dev/projects/7e63b123-cce1-42dc-b476-af41b89879ce/bucket/fc30e904-a250-4e7a-803f-d096683b1402.jpg",
+  },
+];
 
 type Product = {
   id: number; name: string; price: number; unit: string; season: string;
@@ -26,6 +42,8 @@ export default function CatalogSection({
   search, setSearch, activeSection, setActiveSection, activeType, setActiveType,
   currentTypes, filteredProducts, cart, addToCart, updateQty,
 }: CatalogSectionProps) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
   return (
     <section id="catalog" className="py-20 bg-background">
       <div className="container">
@@ -33,6 +51,40 @@ export default function CatalogSection({
           <h2 className="font-heading text-5xl font-bold text-veggie-green mb-3">КАТАЛОГ</h2>
           <div className="section-divider w-24 mx-auto mb-4" />
           <p className="text-muted-foreground text-lg">Выбирайте по разделу — всё самое свежее</p>
+        </div>
+
+        {/* Часто покупают */}
+        <div className="mb-10">
+          <div className="flex items-center gap-2 mb-4">
+            <span className="text-lg">🔥</span>
+            <span className="font-heading font-bold text-veggie-green text-lg uppercase tracking-wide">Часто покупают</span>
+          </div>
+          <div ref={scrollRef} className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-hide" style={{ scrollbarWidth: 'none' }}>
+            {POPULAR_ITEMS.map(item => (
+              <div key={item.id} className={`snap-start shrink-0 w-72 rounded-2xl border ${item.border} bg-gradient-to-br ${item.bg} overflow-hidden shadow-sm flex`} style={{ minWidth: '280px' }}>
+                <div className="w-28 shrink-0 relative overflow-hidden">
+                  <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent to-white/10" />
+                </div>
+                <div className="flex flex-col justify-between p-4 flex-1">
+                  <div>
+                    <span className="inline-block text-[10px] font-bold uppercase tracking-wider bg-veggie-lime/30 text-veggie-green px-2 py-0.5 rounded-full mb-2">{item.tag}</span>
+                    <p className="font-heading font-bold text-foreground text-base leading-tight mb-1">{item.title}</p>
+                    <p className="text-muted-foreground text-xs">{item.subtitle}</p>
+                  </div>
+                  <div className="flex items-center justify-between mt-3">
+                    <span className={`font-heading font-bold text-xl ${item.accent}`}>{item.price}</span>
+                    <button
+                      onClick={() => { setActiveSection("dairy"); setActiveType("все"); setTimeout(() => document.getElementById("catalog")?.scrollIntoView({ behavior: "smooth" }), 50); }}
+                      className="flex items-center gap-1 bg-veggie-green text-white text-xs font-semibold px-3 py-1.5 rounded-full hover:bg-veggie-lime hover:text-veggie-dark transition-colors"
+                    >
+                      <Icon name="ShoppingCart" size={12} />В каталог
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className="max-w-md mx-auto mb-8">
